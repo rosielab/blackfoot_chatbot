@@ -1,13 +1,13 @@
 import Phaser from 'phaser';
 
 var dictionary = {
-  cinema: "Aisaksittoo",
-  store: "Itaohpomoapii",
+  cinema: 'Aisaksittoo',
+  store: 'Itaohpomoapii',
   //night club: "Itaisimmioapii",
-  cafe: "Itoiyo’pii",
-  house: "Naapoiyiss",
-  tipi: "Niitoiyiss",
-  movie: "aisaiksisttoo",
+  cafe: 'Itoiyo’pii',
+  house: 'Naapoiyiss',
+  tipi: 'Niitoiyiss',
+  movie: 'aisaiksisttoo',
 };
 
 export default class TestScene extends Phaser.Scene {
@@ -86,15 +86,16 @@ export default class TestScene extends Phaser.Scene {
       .setOrigin(0.5);
 
     this.add
-      .text(400, 450, "Click here to play the audio:", {
+      .text(400, 450, 'Click here to play the audio:', {
         font: '18px Helvetica',
       })
       .setOrigin(0.5);
 
     var progress_text = this.add
-    .text(400, 150, "Word " + word_index + " of 10", {
-      font: '24px Roboto',
-    }).setOrigin(0.5);
+      .text(400, 150, 'Word ' + word_index + ' of 10', {
+        font: '24px Roboto',
+      })
+      .setOrigin(0.5);
 
     var audioButtons = this.rexUI.add.buttons({
       orientation: 0,
@@ -103,21 +104,28 @@ export default class TestScene extends Phaser.Scene {
       align: undefined,
       click: {
         mode: 'pointerup',
-        clickInterval: 100
+        clickInterval: 100,
       },
     });
 
-    audioButtons.on('button.click', () => {
+    audioButtons
+      .on('button.click', () => {
         this.sound.play(randomWord);
-    }).on('button.over', () => {
-      audioButtons.hideButton(0);
-      audioButtons.showButton(1);
-    }).on('button.out', () => {
-      audioButtons.hideButton(1);
-      audioButtons.showButton(0);
-    });
-      
+      })
+      .on('button.over', () => {
+        audioButtons.hideButton(0);
+        audioButtons.showButton(1);
+      })
+      .on('button.out', () => {
+        audioButtons.hideButton(1);
+        audioButtons.showButton(0);
+      });
+
     audioButtons.hideButton(1);
+
+    let backToMenu = () => {
+      this.scene.start('menu');
+    };
 
     guess.setInteractive().on('pointerdown', () => {
       if (tested == 0) {
@@ -148,11 +156,7 @@ export default class TestScene extends Phaser.Scene {
                 tested = 0;
               } else {
                 message.setText('You got ' + score + '/10. Congrats!');
-                setTimeout( () => {
-                  // Change the scene
-                  //this.scene.start('menu');
-                  console.log("Changed scene?");
-                }, 5000);
+                setTimeout(backToMenu, 5);
               }
             }, 2250);
           }
