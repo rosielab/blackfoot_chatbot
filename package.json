@@ -8,10 +8,10 @@
     "start": "node server.js",
     "postinstall": "webpack",
     "deploy": "git push origin master && git push heroku master",
-	"prettier": "prettier --write \"src/**/*.{js,jsx}\"",
-	"prettier:check": "prettier --check \"src/**/*.{js,jsx}\"",
-	"lint": "eslint \"src/**/*.{js,jsx}\"",
-	"lint:fix": "npm run lint --fix"
+    "prettier": "prettier --write \"src/**/*.{js,jsx}\"",
+    "prettier:check": "prettier --check \"src/**/*.{js,jsx}\"",
+    "lint": "eslint \"src/**/*.{js,jsx}\"",
+    "lint:fix": "npm run lint --fix"
   },
   "keywords": [
     "Phaser 3",
