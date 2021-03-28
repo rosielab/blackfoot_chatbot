@@ -5,7 +5,6 @@ export default class HomeScene extends Phaser.Scene {
     super('home');
   }
   preload() {
-
     this.load.image('homeBackground', '../assets/images/background.png');
     this.load.image('header', '../assets/images/header1.png');
     this.load.image('move', '../assets/images/move.png');
