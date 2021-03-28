@@ -1,8 +1,9 @@
 import Phaser from 'phaser';
-import GameScene from './scenes/game-scene';
-import RexUIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin'
-
-// const height = window.innerHeight;
+import TestScene from './scenes/TestScene';
+import HomeScene from './scenes/HomeScene';
+import MenuScene from './scenes/MenuScene';
+import MoveScene from './scenes/MoveScene';
+import RexUIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin';
 
 const config = {
   type: Phaser.AUTO,
@@ -12,27 +13,25 @@ const config = {
   height: 600,
   parent: 'canvas-container',
   physics: {
-      default: 'arcade',
-      arcade: {
-          gravity: { y: 200 },
-          debug: false
-      }
+    default: 'arcade',
+    arcade: {
+      gravity: { y: 200 },
+      debug: false,
+    },
   },
   dom: {
-	  createContainer: true
+    createContainer: true,
   },
   plugins: {
-  	scene: [
-  		{
-  			key: 'rexUI',
-  			plugin: RexUIPlugin,
-   			mapping: 'rexUI'
-  		}
-	]
+    scene: [
+      {
+        key: 'rexUI',
+        plugin: RexUIPlugin,
+        mapping: 'rexUI',
+      },
+    ],
   },
-  scene: [ GameScene ]
+  scene: [MenuScene, MoveScene, HomeScene, TestScene],
 };
 
-const game = new Phaser.Game(config);
-
-
+export default new Phaser.Game(config);

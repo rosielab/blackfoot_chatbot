@@ -1,36 +1,42 @@
 {
-	"name": "chatbot",
-	"version": "1.1.0",
-	"description": "",
-	"main": "index.js",
-	"scripts": {
-		"build": "webpack",
-		"start": "node server.js",
-		"postinstall": "webpack",
-		"deploy": "git push origin master && git push heroku master"
-	},
-	"keywords": [
-		"Phaser 3",
-		"HTML5 Game",
-		"Javascript Game development"
-	],
-	"dependencies": {
-		"express": "^4.16.4",
-		"phaser": "^3.3.0",
-		"phaser3-rex-plugins": "^1.1.42",
-		"webpack": "^4.2.0"
-	},
-	"devDependencies": {
-		"babel-core": "^6.26.3",
-		"babel-loader": "^7.1.4",
-		"babel-polyfill": "^6.26.0",
-		"babel-preset-es2015": "^6.24.1",
-		"browser-sync": "^2.23.6",
-		"browser-sync-webpack-plugin": "^2.2.2",
-		"copy-webpack-plugin": "^4.5.4",
-		"html-webpack-plugin": "^3.1.0",
-		"raw-loader": "^0.5.1",
-		"source-map-loader": "^0.2.4",
-		"webpack-cli": "^3.1.2"
-	}
+  "name": "chatbot",
+  "version": "1.1.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack",
+    "start": "node server.js",
+    "postinstall": "webpack",
+    "deploy": "git push origin master && git push heroku master",
+	"prettier": "prettier --write \"src/**/*.{js,jsx}\"",
+	"prettier:check": "prettier --check \"src/**/*.{js,jsx}\"",
+	"lint": "eslint \"src/**/*.{js,jsx}\"",
+	"lint:fix": "npm run lint --fix"
+  },
+  "keywords": [
+    "Phaser 3",
+    "HTML5 Game",
+    "Javascript Game development"
+  ],
+  "dependencies": {
+    "express": "^4.16.4",
+    "phaser": "^3.53.1",
+    "phaser3-rex-plugins": "^1.1.42",
+    "webpack": "^4.2.0"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.4",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1",
+    "browser-sync": "^2.23.6",
+    "browser-sync-webpack-plugin": "^2.2.2",
+    "copy-webpack-plugin": "^4.5.4",
+    "eslint": "^7.23.0",
+    "html-webpack-plugin": "^3.1.0",
+    "prettier": "2.2.1",
+    "raw-loader": "^0.5.1",
+    "source-map-loader": "^0.2.4",
+    "webpack-cli": "^3.1.2"
+  }
 }
