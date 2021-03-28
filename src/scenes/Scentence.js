@@ -22,14 +22,8 @@ export default class ScentenceScene extends Phaser.Scene {
     var today = this.add.image(200, 142, 'today');
     var Iwilleat = this.add.image(200, 216, 'Iwilleat');
     var apple = this.add.image(200, 290, 'apple');
-    let wordList = [];
-    const varToString = (varObj) => Object.keys(varObj)[0];
-    // console.log(varToString({today}));
-    var ifaddedToday = 0;
-    var ifaddedIwilleat = false;
-    var ifaddedapple = false;
 
-    let buttonsEffect = (button, temp, name) => {
+    let buttonsEffect = (button) => {
       button.setInteractive();
       this.input.setDraggable(button);
       button.on('pointerover', function () {
@@ -44,21 +38,11 @@ export default class ScentenceScene extends Phaser.Scene {
         if (gameObject.y <= 392) {
           gameObject.y = dragY;
         }
-        // if (gameObject.y > 372 && gameObject.y < 416){
-        //   temp += 1;
-        //   if(temp == 1){
-        //   wordList.push(name);
-        //   wordList.forEach(function(item, index, array) {
-        //     console.log(item, index);
-        //   })
-        // }else{
-        //   temp = 0;
-        // }
       });
-
-      buttonsEffect(today);
-      buttonsEffect(Iwilleat);
-      buttonsEffect(apple);
     };
+
+    buttonsEffect(today);
+    buttonsEffect(Iwilleat);
+    buttonsEffect(apple);
   }
 }
