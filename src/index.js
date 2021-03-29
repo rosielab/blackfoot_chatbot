@@ -40,7 +40,14 @@ const config = {
       },
     ],
   },
-  scene: [MenuScene, MoveScene, HomeScene, TestScene, ScentenceScene, ScoresScene],
+  scene: [
+    MenuScene,
+    MoveScene,
+    HomeScene,
+    TestScene,
+    ScentenceScene,
+    ScoresScene,
+  ],
 };
 
 export default new Phaser.Game(config);

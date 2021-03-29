@@ -1,13 +1,12 @@
 import Phaser from 'phaser';
 
 var dictionary = {
-  cinema: 'Aisaksittoo',
-  store: 'Itaohpomoapii',
-  "night club": "Itaisimmioapii",
-  cafe: 'Itoiyo’pii',
-  house: 'Naapoiyiss',
-  tipi: 'Niitoiyiss',
-  movie: 'aisaiksisttoo',
+  bathroom: 'Makapoiyiss',
+  kitchen: 'Itoiyo’soap',
+  car: 'Aiksistomatomahka',
+  door: 'Kitsim',
+  window: 'Ksisstsikomstan',
+  dog: 'Imitaa',
 };
 
 var scores = {
@@ -20,7 +19,7 @@ var scores = {
 };
 
 // used for ScoresScene.js
-export {scores};
+export { scores };
 
 export default class TestScene extends Phaser.Scene {
   constructor() {
@@ -129,7 +128,11 @@ export default class TestScene extends Phaser.Scene {
             setTimeout(() => {
               if (word_index < 10) {
                 word_index++;
-                randomWord = keys[Math.floor(Math.random() * keys.length)];
+                var current_word = randomWord;
+                // Prevent testing the same word back-to-back unless dictionary only has 1 word
+                while (randomWord === current_word && keys.length > 1) {
+                  randomWord = keys[Math.floor(Math.random() * keys.length)];
+                }
                 message.setText(
                   'What is ' + dictionary[randomWord].toLowerCase() + '?'
                 );
@@ -138,8 +141,8 @@ export default class TestScene extends Phaser.Scene {
                 tested = 0;
               } else {
                 message.setText('You got ' + score + '/10. Congrats!');
-                // currently hardcoded to town
-                scores.town = score;
+                // currently hardcoded to home
+                scores.home = Math.max(scores.home, score);
                 setTimeout(backToMenu, 5000);
               }
             }, 2250);
