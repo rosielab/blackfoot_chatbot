@@ -4,6 +4,7 @@ import HomeScene from './scenes/HomeScene';
 import MenuScene from './scenes/MenuScene';
 import MoveScene from './scenes/MoveScene';
 import ScentenceScene from './scenes/ScentenceScene';
+import ScoresScene from './scenes/ScoresScene';
 
 import RexUIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin';
 import DragPlugin from 'phaser3-rex-plugins/plugins/drag-plugin.js';
@@ -39,7 +40,7 @@ const config = {
       },
     ],
   },
-  scene: [MenuScene, MoveScene, HomeScene, TestScene, ScentenceScene],
+  scene: [MenuScene, MoveScene, HomeScene, TestScene, ScentenceScene, ScoresScene],
 };
 
 export default new Phaser.Game(config);

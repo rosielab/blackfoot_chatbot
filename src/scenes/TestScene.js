@@ -3,12 +3,24 @@ import Phaser from 'phaser';
 var dictionary = {
   cinema: 'Aisaksittoo',
   store: 'Itaohpomoapii',
-  //night club: "Itaisimmioapii",
+  "night club": "Itaisimmioapii",
   cafe: 'Itoiyo’pii',
   house: 'Naapoiyiss',
   tipi: 'Niitoiyiss',
   movie: 'aisaiksisttoo',
 };
+
+var scores = {
+  family: 0,
+  greetings: 0,
+  home: 0,
+  restaurant: 0,
+  town: 0,
+  all: 0,
+};
+
+// used for ScoresScene.js
+export {scores};
 
 export default class TestScene extends Phaser.Scene {
   constructor() {
@@ -32,37 +44,7 @@ export default class TestScene extends Phaser.Scene {
     const speaker_off = this.add.image(535, 450, 'speaker_off');
     const speaker_on = this.add.image(535, 450, 'speaker_on');
 
-    this.cameras.main.setBackgroundColor('#7b9ded');
-
-    // three learn buttons for demonstration
-    // const helloButton = this.add
-    //   .text(300, 100, 'Coffee', {
-    //     font: 'bold 16px Helvetica',
-    //     fill: '#e6edf2',
-    //   })
-    //   .setOrigin(0.5);
-    // helloButton.setInteractive().on('pointerdown', () => {
-    //   this.sound.play('coffee');
-    // });
-
-    // this.add
-    //   .text(200, 100, 'Cinema', {
-    //     font: 'bold 16px Helvetica',
-    //     fill: '#e6edf2',
-    //   })
-    //   .setOrigin(0.5)
-    //   .setInteractive()
-    //   .on('pointerdown', () => {
-    //     this.sound.play('cinema');
-    //   });
-
-    // this.add
-    //   .text(400, 100, 'Store', { font: 'bold 16px Helvetica', fill: '#e6edf2' })
-    //   .setOrigin(0.5)
-    //   .setInteractive()
-    //   .on('pointerdown', () => {
-    //     this.sound.play('store');
-    //   });
+    this.cameras.main.setBackgroundColor('#97cdf7');
 
     var word_index = 1;
     var tested = 0;
@@ -131,7 +113,7 @@ export default class TestScene extends Phaser.Scene {
       if (tested == 0) {
         var editor = this.rexUI.edit(guess, guess, function (guess) {
           if (guess.text != 'Click here to guess...') {
-            if (guess.text == randomWord) {
+            if (guess.text.toLowerCase() == randomWord) {
               message.setText('Correct!');
               score++;
             } else {
@@ -156,7 +138,9 @@ export default class TestScene extends Phaser.Scene {
                 tested = 0;
               } else {
                 message.setText('You got ' + score + '/10. Congrats!');
-                setTimeout(backToMenu, 5);
+                // currently hardcoded to town
+                scores.town = score;
+                setTimeout(backToMenu, 5000);
               }
             }, 2250);
           }
