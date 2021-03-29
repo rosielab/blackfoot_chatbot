@@ -3,7 +3,7 @@ import TestScene from './scenes/TestScene';
 import HomeScene from './scenes/HomeScene';
 import MenuScene from './scenes/MenuScene';
 import MoveScene from './scenes/MoveScene';
-import ScentenceScene from './scenes/Scentence';
+import ScentenceScene from './scenes/ScentenceScene';
 
 import RexUIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin';
 import DragPlugin from 'phaser3-rex-plugins/plugins/drag-plugin.js';
