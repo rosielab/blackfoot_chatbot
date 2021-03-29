@@ -19,7 +19,6 @@
     "Javascript Game development"
   ],
   "dependencies": {
-    "audioconcat": "^0.1.4",
     "express": "^4.16.4",
     "phaser": "^3.53.1",
     "phaser3-rex-plugins": "^1.1.42",
