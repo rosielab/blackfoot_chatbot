@@ -10,53 +10,62 @@ export default class ScoresScene extends Phaser.Scene {
   preload() {
     this.load.image('back', '../assets/images/back.png');
     this.load.image('back1', '../assets/images/back2.png');
+    this.load.image('scores_background', '../assets/images/scores_background.png');
   }
 
   create() {
     const back = this.add.image(63, 56, 'back');
     const back1 = this.add.image(63, 56, 'back1');
+    this.add.image(400, 350, 'scores_background');
 
     this.cameras.main.setBackgroundColor('#97cdf7');
 
     var title = this.add
-      .text(400, 150, 'High Scores', {
-        font: 'bold 55px Roboto',
+      .text(400, 140, 'High Scores', {
+        font: 'bold 55px Cambria',
+        color: '#000000',
       })
       .setOrigin(0.5);
 
     var townScore = this.add
       .text(400, 250, 'Town: ' + scores.town + '/10', {
         font: '35px Trebuchet MS',
+        color: '#000000',
       })
       .setOrigin(0.5);
 
     var restaurantScore = this.add
       .text(400, 290, 'Restaurant: ' + scores.restaurant + '/10', {
         font: '35px Trebuchet MS',
+        color: '#000000',
       })
       .setOrigin(0.5);
 
     var homeScore = this.add
       .text(400, 330, 'Home: ' + scores.home + '/10', {
         font: '35px Trebuchet MS',
+        color: '#000000',
       })
       .setOrigin(0.5);
 
     var familyScore = this.add
       .text(400, 370, 'Family: ' + scores.family + '/10', {
         font: '35px Trebuchet MS',
+        color: '#000000',
       })
       .setOrigin(0.5);
 
     var greetingsScore = this.add
       .text(400, 410, 'Greetings: ' + scores.greetings + '/10', {
         font: '35px Trebuchet MS',
+        color: '#000000',
       })
       .setOrigin(0.5);
 
     var allScore = this.add
       .text(400, 450, 'All: ' + scores.all + '/10', {
         font: '35px Trebuchet MS',
+        color: '#000000',
       })
       .setOrigin(0.5);
 
