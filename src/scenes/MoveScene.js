@@ -6,7 +6,7 @@ export default class MoveScene extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image('moveBackground', '../assets/images/moveBackground2.png');
+    this.load.image('moveBackground', '../assets/images/movebackground2.png');
     this.load.image('back', '../assets/images/back.png');
     this.load.image('back1', '../assets/images/back2.png');
     this.load.image('town', '../assets/images/town2.png');
