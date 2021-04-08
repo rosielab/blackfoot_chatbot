@@ -1,13 +1,15 @@
 import Phaser from 'phaser';
 
-var dictionary = {
-  bathroom: 'Makapoiyiss',
-  kitchen: 'Itoiyo’soap',
-  car: 'Aiksistomatomahka',
-  door: 'Kitsim',
-  window: 'Ksisstsikomstan',
-  dog: 'Imitaa',
-};
+// var dictionary = {
+//   bathroom: 'Makapoiyiss',
+//   kitchen: 'Itoiyo’soap',
+//   car: 'Aiksistomatomahka',
+//   door: 'Kitsim',
+//   window: 'Ksisstsikomstan',
+//   dog: 'Imitaa',
+// };
+
+const dictionary = require('../assets/all_words_translation.json');
 
 var scores = {
   family: 0,
@@ -28,7 +30,7 @@ export default class TestScene extends Phaser.Scene {
 
   preload() {
     Object.keys(dictionary).forEach((sound) => {
-      this.load.audio(sound, '../assets/sounds/' + sound + '.wav');
+      this.load.audio(sound, '../assets/sounds/' + sound.replace("?", "_") + '.wav');
     });
 
     this.load.image('speaker_off', '../assets/images/speaker_off.png');
@@ -40,8 +42,8 @@ export default class TestScene extends Phaser.Scene {
       this.sound.add(sound);
     });
 
-    const speaker_off = this.add.image(535, 450, 'speaker_off');
-    const speaker_on = this.add.image(535, 450, 'speaker_on');
+    const speaker_off = this.add.image(535, 451, 'speaker_off');
+    const speaker_on = this.add.image(535, 451, 'speaker_on');
 
     this.cameras.main.setBackgroundColor('#97cdf7');
 
@@ -134,7 +136,7 @@ export default class TestScene extends Phaser.Scene {
                   randomWord = keys[Math.floor(Math.random() * keys.length)];
                 }
                 message.setText(
-                  'What is ' + dictionary[randomWord].toLowerCase() + '?'
+                  'What is ' + dictionary[randomWord].toLowerCase().replace("?", "") + '?'
                 );
                 guess.setText('Click here to guess...');
                 progress_text.setText('Word ' + word_index + ' of 10');
