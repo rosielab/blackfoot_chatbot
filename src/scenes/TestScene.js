@@ -1,14 +1,5 @@
 import Phaser from 'phaser';
 
-// var dictionary = {
-//   bathroom: 'Makapoiyiss',
-//   kitchen: 'Itoiyo’soap',
-//   car: 'Aiksistomatomahka',
-//   door: 'Kitsim',
-//   window: 'Ksisstsikomstan',
-//   dog: 'Imitaa',
-// };
-
 const dictionary = require('../assets/all_words_translation.json');
 
 var scores = {
@@ -33,6 +24,8 @@ export default class TestScene extends Phaser.Scene {
       this.load.audio(sound, '../assets/sounds/' + sound.replace("?", "_") + '.wav');
     });
 
+    this.load.image('back', '../assets/images/back.png');
+    this.load.image('back1', '../assets/images/back2.png');
     this.load.image('speaker_off', '../assets/images/speaker_off.png');
     this.load.image('speaker_on', '../assets/images/speaker_on.png');
   }
@@ -42,6 +35,8 @@ export default class TestScene extends Phaser.Scene {
       this.sound.add(sound);
     });
 
+    const back = this.add.image(63, 56, 'back');
+    const back1 = this.add.image(63, 56, 'back1');
     const speaker_off = this.add.image(535, 451, 'speaker_off');
     const speaker_on = this.add.image(535, 451, 'speaker_on');
 
@@ -54,6 +49,18 @@ export default class TestScene extends Phaser.Scene {
     // choose a random word from dictionary
     var keys = Object.keys(dictionary);
     var randomWord = keys[Math.floor(Math.random() * keys.length)];
+
+    var progress_text = this.add
+      .text(400, 125, 'Word ' + word_index + ' of 10', {
+        font: '24px Roboto',
+      })
+      .setOrigin(0.5);
+  
+    var score_text = this.add
+    .text(400, 150, 'Current Score: ' + score + '/10', {
+      font: '16px Roboto',
+    })
+    .setOrigin(0.5);
 
     var message = this.add
       .text(400, 275, 'What is ' + dictionary[randomWord].toLowerCase() + '?', {
@@ -71,12 +78,6 @@ export default class TestScene extends Phaser.Scene {
     this.add
       .text(400, 450, 'Click here to play the audio:', {
         font: '18px Helvetica',
-      })
-      .setOrigin(0.5);
-
-    var progress_text = this.add
-      .text(400, 150, 'Word ' + word_index + ' of 10', {
-        font: '24px Roboto',
       })
       .setOrigin(0.5);
 
@@ -110,13 +111,43 @@ export default class TestScene extends Phaser.Scene {
       this.scene.start('menu');
     };
 
+    var backButtons = this.rexUI.add.buttons({
+      orientation: 0,
+      buttons: [back, back1],
+      expand: false,
+      align: undefined,
+      click: {
+        mode: 'pointerup',
+        clickInterval: 100,
+      },
+    });
+
+    backButtons.hideButton(1);
+
+    backButtons
+      .on('button.click', () => {
+        this.scene.start('menu');
+      })
+      .on('button.over', () => {
+        backButtons.hideButton(0);
+        backButtons.showButton(1);
+      })
+      .on('button.out', () => {
+        backButtons.hideButton(1);
+        backButtons.showButton(0);
+      });
+
     guess.setInteractive().on('pointerdown', () => {
       if (tested == 0) {
-        var editor = this.rexUI.edit(guess, guess, function (guess) {
+        var editor = this.rexUI.edit(guess, guess, function () {
           if (guess.text != 'Click here to guess...') {
             if (guess.text.toLowerCase() == randomWord) {
               message.setText('Correct!');
               score++;
+              score_text.setText('Current Score: ' + score + '/10');
+
+              // currently hardcoded to all
+              scores.all = Math.max(scores.all, score);
             } else {
               message.setText("Sorry, it's " + randomWord);
             }
@@ -143,8 +174,6 @@ export default class TestScene extends Phaser.Scene {
                 tested = 0;
               } else {
                 message.setText('You got ' + score + '/10. Congrats!');
-                // currently hardcoded to home
-                scores.home = Math.max(scores.home, score);
                 setTimeout(backToMenu, 5000);
               }
             }, 2250);
