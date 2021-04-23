@@ -37,46 +37,97 @@ export default class TestScene extends Phaser.Scene {
 
     const back = this.add.image(63, 56, 'back');
     const back1 = this.add.image(63, 56, 'back1');
-    const speaker_off = this.add.image(535, 451, 'speaker_off');
-    const speaker_on = this.add.image(535, 451, 'speaker_on');
+    const speaker_off = this.add.image(510, 451, 'speaker_off');
+    const speaker_on = this.add.image(510, 451, 'speaker_on');
 
     this.cameras.main.setBackgroundColor('#97cdf7');
 
     var word_index = 1;
-    var tested = 0;
+    var is_testing = 0;
     var score = 0;
+
+    // Main function to process guessing and text updates
+    var startGuess = () => {
+      if (is_testing == 0) {
+        this.rexUI.edit(guess, guess, function () {
+          if (guess.text != 'Click here to guess...') {
+            if (guess.text.toLowerCase() == randomWord) {
+              message.setText('Correct!');
+              score++;
+              score_text.setText('Current Score: ' + score + '/10');
+
+              // currently hardcoded to all
+              scores.all = Math.max(scores.all, score);
+            } else {
+              message.setText("Sorry, it's " + randomWord);
+            }
+            is_testing = 1;
+            setTimeout(() => {
+              message.setText(message.text + '.');
+            }, 750);
+            setTimeout(() => {
+              message.setText(message.text + '.');
+            }, 1500);
+            setTimeout(() => {
+              if (word_index < 10) {
+                word_index++;
+                var current_word = randomWord;
+                // Prevent testing the same word back-to-back unless dictionary only has 1 word
+                while (randomWord === current_word && keys.length > 1) {
+                  randomWord = keys[Math.floor(Math.random() * keys.length)];
+                }
+                message.setText(
+                  'What is ' + dictionary[randomWord].toLowerCase().replace("?", "") + '?'
+                );
+                guess.setText('Click here to guess...');
+                progress_text.setText('Word ' + word_index + ' of 10');
+                is_testing = 0;
+                startGuess();
+              } else {
+                message.setText('You got ' + score + '/10. Congrats!');
+                setTimeout(backToMenu, 5000);
+              }
+            }, 2250);
+          }
+        });
+      }
+    }
 
     // choose a random word from dictionary
     var keys = Object.keys(dictionary);
     var randomWord = keys[Math.floor(Math.random() * keys.length)];
 
     var progress_text = this.add
-      .text(400, 125, 'Word ' + word_index + ' of 10', {
+      .text(400, 115, 'Word ' + word_index + ' of 10', {
         font: '24px Roboto',
       })
       .setOrigin(0.5);
   
     var score_text = this.add
-    .text(400, 150, 'Current Score: ' + score + '/10', {
-      font: '16px Roboto',
+    .text(400, 140, 'Current Score: ' + score + '/10', {
+      font: '18px Roboto',
     })
     .setOrigin(0.5);
 
     var message = this.add
-      .text(400, 275, 'What is ' + dictionary[randomWord].toLowerCase() + '?', {
-        font: 'bold 36px Helvetica',
+      .text(400, 260, 'What is ' + dictionary[randomWord].toLowerCase().replace("?", "") + '?', {
+        font: 'bold 40px Helvetica',
       })
       .setOrigin(0.5);
 
     var guess = this.add
-      .text(400, 350, 'Click here to guess...', {
-        font: '30px Helvetica',
+      .text(400, 340, 'Click here to guess...', {
+        font: '35px Helvetica',
         fill: '#e6edf2',
       })
-      .setOrigin(0.5);
+      .setOrigin(0.5)
+      .setInteractive()
+      .on('pointerdown', () => {
+        startGuess();
+      });
 
     this.add
-      .text(400, 450, 'Click here to play the audio:', {
+      .text(400, 450, 'Click to play the audio:', {
         font: '18px Helvetica',
       })
       .setOrigin(0.5);
@@ -137,50 +188,8 @@ export default class TestScene extends Phaser.Scene {
         backButtons.showButton(0);
       });
 
-    guess.setInteractive().on('pointerdown', () => {
-      if (tested == 0) {
-        var editor = this.rexUI.edit(guess, guess, function () {
-          if (guess.text != 'Click here to guess...') {
-            if (guess.text.toLowerCase() == randomWord) {
-              message.setText('Correct!');
-              score++;
-              score_text.setText('Current Score: ' + score + '/10');
-
-              // currently hardcoded to all
-              scores.all = Math.max(scores.all, score);
-            } else {
-              message.setText("Sorry, it's " + randomWord);
-            }
-            tested = 1;
-            setTimeout(() => {
-              message.setText(message.text + '.');
-            }, 750);
-            setTimeout(() => {
-              message.setText(message.text + '.');
-            }, 1500);
-            setTimeout(() => {
-              if (word_index < 10) {
-                word_index++;
-                var current_word = randomWord;
-                // Prevent testing the same word back-to-back unless dictionary only has 1 word
-                while (randomWord === current_word && keys.length > 1) {
-                  randomWord = keys[Math.floor(Math.random() * keys.length)];
-                }
-                message.setText(
-                  'What is ' + dictionary[randomWord].toLowerCase().replace("?", "") + '?'
-                );
-                guess.setText('Click here to guess...');
-                progress_text.setText('Word ' + word_index + ' of 10');
-                tested = 0;
-              } else {
-                message.setText('You got ' + score + '/10. Congrats!');
-                setTimeout(backToMenu, 5000);
-              }
-            }, 2250);
-          }
-        });
-      }
-    });
+    // Initialise guessing function
+    startGuess();
   }
 
   update() {}
