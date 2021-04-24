@@ -21,51 +21,22 @@ export default class ScoresScene extends Phaser.Scene {
     this.cameras.main.setBackgroundColor('#97cdf7');
 
     var title = this.add
-      .text(400, 140, 'High Scores', {
+      .text(400, 130, 'High Scores', {
         font: 'bold 55px Cambria',
         color: '#000000',
       })
       .setOrigin(0.5);
 
-    var townScore = this.add
-      .text(400, 250, 'Town: ' + scores.town + '/10', {
-        font: '35px Trebuchet MS',
+    var top_scores_text = this.add
+      .text(400, 350, 'Town: ' + scores.town + '/10\n'
+                    + 'Restaurant: ' + scores.restaurant + '/10\n'
+                    + 'Home: ' + scores.home + '/10\n'
+                    + 'Family: ' + scores.family + '/10\n'
+                    + 'Greetings: ' + scores.greetings + '/10\n'
+                    + 'All: ' + scores.all + '/10', {
+        font: '36px Trebuchet MS',
         color: '#000000',
-      })
-      .setOrigin(0.5);
-
-    var restaurantScore = this.add
-      .text(400, 290, 'Restaurant: ' + scores.restaurant + '/10', {
-        font: '35px Trebuchet MS',
-        color: '#000000',
-      })
-      .setOrigin(0.5);
-
-    var homeScore = this.add
-      .text(400, 330, 'Home: ' + scores.home + '/10', {
-        font: '35px Trebuchet MS',
-        color: '#000000',
-      })
-      .setOrigin(0.5);
-
-    var familyScore = this.add
-      .text(400, 370, 'Family: ' + scores.family + '/10', {
-        font: '35px Trebuchet MS',
-        color: '#000000',
-      })
-      .setOrigin(0.5);
-
-    var greetingsScore = this.add
-      .text(400, 410, 'Greetings: ' + scores.greetings + '/10', {
-        font: '35px Trebuchet MS',
-        color: '#000000',
-      })
-      .setOrigin(0.5);
-
-    var allScore = this.add
-      .text(400, 450, 'All: ' + scores.all + '/10', {
-        font: '35px Trebuchet MS',
-        color: '#000000',
+        align: 'right',
       })
       .setOrigin(0.5);
 
