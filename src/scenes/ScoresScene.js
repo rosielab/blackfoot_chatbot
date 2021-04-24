@@ -1,6 +1,16 @@
 import Phaser from 'phaser';
 
-import { scores } from './TestScene.js';
+var scores = {
+  family: 0,
+  greetings: 0,
+  home: 0,
+  restaurant: 0,
+  town: 0,
+  all: 0,
+};
+
+// used for TestScene.js
+export { scores };
 
 export default class ScoresScene extends Phaser.Scene {
   constructor() {

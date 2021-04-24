@@ -112,7 +112,7 @@ export default class MenuScene extends Phaser.Scene {
     exitButtons.hideButton(1);
 
     buttonsEffect(learnButtons, 'move');
-    buttonsEffect(testButtons, 'test');
+    buttonsEffect(testButtons, 'pretest');
     buttonsEffect(sentenceButtons, 'scentence');
     buttonsEffect(scoreButtons, 'scores');
     buttonsEffect(exitButtons, 'move');

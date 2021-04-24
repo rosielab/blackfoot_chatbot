@@ -1,18 +1,10 @@
 import Phaser from 'phaser';
 
-const dictionary = require('../assets/all_words_translation.json');
+//const dictionary = require('../assets/all_words_translation.json');
 
-var scores = {
-  family: 0,
-  greetings: 0,
-  home: 0,
-  restaurant: 0,
-  town: 0,
-  all: 0,
-};
-
-// used for ScoresScene.js
-export { scores };
+import { dictionary } from './PreTestScene.js';
+import { current_test } from './PreTestScene.js';
+import { scores } from './ScoresScene.js';
 
 export default class TestScene extends Phaser.Scene {
   constructor() {
@@ -50,14 +42,14 @@ export default class TestScene extends Phaser.Scene {
     var startGuess = () => {
       if (is_testing == 0) {
         this.rexUI.edit(guess, guess, function () {
-          if (guess.text != 'Click here to guess...') {
+          if (guess.text == "") {
+            guess.setText('Click here to guess...');
+          } else if (guess.text != 'Click here to guess...') {
             if (guess.text.toLowerCase() == randomWord) {
               message.setText('Correct!');
               score++;
               score_text.setText('Current Score: ' + score + '/10');
-
-              // currently hardcoded to all
-              scores.all = Math.max(scores.all, score);
+              scores[current_test] = Math.max(scores[current_test], score);
             } else {
               message.setText("Sorry, it's " + randomWord);
             }
@@ -77,7 +69,7 @@ export default class TestScene extends Phaser.Scene {
                   randomWord = keys[Math.floor(Math.random() * keys.length)];
                 }
                 message.setText(
-                  'What is ' + dictionary[randomWord].toLowerCase().replace("?", "") + '?'
+                  'What is ' + dictionary[randomWord][0].toLowerCase().replace("?", "") + '?'
                 );
                 guess.setText('Click here to guess...');
                 progress_text.setText('Word ' + word_index + ' of 10');
@@ -92,6 +84,10 @@ export default class TestScene extends Phaser.Scene {
         });
       }
     }
+
+    let backToMenu = () => {
+      this.scene.start('menu');
+    };
 
     // choose a random word from dictionary
     var keys = Object.keys(dictionary);
@@ -110,7 +106,7 @@ export default class TestScene extends Phaser.Scene {
     .setOrigin(0.5);
 
     var message = this.add
-      .text(400, 260, 'What is ' + dictionary[randomWord].toLowerCase().replace("?", "") + '?', {
+      .text(400, 260, 'What is ' + dictionary[randomWord][0].toLowerCase().replace("?", "") + '?', {
         font: 'bold 40px Helvetica',
       })
       .setOrigin(0.5);
@@ -143,6 +139,17 @@ export default class TestScene extends Phaser.Scene {
       },
     });
 
+    var backButtons = this.rexUI.add.buttons({
+      orientation: 0,
+      buttons: [back, back1],
+      expand: false,
+      align: undefined,
+      click: {
+        mode: 'pointerup',
+        clickInterval: 100,
+      },
+    });
+
     audioButtons
       .on('button.click', () => {
         this.sound.play(randomWord);
@@ -156,25 +163,6 @@ export default class TestScene extends Phaser.Scene {
         audioButtons.showButton(0);
       });
 
-    audioButtons.hideButton(1);
-
-    let backToMenu = () => {
-      this.scene.start('menu');
-    };
-
-    var backButtons = this.rexUI.add.buttons({
-      orientation: 0,
-      buttons: [back, back1],
-      expand: false,
-      align: undefined,
-      click: {
-        mode: 'pointerup',
-        clickInterval: 100,
-      },
-    });
-
-    backButtons.hideButton(1);
-
     backButtons
       .on('button.click', () => {
         this.scene.start('menu');
@@ -187,6 +175,9 @@ export default class TestScene extends Phaser.Scene {
         backButtons.hideButton(1);
         backButtons.showButton(0);
       });
+
+    audioButtons.hideButton(1);
+    backButtons.hideButton(1);
 
     // Initialise guessing function
     startGuess();
