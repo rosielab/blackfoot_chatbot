@@ -30,14 +30,14 @@ export default class ScoresScene extends Phaser.Scene {
 
     this.cameras.main.setBackgroundColor('#97cdf7');
 
-    var title = this.add
+    const title = this.add
       .text(400, 130, 'High Scores', {
         font: 'bold 55px Cambria',
         color: '#000000',
       })
       .setOrigin(0.5);
 
-    var top_scores_text = this.add
+    const top_scores_text = this.add
       .text(400, 350, 'Town: ' + scores.town + '/10\n'
                     + 'Restaurant: ' + scores.restaurant + '/10\n'
                     + 'Home: ' + scores.home + '/10\n'

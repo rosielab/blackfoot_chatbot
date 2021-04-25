@@ -1,7 +1,5 @@
 import Phaser from 'phaser';
 
-//const dictionary = require('../assets/all_words_translation.json');
-
 import { dictionary } from './PreTestScene.js';
 import { current_test } from './PreTestScene.js';
 import { scores } from './ScoresScene.js';
@@ -35,25 +33,27 @@ export default class TestScene extends Phaser.Scene {
     this.cameras.main.setBackgroundColor('#97cdf7');
 
     var word_index = 1;
-    var is_testing = 0;
+    var is_testing = false;
     var score = 0;
 
     // Main function to process guessing and text updates
     var startGuess = () => {
-      if (is_testing == 0) {
+      if (!is_testing) {
         this.rexUI.edit(guess, guess, function () {
           if (guess.text == "") {
             guess.setText('Click here to guess...');
           } else if (guess.text != 'Click here to guess...') {
+            is_testing = true;
+
             if (guess.text.toLowerCase() == randomWord) {
-              message.setText('Correct!');
               score++;
+              message.setText('Correct!');
               score_text.setText('Current Score: ' + score + '/10');
               scores[current_test] = Math.max(scores[current_test], score);
             } else {
               message.setText("Sorry, it's " + randomWord);
             }
-            is_testing = 1;
+
             setTimeout(() => {
               message.setText(message.text + '.');
             }, 750);
@@ -63,9 +63,10 @@ export default class TestScene extends Phaser.Scene {
             setTimeout(() => {
               if (word_index < 10) {
                 word_index++;
-                var current_word = randomWord;
+                var previous_word = randomWord;
+
                 // Prevent testing the same word back-to-back unless dictionary only has 1 word
-                while (randomWord === current_word && keys.length > 1) {
+                while (randomWord === previous_word && keys.length > 1) {
                   randomWord = keys[Math.floor(Math.random() * keys.length)];
                 }
                 message.setText(
@@ -73,11 +74,12 @@ export default class TestScene extends Phaser.Scene {
                 );
                 guess.setText('Click here to guess...');
                 progress_text.setText('Word ' + word_index + ' of 10');
-                is_testing = 0;
+
+                is_testing = false;
                 startGuess();
               } else {
                 message.setText('You got ' + score + '/10. Congrats!');
-                setTimeout(backToMenu, 5000);
+                setTimeout(backToMenu, 4000);
               }
             }, 2250);
           }
@@ -100,10 +102,10 @@ export default class TestScene extends Phaser.Scene {
       .setOrigin(0.5);
   
     var score_text = this.add
-    .text(400, 140, 'Current Score: ' + score + '/10', {
-      font: '18px Roboto',
-    })
-    .setOrigin(0.5);
+      .text(400, 140, 'Current Score: ' + score + '/10', {
+        font: '18px Roboto',
+      })
+      .setOrigin(0.5);
 
     var message = this.add
       .text(400, 260, 'What is ' + dictionary[randomWord][0].toLowerCase().replace("?", "") + '?', {
