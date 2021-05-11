@@ -30,7 +30,7 @@ export default class TestScene extends Phaser.Scene {
     const speaker_off = this.add.image(510, 451, 'speaker_off');
     const speaker_on = this.add.image(510, 451, 'speaker_on');
 
-    this.cameras.main.setBackgroundColor('#97cdf7');
+    this.cameras.main.setBackgroundColor('#90cae0');
 
     var word_index = 1;
     var is_testing = false;

@@ -25,6 +25,8 @@ export default class PreTestScene extends Phaser.Scene {
   create() {
     const back = this.add.image(63, 56, 'back');
     const back1 = this.add.image(63, 56, 'back1');
+    const next = this.add.image(750, 300, 'back'); // placeholder
+    const next1 = this.add.image(750, 300, 'back1');
 
     this.cameras.main.setBackgroundColor('#97cdf7');
 
@@ -111,7 +113,19 @@ export default class PreTestScene extends Phaser.Scene {
       },
     });
 
+    var nextButtons = this.rexUI.add.buttons({
+      orientation: 0,
+      buttons: [next, next1],
+      expand: false,
+      align: undefined,
+      click: {
+        mode: 'pointerup',
+        clickInterval: 100,
+      },
+    });
+
     backButtons.hideButton(1);
+    nextButtons.hideButton(1);
 
     backButtons
       .on('button.click', () => {
@@ -125,6 +139,19 @@ export default class PreTestScene extends Phaser.Scene {
         backButtons.hideButton(1);
         backButtons.showButton(0);
       });
+
+    nextButtons
+    .on('button.click', () => {
+      this.scene.start('pretest2');
+    })
+    .on('button.over', () => {
+      nextButtons.hideButton(0);
+      nextButtons.showButton(1);
+    })
+    .on('button.out', () => {
+      nextButtons.hideButton(1);
+      nextButtons.showButton(0);
+    });
   }
 
   update() {}

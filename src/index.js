@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import PreTestScene from './scenes/PreTestScene';
+import PreTestScene2 from './scenes/PreTestScene2';
 import TestScene from './scenes/TestScene';
 import HomeScene from './scenes/HomeScene';
 import MenuScene from './scenes/MenuScene';
@@ -46,6 +47,7 @@ const config = {
     MoveScene,
     HomeScene,
     PreTestScene,
+    PreTestScene2,
     TestScene,
     ScentenceScene,
     ScoresScene,
