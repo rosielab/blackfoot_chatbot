@@ -1,11 +1,37 @@
 import Phaser from 'phaser';
 
-var dictionary = require('../assets/all_words_translation.json');
-var current_test = 'all';
+/*
+Note: All global variables for TestScene, ScoresScene, other PreTestScenes, etc. are declared here.
+*/
+const full_dict = require('../assets/all_words_translation.json');
+const scene_dict = new Object();
+
+// List all currently used scenes in lowercase
+// important: keep "all" scene at the end for now
+const scenes = ['town', 'restaurant', 'home', 'family', 'greetings', 'all'];
+
+const scores = {
+  family: 0,
+  greetings: 0,
+  home: 0,
+  restaurant: 0,
+  town: 0,
+  all: 0,
+};
+
+const current_test = {
+  scene: 'all',
+}
 
 // used for TestScene.js
-export { dictionary };
+export { scene_dict };
 export { current_test };
+// used for TestScene.js & ScoresScene.js
+export { scores };
+// used for ScoresScene.js
+export { scenes };
+// used for other PreTestScenes
+export { full_dict };
 
 export default class PreTestScene extends Phaser.Scene {
   constructor() {
@@ -25,23 +51,35 @@ export default class PreTestScene extends Phaser.Scene {
   create() {
     const back = this.add.image(63, 56, 'back');
     const back1 = this.add.image(63, 56, 'back1');
-    const next = this.add.image(750, 300, 'back'); // placeholder
+    const next = this.add.image(750, 300, 'back'); // placeholder (needs icon change)
     const next1 = this.add.image(750, 300, 'back1');
 
     this.cameras.main.setBackgroundColor('#97cdf7');
 
-    function changeDict(dict, scene) {
-      dict = new Object();
+    function changeDict(dict, full_dict, scene) {
+      for (var key of Object.keys(dict)) {
+        delete dict[key];
+      }
 
-      const translation_file = require('../assets/all_words_translation.json');
-      Object.keys(translation_file).forEach((word) => {
-        if (translation_file[word][1] == scene) {
-          dict[word] = translation_file[word];
+      Object.keys(full_dict).forEach((word) => {
+        if (full_dict[word][1] == scene) {
+          dict[word] = full_dict[word];
         }
       })
-
-      return dict;
     }
+
+    function fillDict(dict, full_dict) {
+      for (var key of Object.keys(dict)) {
+        delete dict[key];
+      }
+
+      Object.keys(full_dict).forEach((word) => {
+        dict[word] = full_dict[word];
+      })
+    }
+
+    // Initialise scene_dict with all words
+    fillDict(scene_dict, full_dict);
 
     const title = this.add
       .text(400, 100, 'What would you like to test?', {
@@ -52,40 +90,40 @@ export default class PreTestScene extends Phaser.Scene {
     const town_test = this.add.image(200, 260, 'town')
       .setInteractive()
       .on('pointerdown', () => {
-        dictionary = changeDict(dictionary, 'town');
-        current_test = 'town';
+        changeDict(scene_dict, full_dict, 'town');
+        current_test.scene = 'town';
         this.scene.start('test');
       })
 
     const restaurant_test = this.add.image(400, 260, 'restaurant')
       .setInteractive()
       .on('pointerdown', () => {
-        dictionary = changeDict(dictionary, 'restaurant');
-        current_test = 'restaurant';
+        changeDict(scene_dict, full_dict, 'restaurant');
+        current_test.scene = 'restaurant';
         this.scene.start('test');
       })
     
     const home_test = this.add.image(600, 260, 'home')
       .setInteractive()
       .on('pointerdown', () => {
-        dictionary = changeDict(dictionary, 'home');
-        current_test = 'home';
+        changeDict(scene_dict, full_dict, 'home');
+        current_test.scene = 'home';
         this.scene.start('test');
       })
 
     const family_test = this.add.image(200, 480, 'family')
       .setInteractive()
       .on('pointerdown', () => {
-        dictionary = changeDict(dictionary, 'family');
-        current_test = 'family';
+        changeDict(scene_dict, full_dict, 'family');
+        current_test.scene = 'family';
         this.scene.start('test');
       })
 
     const greetings_test = this.add.image(400, 480, 'greetings')
       .setInteractive()
       .on('pointerdown', () => {
-        dictionary = changeDict(dictionary, 'greetings');
-        current_test = 'greetings';
+        changeDict(scene_dict, full_dict, 'greetings');
+        current_test.scene = 'greetings';
         this.scene.start('test');
       })
 
@@ -97,8 +135,8 @@ export default class PreTestScene extends Phaser.Scene {
       .setOrigin(0.5)
       .setInteractive()
       .on('pointerdown', () => {
-        dictionary = require('../assets/all_words_translation.json');
-        current_test = 'all';
+        fillDict(scene_dict, full_dict);
+        current_test.scene = 'all';
         this.scene.start('test');
       });
 
@@ -127,31 +165,24 @@ export default class PreTestScene extends Phaser.Scene {
     backButtons.hideButton(1);
     nextButtons.hideButton(1);
 
-    backButtons
-      .on('button.click', () => {
-        this.scene.start('menu');
-      })
-      .on('button.over', () => {
-        backButtons.hideButton(0);
-        backButtons.showButton(1);
-      })
-      .on('button.out', () => {
-        backButtons.hideButton(1);
-        backButtons.showButton(0);
+    let buttonsEffect = (buttons, scene) => {
+      buttons.on('button.click', () => {
+        this.scene.start(scene);
       });
 
-    nextButtons
-    .on('button.click', () => {
-      this.scene.start('pretest2');
-    })
-    .on('button.over', () => {
-      nextButtons.hideButton(0);
-      nextButtons.showButton(1);
-    })
-    .on('button.out', () => {
-      nextButtons.hideButton(1);
-      nextButtons.showButton(0);
-    });
+      buttons.on('button.over', () => {
+        buttons.hideButton(0);
+        buttons.showButton(1);
+      });
+
+      buttons.on('button.out', () => {
+        buttons.hideButton(1);
+        buttons.showButton(0);
+      });
+    };
+
+    buttonsEffect(backButtons, 'menu');
+    buttonsEffect(nextButtons, 'pretest2');
   }
 
   update() {}

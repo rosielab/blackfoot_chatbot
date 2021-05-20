@@ -1,8 +1,8 @@
 import Phaser from 'phaser';
 
-import { dictionary } from './PreTestScene.js';
+import { scene_dict as dictionary } from './PreTestScene.js';
 import { current_test } from './PreTestScene.js';
-import { scores } from './ScoresScene.js';
+import { scores } from './PreTestScene.js';
 
 export default class TestScene extends Phaser.Scene {
   constructor() {
@@ -49,7 +49,7 @@ export default class TestScene extends Phaser.Scene {
               score++;
               message.setText('Correct!');
               score_text.setText('Current Score: ' + score + '/10');
-              scores[current_test] = Math.max(scores[current_test], score);
+              scores[current_test.scene] = Math.max(scores[current_test.scene], score);
             } else {
               message.setText("Sorry, it's " + randomWord);
             }
@@ -76,7 +76,7 @@ export default class TestScene extends Phaser.Scene {
                 progress_text.setText('Word ' + word_index + ' of 10');
 
                 is_testing = false;
-                startGuess();
+                startGuess(); // repeat for the next word
               } else {
                 message.setText('You got ' + score + '/10. Congrats!');
                 setTimeout(backToMenu, 4000);

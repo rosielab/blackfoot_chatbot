@@ -1,11 +1,8 @@
 import Phaser from 'phaser';
 
-var dictionary = require('../assets/all_words_translation.json');
-var current_test = 'all';
-
-// used for TestScene.js
-export { dictionary };
-export { current_test };
+import { scene_dict as dictionary } from './PreTestScene.js';
+import { current_test } from './PreTestScene.js';
+import { full_dict } from './PreTestScene.js';
 
 export default class PreTestScene extends Phaser.Scene {
   constructor() {
@@ -32,17 +29,16 @@ export default class PreTestScene extends Phaser.Scene {
 
     this.cameras.main.setBackgroundColor('#85a5ff');
 
-    function changeDict(dict, scene) {
-      dict = new Object();
+    function changeDict(dict, full_dict, scene) {
+      for (var key of Object.keys(dict)) {
+        delete dict[key];
+      }
 
-      const translation_file = require('../assets/all_words_translation.json');
-      Object.keys(translation_file).forEach((word) => {
-        if (translation_file[word][1] == scene) {
-          dict[word] = translation_file[word];
+      Object.keys(full_dict).forEach((word) => {
+        if (full_dict[word][1] == scene) {
+          dict[word] = full_dict[word];
         }
       })
-
-      return dict;
     }
 
     const title = this.add
@@ -54,11 +50,14 @@ export default class PreTestScene extends Phaser.Scene {
     // const town_test = this.add.image(200, 260, 'town')
     //   .setInteractive()
     //   .on('pointerdown', () => {
-    //     dictionary = changeDict(dictionary, 'town');
-    //     current_test = 'town';
+    //     changeDict(dictionary, full_dict, 'town');
+    //     current_test.scene = 'town';
     //     this.scene.start('test');
     //   })
 
+    /*
+      To be removed
+    */
     // const restaurant_test = this.add.image(400, 260, 'restaurant')
     //   .setInteractive()
     //   .on('pointerdown', () => {
@@ -122,17 +121,6 @@ export default class PreTestScene extends Phaser.Scene {
       },
     });
 
-    // var nextButtons = this.rexUI.add.buttons({
-    //   orientation: 0,
-    //   buttons: [next, next1],
-    //   expand: false,
-    //   align: undefined,
-    //   click: {
-    //     mode: 'pointerup',
-    //     clickInterval: 100,
-    //   },
-    // });
-
     var prevButtons = this.rexUI.add.buttons({
       orientation: 0,
       buttons: [prev, prev1],
@@ -144,48 +132,40 @@ export default class PreTestScene extends Phaser.Scene {
       },
     });
 
-    backButtons.hideButton(1);
-    // nextButtons.hideButton(1);
-    prevButtons.hideButton(1);
-
-    backButtons
-      .on('button.click', () => {
-        this.scene.start('menu');
-      })
-      .on('button.over', () => {
-        backButtons.hideButton(0);
-        backButtons.showButton(1);
-      })
-      .on('button.out', () => {
-        backButtons.hideButton(1);
-        backButtons.showButton(0);
-      });
-
-    // nextButtons
-    // .on('button.click', () => {
-    //   this.scene.start('pretest2');
-    // })
-    // .on('button.over', () => {
-    //   nextButtons.hideButton(0);
-    //   nextButtons.showButton(1);
-    // })
-    // .on('button.out', () => {
-    //   nextButtons.hideButton(1);
-    //   nextButtons.showButton(0);
+    // var nextButtons = this.rexUI.add.buttons({
+    //   orientation: 0,
+    //   buttons: [next, next1],
+    //   expand: false,
+    //   align: undefined,
+    //   click: {
+    //     mode: 'pointerup',
+    //     clickInterval: 100,
+    //   },
     // });
 
-    prevButtons
-    .on('button.click', () => {
-      this.scene.start('pretest');
-    })
-    .on('button.over', () => {
-      prevButtons.hideButton(0);
-      prevButtons.showButton(1);
-    })
-    .on('button.out', () => {
-      prevButtons.hideButton(1);
-      prevButtons.showButton(0);
-    });
+    backButtons.hideButton(1);
+    prevButtons.hideButton(1);
+    // nextButtons.hideButton(1);
+
+    let buttonsEffect = (buttons, scene) => {
+      buttons.on('button.click', () => {
+        this.scene.start(scene);
+      });
+
+      buttons.on('button.over', () => {
+        buttons.hideButton(0);
+        buttons.showButton(1);
+      });
+
+      buttons.on('button.out', () => {
+        buttons.hideButton(1);
+        buttons.showButton(0);
+      });
+    };
+
+    buttonsEffect(backButtons, 'menu');
+    buttonsEffect(prevButtons, 'pretest');
+    // buttonsEffect(nextButtons, 'pretest3');
   }
 
   update() {}

@@ -1,16 +1,7 @@
 import Phaser from 'phaser';
 
-var scores = {
-  family: 0,
-  greetings: 0,
-  home: 0,
-  restaurant: 0,
-  town: 0,
-  all: 0,
-};
-
-// used for TestScene.js
-export { scores };
+import { scores } from './PreTestScene.js';
+import { scenes } from './PreTestScene.js';
 
 export default class ScoresScene extends Phaser.Scene {
   constructor() {
@@ -30,7 +21,26 @@ export default class ScoresScene extends Phaser.Scene {
 
     this.cameras.main.setBackgroundColor('#97cdf7');
 
-    const title = this.add
+    function scrollScores(scenes_index, scores_txt) {
+      if (scenes_index + 5 < scenes.length-1) {
+        var scoresText = "";
+        for (var i = scenes_index + 5; i < scenes_index + 10; i++) {
+          if (i < scenes.length-1) { // only append the "all" score to the end
+            scoresText = scoresText.concat(scenes[i][0].toUpperCase() + scenes[i].slice(1) + ': ' + scores[scenes[i]] + '/10\n');
+          } else {
+            scoresText = scoresText.concat('\n');
+          }
+        }
+        scoresText = scoresText.concat('All: ' + scores.all + '/10');
+        scores_txt.setText(scoresText);
+        return scenes_index + 5;
+      }
+      return scenes_index;
+    }
+
+    var scenes_index = 0;
+
+    this.add
       .text(400, 130, 'High Scores', {
         font: 'bold 55px Cambria',
         color: '#000000',
@@ -49,6 +59,31 @@ export default class ScoresScene extends Phaser.Scene {
         align: 'right',
       })
       .setOrigin(0.5);
+
+    this.add
+      .text(560, 230, '/\\', {
+        font: '30px Trebuchet MS',
+        color: '#000000'
+      })
+      .setOrigin(0.5)
+      .setInteractive()
+      .on('pointerdown', () => {
+        if (scenes_index - 5 >= 0) {
+          scenes_index -= 10;
+          scenes_index = scrollScores(scenes_index, top_scores_text);
+        }
+      });
+    
+      this.add
+      .text(560, 470, '\\/', {
+        font: '30px Trebuchet MS',
+        color: '#000000'
+      })
+      .setOrigin(0.5)
+      .setInteractive()
+      .on('pointerdown', () => {
+        scenes_index = scrollScores(scenes_index, top_scores_text);
+      });
 
     var backButtons = this.rexUI.add.buttons({
       orientation: 0,
