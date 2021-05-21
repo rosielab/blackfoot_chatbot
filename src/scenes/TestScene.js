@@ -1,8 +1,6 @@
 import Phaser from 'phaser';
 
-import { scene_dict as dictionary } from './PreTestScene.js';
-import { current_test } from './PreTestScene.js';
-import { scores } from './PreTestScene.js';
+import { scene_dict, current_test, scenes, scores } from './util.js';
 
 export default class TestScene extends Phaser.Scene {
   constructor() {
@@ -10,7 +8,7 @@ export default class TestScene extends Phaser.Scene {
   }
 
   preload() {
-    Object.keys(dictionary).forEach((sound) => {
+    Object.keys(scene_dict).forEach((sound) => {
       this.load.audio(sound, '../assets/sounds/' + sound.replace("?", "_") + '.wav');
     });
 
@@ -21,7 +19,7 @@ export default class TestScene extends Phaser.Scene {
   }
 
   create() {
-    Object.keys(dictionary).forEach((sound) => {
+    Object.keys(scene_dict).forEach((sound) => {
       this.sound.add(sound);
     });
 
@@ -35,6 +33,14 @@ export default class TestScene extends Phaser.Scene {
     var word_index = 1;
     var is_testing = false;
     var score = 0;
+
+    function updateScoreCookie() {
+      var score_cookie = "score=";
+      for (var i = 0; i < scenes.length; i++) {
+        score_cookie = score_cookie.concat(scores[scenes[i]].toString(16));
+      }
+      document.cookie = score_cookie;
+    }
 
     // Main function to process guessing and text updates
     var startGuess = () => {
@@ -50,6 +56,7 @@ export default class TestScene extends Phaser.Scene {
               message.setText('Correct!');
               score_text.setText('Current Score: ' + score + '/10');
               scores[current_test.scene] = Math.max(scores[current_test.scene], score);
+              updateScoreCookie();
             } else {
               message.setText("Sorry, it's " + randomWord);
             }
@@ -70,7 +77,7 @@ export default class TestScene extends Phaser.Scene {
                   randomWord = keys[Math.floor(Math.random() * keys.length)];
                 }
                 message.setText(
-                  'What is ' + dictionary[randomWord][0].toLowerCase().replace("?", "") + '?'
+                  'What is ' + scene_dict[randomWord][0].toLowerCase().replace("?", "") + '?'
                 );
                 guess.setText('Click here to guess...');
                 progress_text.setText('Word ' + word_index + ' of 10');
@@ -92,7 +99,7 @@ export default class TestScene extends Phaser.Scene {
     };
 
     // choose a random word from dictionary
-    var keys = Object.keys(dictionary);
+    var keys = Object.keys(scene_dict);
     var randomWord = keys[Math.floor(Math.random() * keys.length)];
 
     var progress_text = this.add
@@ -108,7 +115,7 @@ export default class TestScene extends Phaser.Scene {
       .setOrigin(0.5);
 
     var message = this.add
-      .text(400, 260, 'What is ' + dictionary[randomWord][0].toLowerCase().replace("?", "") + '?', {
+      .text(400, 260, 'What is ' + scene_dict[randomWord][0].toLowerCase().replace("?", "") + '?', {
         font: 'bold 40px Helvetica',
       })
       .setOrigin(0.5);

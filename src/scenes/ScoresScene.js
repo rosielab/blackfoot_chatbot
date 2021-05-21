@@ -1,7 +1,6 @@
 import Phaser from 'phaser';
 
-import { scores } from './PreTestScene.js';
-import { scenes } from './PreTestScene.js';
+import { scores, scenes } from './util.js';
 
 export default class ScoresScene extends Phaser.Scene {
   constructor() {
@@ -21,7 +20,7 @@ export default class ScoresScene extends Phaser.Scene {
 
     this.cameras.main.setBackgroundColor('#97cdf7');
 
-    function scrollScores(scenes_index, scores_txt) {
+    function scrollDownScores(scenes_index, scores_txt) {
       if (scenes_index + 5 < scenes.length-1) {
         var scoresText = "";
         for (var i = scenes_index + 5; i < scenes_index + 10; i++) {
@@ -36,6 +35,36 @@ export default class ScoresScene extends Phaser.Scene {
         return scenes_index + 5;
       }
       return scenes_index;
+    }
+
+    function scrollUpScores(scenes_index, scores_txt) {
+      if (scenes_index - 5 >= 0) {
+        return scrollDownScores(scenes_index - 10, scores_txt);
+      }
+      return scenes_index;
+    }
+
+    function checkCookie(cookie, all_cookies) {
+      const split_cookies = all_cookies.split(";");
+      for (var i = 0; i < split_cookies.length; i++) {
+        if (split_cookies[i].includes(cookie + "=")) {
+          return i;
+        }
+      }
+      return -1;
+    }
+
+    // Check if scores have been saved previously
+    const cookie_index = checkCookie("score", document.cookie);
+    if (cookie_index != -1) {
+      const cookie_score = document.cookie.split(";")[cookie_index].trim().slice(6);
+      if (cookie_score.length == scenes.length) {
+        for (var i = 0; i < cookie_score.length; i++) {
+          scores[scenes[i]] = parseInt(cookie_score[i], 16);
+        }
+      } else {
+        console.log("Error: Saved score may be outdated. Will not be used!");
+      }
     }
 
     var scenes_index = 0;
@@ -60,29 +89,28 @@ export default class ScoresScene extends Phaser.Scene {
       })
       .setOrigin(0.5);
 
+    // Up arrow (placeholders)
     this.add
-      .text(560, 230, '/\\', {
+      .text(565, 230, '/\\', {
         font: '30px Trebuchet MS',
         color: '#000000'
       })
       .setOrigin(0.5)
       .setInteractive()
       .on('pointerdown', () => {
-        if (scenes_index - 5 >= 0) {
-          scenes_index -= 10;
-          scenes_index = scrollScores(scenes_index, top_scores_text);
-        }
+        scenes_index = scrollUpScores(scenes_index, top_scores_text);
       });
     
-      this.add
-      .text(560, 470, '\\/', {
+    // Down arrow
+    this.add
+      .text(565, 470, '\\/', {
         font: '30px Trebuchet MS',
         color: '#000000'
       })
       .setOrigin(0.5)
       .setInteractive()
       .on('pointerdown', () => {
-        scenes_index = scrollScores(scenes_index, top_scores_text);
+        scenes_index = scrollDownScores(scenes_index, top_scores_text);
       });
 
     var backButtons = this.rexUI.add.buttons({

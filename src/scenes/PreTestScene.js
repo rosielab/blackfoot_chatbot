@@ -1,37 +1,6 @@
 import Phaser from 'phaser';
 
-/*
-Note: All global variables for TestScene, ScoresScene, other PreTestScenes, etc. are declared here.
-*/
-const full_dict = require('../assets/all_words_translation.json');
-const scene_dict = new Object();
-
-// List all currently used scenes in lowercase
-// important: keep "all" scene at the end for now
-const scenes = ['town', 'restaurant', 'home', 'family', 'greetings', 'all'];
-
-const scores = {
-  family: 0,
-  greetings: 0,
-  home: 0,
-  restaurant: 0,
-  town: 0,
-  all: 0,
-};
-
-const current_test = {
-  scene: 'all',
-}
-
-// used for TestScene.js
-export { scene_dict };
-export { current_test };
-// used for TestScene.js & ScoresScene.js
-export { scores };
-// used for ScoresScene.js
-export { scenes };
-// used for other PreTestScenes
-export { full_dict };
+import { scene_dict, full_dict, current_test } from './util.js';
 
 export default class PreTestScene extends Phaser.Scene {
   constructor() {
@@ -56,6 +25,7 @@ export default class PreTestScene extends Phaser.Scene {
 
     this.cameras.main.setBackgroundColor('#97cdf7');
 
+    // Set dict to contain only words from the specified scene
     function changeDict(dict, full_dict, scene) {
       for (var key of Object.keys(dict)) {
         delete dict[key];
@@ -68,6 +38,7 @@ export default class PreTestScene extends Phaser.Scene {
       })
     }
 
+    // Fill dict with all words from full_dict
     function fillDict(dict, full_dict) {
       for (var key of Object.keys(dict)) {
         delete dict[key];
@@ -78,7 +49,8 @@ export default class PreTestScene extends Phaser.Scene {
       })
     }
 
-    // Initialise scene_dict with all words
+    // Init scene_dict with all words
+    // Can be done here as test scene comes after pretest
     fillDict(scene_dict, full_dict);
 
     const title = this.add
