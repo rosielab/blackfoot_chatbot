@@ -5,7 +5,7 @@ import TestScene from './scenes/TestScene';
 import HomeScene from './scenes/HomeScene';
 import MenuScene from './scenes/MenuScene';
 import MoveScene from './scenes/MoveScene';
-import ScentenceScene from './scenes/ScentenceScene';
+import SentenceScene from './scenes/SentenceScene';
 import ScoresScene from './scenes/ScoresScene';
 
 import RexUIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin';
@@ -49,7 +49,7 @@ const config = {
     PreTestScene,
     PreTestScene2,
     TestScene,
-    ScentenceScene,
+    SentenceScene,
     ScoresScene,
   ],
 };

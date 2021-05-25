@@ -1,14 +1,14 @@
 import Phaser from 'phaser';
 
-export default class ScentenceScene extends Phaser.Scene {
+export default class SentenceScene extends Phaser.Scene {
   constructor() {
-    super('scentence');
+    super('sentence');
   }
 
   preload() {
     this.load.image(
       'sentenceBackground',
-      '../assets/images/scentenceBackground.png'
+      '../assets/images/sentenceBackground.png'
     );
 
     this.load.image('today', '../assets/images/today.png');
@@ -87,9 +87,19 @@ export default class ScentenceScene extends Phaser.Scene {
         button.y = dragY;
       });
       button.on('dragend', function (pointer, dragX, dragY, dropped) {
-        button.y = 408;
-        wordSet.add(data[name]);
-        console.log(wordSet);
+        if (button.y > 360 && button.y < 450) {
+          if (button.x < 120) {
+            button.x = 120;
+          }
+          if (button.x > 660) {
+            button.x = 660;
+          }
+          button.y = 408;
+          wordSet.add(data[name]);
+          console.log(wordSet);
+        } else if (button.y <= 360 || button.y >= 450) {
+          wordSet.delete(data[name]);
+        }
       });
     };
 
@@ -121,7 +131,7 @@ export default class ScentenceScene extends Phaser.Scene {
 
     cleanButtons
       .on('button.click', () => {
-        this.scene.start('scentence');
+        this.scene.start('sentence');
       })
       .on('button.over', (button) => {
         button.setTint(0x44ff44);
