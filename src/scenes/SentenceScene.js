@@ -87,19 +87,23 @@ export default class SentenceScene extends Phaser.Scene {
         button.y = dragY;
       });
       button.on('dragend', function (pointer, dragX, dragY, dropped) {
-        if (button.y > 360 && button.y < 450) {
-          if (button.x < 120) {
-            button.x = 120;
-          }
-          if (button.x > 660) {
-            button.x = 660;
-          }
-          button.y = 408;
-          wordSet.add(data[name]);
-          console.log(wordSet);
-        } else if (button.y <= 360 || button.y >= 450) {
-          wordSet.delete(data[name]);
-        }
+        button.y = 408;
+        wordSet.add(data[name]);
+        console.log(wordSet);
+        //TODO:
+        // if (button.y > 360 && button.y < 450) {
+        //   if (button.x < 120) {
+        //     button.x = 120;
+        //   }
+        //   if (button.x > 660) {
+        //     button.x = 660;
+        //   }
+        //   button.y = 408;
+        //   wordSet.add(data[name]);
+        //   console.log(wordSet);
+        // } else if (button.y <= 360 || button.y >= 450) {
+        //   wordSet.delete(data[name]);
+        // }
       });
     };
 
