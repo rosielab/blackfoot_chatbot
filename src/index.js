@@ -7,6 +7,7 @@ import MenuScene from './scenes/MenuScene';
 import MoveScene from './scenes/MoveScene';
 import SentenceScene from './scenes/SentenceScene';
 import ScoresScene from './scenes/ScoresScene';
+import ExitScene from './scenes/ExitScene';
 
 import RexUIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin';
 import DragPlugin from 'phaser3-rex-plugins/plugins/drag-plugin.js';
@@ -51,6 +52,7 @@ const config = {
     TestScene,
     SentenceScene,
     ScoresScene,
+    ExitScene,
   ],
 };
 

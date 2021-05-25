@@ -38,6 +38,36 @@ export default class SentenceScene extends Phaser.Scene {
 
     const data = require('../assets/all_words_address.json');
 
+    function insertButton(name, button, arr) {
+      removeButton(name, arr); // prevent duplicates
+
+      if (arr.length == 0) {
+        arr.push([data[name], button.x]);
+      } else {
+        for (var i = 0; i < arr.length; i++) {
+          if (arr[0][1] >= button.x) { // left-most
+            arr.unshift([data[name], button.x]);
+            return;
+          } else if (i == arr.length-1) { // right-most
+            arr.push([data[name], button.x]);
+            return;
+          } else if (arr[i][1] <= button.x && arr[i+1][1] >= button.x) {
+            arr.splice(i+1, 0, [data[name], button.x]);
+            return;
+          }
+        }
+      }
+    }
+
+    function removeButton(name, arr) {
+      for (var i = 0; i < arr.length; i++) {
+        if (arr[i][0] == data[name]) {
+          arr.splice(i, 1);
+          return;
+        }
+      }
+    }
+
     var mediaButtons = this.rexUI.add.buttons({
       orientation: 0,
       buttons: [media],
@@ -71,7 +101,7 @@ export default class SentenceScene extends Phaser.Scene {
       },
     });
 
-    const wordSet = new Set();
+    const wordArry = new Array();
 
     let buttonsEffect = (button, name) => {
       button.setInteractive();
@@ -87,18 +117,18 @@ export default class SentenceScene extends Phaser.Scene {
         button.y = dragY;
       });
       button.on('dragend', function (pointer, dragX, dragY, dropped) {
-        if (button.y > 360 && button.y < 450) {
+        if (button.y > 360) {
           if (button.x < 120) {
             button.x = 120;
-          }
-          if (button.x > 660) {
+          } else if (button.x > 660) {
             button.x = 660;
           }
           button.y = 408;
-          wordSet.add(data[name]);
-          console.log(wordSet);
-        } else if (button.y <= 360 || button.y >= 450) {
-          wordSet.delete(data[name]);
+          insertButton(name, button, wordArry);
+          console.log(wordArry);
+        } else if (button.y <= 360) {
+          removeButton(name, wordArry);
+          console.log(wordArry);
         }
       });
     };
@@ -114,14 +144,13 @@ export default class SentenceScene extends Phaser.Scene {
       buttons.on('button.click', (button, index, pointer, event) => {
         //****muti thread problem********
         var index = 1;
-        var wordArry = Array.from(wordSet);
         var audioToPlay = new Audio();
-        audioToPlay.src = wordArry[0];
+        audioToPlay.src = wordArry[0][0];
         audioToPlay.play();
 
         audioToPlay.onended = function () {
           if (index < wordArry.length) {
-            audioToPlay.src = wordArry[index];
+            audioToPlay.src = wordArry[index][0];
             audioToPlay.play();
             index++;
           }

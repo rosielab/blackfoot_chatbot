@@ -54,6 +54,17 @@ export default class ScoresScene extends Phaser.Scene {
       return -1;
     }
 
+    function updateScoreCookie() {
+      var score_cookie = "score=";
+      for (var i = 0; i < scenes.length; i++) {
+        score_cookie = score_cookie.concat(scores[scenes[i]].toString(16));
+      }
+      const date = new Date();
+      date.setFullYear(date.getFullYear() + 2); // add 2 years to the current date
+      score_cookie = score_cookie.concat("; expires=" + date.toUTCString());
+      document.cookie = score_cookie;
+    }
+
     // Check if scores have been saved previously
     const cookie_index = checkCookie("score", document.cookie);
     if (cookie_index != -1) {
@@ -111,6 +122,33 @@ export default class ScoresScene extends Phaser.Scene {
       .setInteractive()
       .on('pointerdown', () => {
         scenes_index = scrollDownScores(scenes_index, top_scores_text);
+      });
+
+    const reset_scores = this.add
+      .text(400, 540, 'Reset Scores', { // placeholder (will be a button)
+        font: '35px Trebuchet MS',
+        color: '#000000'
+      })
+      .setOrigin(0.5)
+      .setInteractive()
+      .on('pointerup', () => {
+        reset_scores.setColor('#000000');
+        if (reset_scores.text == 'Are you sure?') {
+          for (var scene in scores) {
+            scores[scene] = 0;
+          }
+          updateScoreCookie();
+          this.scene.start('scores');
+        } else {
+          reset_scores.setText('Are you sure?');
+        }
+      })
+      .on('pointerout', () => {
+        reset_scores.setText('Reset Scores');
+        reset_scores.setColor('#000000');
+      })
+      .on('pointerdown', () => {
+        reset_scores.setColor('#FFFFFF');
       });
 
     var backButtons = this.rexUI.add.buttons({

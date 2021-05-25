@@ -136,6 +136,7 @@ export default class PreTestScene extends Phaser.Scene {
 
     backButtons.hideButton(1);
     nextButtons.hideButton(1);
+    nextButtons.hideButton(0); // remove when adding new words/scenes
 
     let buttonsEffect = (buttons, scene) => {
       buttons.on('button.click', () => {
