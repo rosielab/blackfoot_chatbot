@@ -39,6 +39,9 @@ export default class TestScene extends Phaser.Scene {
       for (var i = 0; i < scenes.length; i++) {
         score_cookie = score_cookie.concat(scores[scenes[i]].toString(16));
       }
+      const date = new Date();
+      date.setFullYear(date.getFullYear() + 2); // add 2 years to the current date
+      score_cookie = score_cookie.concat("; expires=" + date.toUTCString());
       document.cookie = score_cookie;
     }
 
