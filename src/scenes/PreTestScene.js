@@ -20,8 +20,8 @@ export default class PreTestScene extends Phaser.Scene {
   create() {
     const back = this.add.image(63, 56, 'back');
     const back1 = this.add.image(63, 56, 'back1');
-    const next = this.add.image(750, 300, 'back'); // placeholder (needs icon change)
-    const next1 = this.add.image(750, 300, 'back1');
+    // const next = this.add.image(750, 300, 'back'); // placeholder (needs icon change)
+    // const next1 = this.add.image(750, 300, 'back1');
 
     this.cameras.main.setBackgroundColor('#97cdf7');
 
@@ -123,19 +123,19 @@ export default class PreTestScene extends Phaser.Scene {
       },
     });
 
-    var nextButtons = this.rexUI.add.buttons({
-      orientation: 0,
-      buttons: [next, next1],
-      expand: false,
-      align: undefined,
-      click: {
-        mode: 'pointerup',
-        clickInterval: 100,
-      },
-    });
+    // var nextButtons = this.rexUI.add.buttons({
+    //   orientation: 0,
+    //   buttons: [next, next1],
+    //   expand: false,
+    //   align: undefined,
+    //   click: {
+    //     mode: 'pointerup',
+    //     clickInterval: 100,
+    //   },
+    // });
 
     backButtons.hideButton(1);
-    nextButtons.hideButton(1);
+    // nextButtons.hideButton(1);
 
     let buttonsEffect = (buttons, scene) => {
       buttons.on('button.click', () => {
@@ -154,7 +154,7 @@ export default class PreTestScene extends Phaser.Scene {
     };
 
     buttonsEffect(backButtons, 'menu');
-    buttonsEffect(nextButtons, 'pretest2');
+    // buttonsEffect(nextButtons, 'pretest2');
   }
 
   update() {}
