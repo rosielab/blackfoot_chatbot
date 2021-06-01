@@ -12,6 +12,7 @@ export default class TestScene extends Phaser.Scene {
       this.load.audio(sound, '../assets/sounds/' + sound.replace("?", "_") + '.wav');
     });
 
+    this.load.image('testBackground', '../assets/images/Quiz.png');
     this.load.image('back', '../assets/images/back.png');
     this.load.image('back1', '../assets/images/back2.png');
     this.load.image('speaker_off', '../assets/images/speaker_off.png');
@@ -23,12 +24,13 @@ export default class TestScene extends Phaser.Scene {
       this.sound.add(sound);
     });
 
+    this.background = this.add.image(400, 300, 'testBackground');
     const back = this.add.image(63, 56, 'back');
     const back1 = this.add.image(63, 56, 'back1');
     const speaker_off = this.add.image(510, 451, 'speaker_off');
     const speaker_on = this.add.image(510, 451, 'speaker_on');
 
-    this.cameras.main.setBackgroundColor('#90cae0');
+    // this.cameras.main.setBackgroundColor('#90cae0');
 
     var word_index = 1;
     var is_testing = false;

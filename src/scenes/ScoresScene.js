@@ -8,17 +8,19 @@ export default class ScoresScene extends Phaser.Scene {
   }
 
   preload() {
+    this.load.image('scoreBackground', '../assets/images/scoreBackground.png');
     this.load.image('back', '../assets/images/back.png');
     this.load.image('back1', '../assets/images/back2.png');
     this.load.image('scores_background', '../assets/images/scores_background.png');
   }
 
   create() {
+    this.background = this.add.image(400, 300, 'scoreBackground');
     const back = this.add.image(63, 56, 'back');
     const back1 = this.add.image(63, 56, 'back1');
     this.add.image(400, 350, 'scores_background');
 
-    this.cameras.main.setBackgroundColor('#97cdf7');
+    // this.cameras.main.setBackgroundColor('#97cdf7');
 
     function scrollDownScores(scenes_index, scores_txt) {
       if (scenes_index + 5 < scenes.length-1) {
