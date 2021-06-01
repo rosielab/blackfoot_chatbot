@@ -6,33 +6,33 @@ export default class MenuScene extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image('menuBackground', '../assets/images/menu.png');
+    this.load.image('menuBackground', '../assets/images/MenuScene/start.png');
 
-    this.load.image('learn', '../assets/images/learn.png');
-    this.load.image('learn1', '../assets/images/learn1.png');
+    this.load.image('learn', '../assets/images/MenuScene/learn-b.png');
+    this.load.image('learn1', '../assets/images/MenuScene/learn-b-rollover.png');
 
-    this.load.image('test', '../assets/images/test.png');
-    this.load.image('test1', '../assets/images/test1.png');
-    this.load.image('sentence', '../assets/images/sentence.png');
-    this.load.image('sentence1', '../assets/images/sentence1.png');
-    this.load.image('score', '../assets/images/score.png');
-    this.load.image('score1', '../assets/images/score_1.png');
-    this.load.image('exit', '../assets/images/exit.png');
-    this.load.image('exit1', '../assets/images/exit1.png');
+    this.load.image('test', '../assets/images/MenuScene/quiz-b.png');
+    this.load.image('test1', '../assets/images/MenuScene/quiz-b-rollover.png');
+    this.load.image('sentence', '../assets/images/MenuScene/sentence-b.png');
+    this.load.image('sentence1', '../assets/images/MenuScene/sentence-b-rollover.png');
+    this.load.image('score', '../assets/images/MenuScene/scores-b.png');
+    this.load.image('score1', '../assets/images/MenuScene/scores-b-rollover.png');
+    this.load.image('exit', '../assets/images/MenuScene/exit-b.png');
+    this.load.image('exit1', '../assets/images/MenuScene/exit-b-rollover.png');
   }
 
   create() {
     this.background = this.add.image(400, 300, 'menuBackground');
-    const learn = this.add.image(400, 210, 'learn');
-    const learn1 = this.add.image(400, 210, 'learn1');
-    const test = this.add.image(400, 255, 'test');
-    const test1 = this.add.image(400, 255, 'test1');
-    const sentence = this.add.image(400, 300, 'sentence');
-    const sentence1 = this.add.image(400, 300, 'sentence1');
-    const score = this.add.image(400, 345, 'score');
-    const score1 = this.add.image(400, 345, 'score1');
-    const exit = this.add.image(400, 390, 'exit');
-    const exit1 = this.add.image(400, 390, 'exit1');
+    const learn = this.add.image(370, 285, 'learn');
+    const learn1 = this.add.image(370, 285, 'learn1');
+    const test = this.add.image(370, 351, 'test');
+    const test1 = this.add.image(370, 351, 'test1');
+    const sentence = this.add.image(370, 416, 'sentence');
+    const sentence1 = this.add.image(370, 416, 'sentence1');
+    const score = this.add.image(370, 482, 'score');
+    const score1 = this.add.image(370, 482, 'score1');
+    const exit = this.add.image(108, 552, 'exit');
+    const exit1 = this.add.image(108, 552, 'exit1');
 
     var learnButtons = this.rexUI.add.buttons({
       orientation: 0,

@@ -12,21 +12,23 @@ export default class TestScene extends Phaser.Scene {
       this.load.audio(sound, '../assets/sounds/' + sound.replace("?", "_") + '.wav');
     });
 
-    this.load.image('back', '../assets/images/back.png');
-    this.load.image('back1', '../assets/images/back2.png');
-    this.load.image('speaker_off', '../assets/images/speaker_off.png');
-    this.load.image('speaker_on', '../assets/images/speaker_on.png');
+    this.load.image('testBackground', '../assets/images/TestScene/quiz.png');
+
+    this.load.image('back', '../assets/images/TestScene/back-b.png');
+    this.load.image('back1', '../assets/images/TestScene/back-b-rollover.png');
+    this.load.image('speaker_off', '../assets/images/TestScene/play-b.png');
+    this.load.image('speaker_on', '../assets/images/TestScene/play-b-rollover.png');
   }
 
   create() {
     Object.keys(scene_dict).forEach((sound) => {
       this.sound.add(sound);
     });
-
-    const back = this.add.image(63, 56, 'back');
-    const back1 = this.add.image(63, 56, 'back1');
-    const speaker_off = this.add.image(510, 451, 'speaker_off');
-    const speaker_on = this.add.image(510, 451, 'speaker_on');
+    this.background = this.add.image(400, 300, 'testBackground');
+    const back = this.add.image(58, 548, 'back');
+    const back1 = this.add.image(58, 548, 'back1');
+    const speaker_off = this.add.image(400, 358, 'speaker_off');
+    const speaker_on = this.add.image(400, 358, 'speaker_on');
 
     this.cameras.main.setBackgroundColor('#90cae0');
 
@@ -106,27 +108,30 @@ export default class TestScene extends Phaser.Scene {
     var randomWord = keys[Math.floor(Math.random() * keys.length)];
 
     var progress_text = this.add
-      .text(400, 115, 'Word ' + word_index + ' of 10', {
+      .text(110, 182, 'Word ' + word_index + ' of 10', {
         font: '24px Roboto',
+        color: '#479D76',
       })
       .setOrigin(0.5);
   
     var score_text = this.add
-      .text(400, 140, 'Current Score: ' + score + '/10', {
+      .text(692, 182, 'Current Score: ' + score + '/10', {
         font: '18px Roboto',
+        color: '#479D76',
       })
       .setOrigin(0.5);
 
     var message = this.add
-      .text(400, 260, 'What is ' + scene_dict[randomWord][0].toLowerCase().replace("?", "") + '?', {
+      .text(400, 258, 'What is ' + scene_dict[randomWord][0].toLowerCase().replace("?", "") + '?', {
         font: 'bold 40px Helvetica',
+        color: '#754F37',
       })
       .setOrigin(0.5);
 
     var guess = this.add
-      .text(400, 340, 'Click here to guess...', {
-        font: '35px Helvetica',
-        fill: '#e6edf2',
+      .text(400, 462, 'Click here to guess...', {
+        font: 'italic 35px Helvetica',
+        fill: '#000000',
       })
       .setOrigin(0.5)
       .setInteractive()
@@ -134,11 +139,11 @@ export default class TestScene extends Phaser.Scene {
         startGuess();
       });
 
-    this.add
-      .text(400, 450, 'Click to play the audio:', {
-        font: '18px Helvetica',
-      })
-      .setOrigin(0.5);
+    // this.add
+    //   .text(400, 450, 'Click to play the audio:', {
+    //     font: '18px Helvetica',
+    //   })
+    //   .setOrigin(0.5);
 
     var audioButtons = this.rexUI.add.buttons({
       orientation: 0,
