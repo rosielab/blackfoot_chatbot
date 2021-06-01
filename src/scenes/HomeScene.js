@@ -5,8 +5,8 @@ export default class HomeScene extends Phaser.Scene {
     super('home');
   }
   preload() {
-    this.load.image('homeBackground', '../assets/images/background.png');
-    this.load.image('header', '../assets/images/header1.png');
+    this.load.image('homeBackground', '../assets/images/Learn-home.png');
+    // this.load.image('header', '../assets/images/header1.png');
     this.load.image('move', '../assets/images/move.png');
     this.load.image('move1', '../assets/images/move2.png');
     this.load.image('bathroom0', '../assets/images/bathroom0.png');
@@ -39,7 +39,7 @@ export default class HomeScene extends Phaser.Scene {
   create() {
     this.sound.add('bathroomwav');
     this.background = this.add.image(400, 300, 'homeBackground');
-    const header = this.add.image(382, 576, 'header');
+    // const header = this.add.image(382, 576, 'header');
     const back = this.add.image(63, 56, 'back');
     const back1 = this.add.image(63, 56, 'back1');
     const move = this.add.image(739, 52, 'move');
