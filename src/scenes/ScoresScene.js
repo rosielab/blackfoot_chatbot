@@ -8,17 +8,17 @@ export default class ScoresScene extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image('scoreBackground', '../assets/images/scoreBackground.png');
-    this.load.image('back', '../assets/images/back.png');
-    this.load.image('back1', '../assets/images/back2.png');
-    this.load.image('scores_background', '../assets/images/scores_background.png');
+    this.load.image('scoreBackground', '../assets/images/ScoresScene/scores.png');
+    this.load.image('back', '../assets/images/ScoresScene/back-b.png');
+    this.load.image('back1', '../assets/images/ScoresScene/back-b-rollover.png');
+    // this.load.image('scores_background', '../assets/images/scores_background.png');
   }
 
   create() {
     this.background = this.add.image(400, 300, 'scoreBackground');
-    const back = this.add.image(63, 56, 'back');
-    const back1 = this.add.image(63, 56, 'back1');
-    this.add.image(400, 350, 'scores_background');
+    const back = this.add.image(53, 548, 'back');
+    const back1 = this.add.image(53, 548, 'back1');
+    // this.add.image(400, 350, 'scores_background');
 
     // this.cameras.main.setBackgroundColor('#97cdf7');
 
@@ -82,49 +82,51 @@ export default class ScoresScene extends Phaser.Scene {
 
     var scenes_index = 0;
 
-    this.add
-      .text(400, 130, 'High Scores', {
-        font: 'bold 55px Cambria',
-        color: '#000000',
-      })
-      .setOrigin(0.5);
+    // this.add
+    //   .text(400, 130, 'High Scores', {
+    //     font: 'bold 55px Cambria',
+    //     color: '#000000',
+    //   })
+    //   .setOrigin(0.5);
 
     const top_scores_text = this.add
-      .text(400, 350, 'Town: ' + scores.town + '/10\n'
+      .text(400, 295, 'Town: ' + scores.town + '/10\n'
                     + 'Restaurant: ' + scores.restaurant + '/10\n'
                     + 'Home: ' + scores.home + '/10\n'
                     + 'Family: ' + scores.family + '/10\n'
                     + 'Greetings: ' + scores.greetings + '/10\n'
                     + 'All: ' + scores.all + '/10', {
-        font: '36px Trebuchet MS',
-        color: '#000000',
+        font: '50px Mukta',
+        color: '#479D76',
         align: 'right',
       })
       .setOrigin(0.5);
 
-    // Up arrow (placeholders)
-    this.add
-      .text(565, 230, '/\\', {
-        font: '30px Trebuchet MS',
-        color: '#000000'
-      })
-      .setOrigin(0.5)
-      .setInteractive()
-      .on('pointerdown', () => {
-        scenes_index = scrollUpScores(scenes_index, top_scores_text);
-      });
-    
-    // Down arrow
-    this.add
-      .text(565, 470, '\\/', {
-        font: '30px Trebuchet MS',
-        color: '#000000'
-      })
-      .setOrigin(0.5)
-      .setInteractive()
-      .on('pointerdown', () => {
-        scenes_index = scrollDownScores(scenes_index, top_scores_text);
-      });
+    if (scenes.length > 6) {
+      // Up arrow (placeholders)
+      this.add
+        .text(590, 130, '/\\', {
+          font: '30px Trebuchet MS',
+          color: '#000000'
+        })
+        .setOrigin(0.5)
+        .setInteractive()
+        .on('pointerdown', () => {
+          scenes_index = scrollUpScores(scenes_index, top_scores_text);
+        });
+      
+      // Down arrow
+      this.add
+        .text(590, 460, '\\/', {
+          font: '30px Trebuchet MS',
+          color: '#000000'
+        })
+        .setOrigin(0.5)
+        .setInteractive()
+        .on('pointerdown', () => {
+          scenes_index = scrollDownScores(scenes_index, top_scores_text);
+        });
+    }
 
     const reset_scores = this.add
       .text(400, 540, 'Reset Scores', { // placeholder (will be a button)

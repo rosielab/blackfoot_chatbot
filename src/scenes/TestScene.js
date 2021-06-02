@@ -25,8 +25,8 @@ export default class TestScene extends Phaser.Scene {
       this.sound.add(sound);
     });
     this.background = this.add.image(400, 300, 'testBackground');
-    const back = this.add.image(58, 548, 'back');
-    const back1 = this.add.image(58, 548, 'back1');
+    const back = this.add.image(53, 548, 'back');
+    const back1 = this.add.image(53, 548, 'back1');
     const speaker_off = this.add.image(400, 358, 'speaker_off');
     const speaker_on = this.add.image(400, 358, 'speaker_on');
 
@@ -59,7 +59,7 @@ export default class TestScene extends Phaser.Scene {
             if (guess.text.toLowerCase() == randomWord) {
               score++;
               message.setText('Correct!');
-              score_text.setText('Current Score: ' + score + '/10');
+              score_text.setText('Score ' + score + '/10');
               scores[current_test.scene] = Math.max(scores[current_test.scene], score);
               updateScoreCookie();
             } else {
@@ -109,28 +109,28 @@ export default class TestScene extends Phaser.Scene {
 
     var progress_text = this.add
       .text(110, 182, 'Word ' + word_index + ' of 10', {
-        font: '24px Roboto',
+        font: '21px Mukta',
         color: '#479D76',
       })
       .setOrigin(0.5);
   
     var score_text = this.add
-      .text(692, 182, 'Current Score: ' + score + '/10', {
-        font: '18px Roboto',
+      .text(692, 182, 'Score ' + score + '/10', {
+        font: '21px Mukta',
         color: '#479D76',
       })
       .setOrigin(0.5);
 
     var message = this.add
       .text(400, 258, 'What is ' + scene_dict[randomWord][0].toLowerCase().replace("?", "") + '?', {
-        font: 'bold 40px Helvetica',
+        font: '60px Mukta',
         color: '#754F37',
       })
       .setOrigin(0.5);
 
     var guess = this.add
       .text(400, 462, 'Click here to guess...', {
-        font: 'italic 35px Helvetica',
+        font: 'italic 40px Helvetica',
         fill: '#000000',
       })
       .setOrigin(0.5)
