@@ -1,5 +1,3 @@
-import Phaser from 'phaser';
-
 import { scene_dict, current_test, scenes, scores } from './util.js';
 
 export default class TestScene extends Phaser.Scene {
@@ -18,6 +16,9 @@ export default class TestScene extends Phaser.Scene {
     this.load.image('back1', '../assets/images/TestScene/back-b-rollover.png');
     this.load.image('speaker_off', '../assets/images/TestScene/play-b.png');
     this.load.image('speaker_on', '../assets/images/TestScene/play-b-rollover.png');
+    this.load.image('textInput', '../assets/images/TestScene/input-box.png');
+    this.load.image('submit', '../assets/images/TestScene/submit-b.png');
+    this.load.image('submit1', '../assets/images/TestScene/submit-b-rollover.png');
   }
 
   create() {
@@ -27,10 +28,11 @@ export default class TestScene extends Phaser.Scene {
     this.background = this.add.image(400, 300, 'testBackground');
     const back = this.add.image(53, 548, 'back');
     const back1 = this.add.image(53, 548, 'back1');
-    const speaker_off = this.add.image(400, 358, 'speaker_off');
-    const speaker_on = this.add.image(400, 358, 'speaker_on');
-
-    // this.cameras.main.setBackgroundColor('#90cae0');
+    const speaker_off = this.add.image(400, 365, 'speaker_off');
+    const speaker_on = this.add.image(400, 365, 'speaker_on');
+    const textInput = this.add.image(328, 461, 'textInput');
+    const submit = this.add.image(675, 461, 'submit');
+    const submit1 = this.add.image(675, 461, 'submit1');
 
     var word_index = 1;
     var is_testing = false;
@@ -47,54 +49,67 @@ export default class TestScene extends Phaser.Scene {
       document.cookie = score_cookie;
     }
 
-    // Main function to process guessing and text updates
-    var startGuess = () => {
-      if (!is_testing) {
-        this.rexUI.edit(guess, guess, function () {
-          if (guess.text == "") {
-            guess.setText('Click here to guess...');
-          } else if (guess.text != 'Click here to guess...') {
-            is_testing = true;
+    this.input.keyboard.on('keydown-ENTER', function () { processGuess(); });
 
-            if (guess.text.toLowerCase() == randomWord) {
-              score++;
-              message.setText('Correct!');
-              score_text.setText('Score ' + score + '/10');
-              scores[current_test.scene] = Math.max(scores[current_test.scene], score);
-              updateScoreCookie();
-            } else {
-              message.setText("Sorry, it's " + randomWord);
+    function processGuess() {
+      if (guess.text != '' && !is_testing) {
+        is_testing = true;
+
+        // Fix misalignment from text edit plugin
+        guess.x += 2;
+        guess.y += 4;
+
+        if (guess.text.toLowerCase() == randomWord) {
+          score++;
+          message.setText('Correct!');
+          score_text.setText('Score ' + score + '/10');
+          scores[current_test.scene] = Math.max(scores[current_test.scene], score);
+          updateScoreCookie();
+        } else {
+          message.setText("Sorry, it's " + randomWord);
+        }
+
+        setTimeout(() => {
+          message.setText(message.text + '.');
+        }, 750);
+        setTimeout(() => {
+          message.setText(message.text + '.');
+        }, 1500);
+        setTimeout(() => {
+          if (word_index < 10) { // test another word
+            word_index++;
+            var previous_word = randomWord;
+
+            // Prevent testing the same word back-to-back unless dictionary only has 1 word
+            while (randomWord === previous_word && keys.length > 1) {
+              randomWord = keys[Math.floor(Math.random() * keys.length)];
             }
+            message.setText(
+              'What is ' + scene_dict[randomWord][0].toLowerCase().replace("?", "") + '?'
+            );
+            guess.setText('');
+            progress_text.setText('Word ' + word_index + ' of 10');
 
-            setTimeout(() => {
-              message.setText(message.text + '.');
-            }, 750);
-            setTimeout(() => {
-              message.setText(message.text + '.');
-            }, 1500);
-            setTimeout(() => {
-              if (word_index < 10) {
-                word_index++;
-                var previous_word = randomWord;
+            is_testing = false;
 
-                // Prevent testing the same word back-to-back unless dictionary only has 1 word
-                while (randomWord === previous_word && keys.length > 1) {
-                  randomWord = keys[Math.floor(Math.random() * keys.length)];
-                }
-                message.setText(
-                  'What is ' + scene_dict[randomWord][0].toLowerCase().replace("?", "") + '?'
-                );
-                guess.setText('Click here to guess...');
-                progress_text.setText('Word ' + word_index + ' of 10');
+            // Reset misalignment fix
+            guess.x -= 2;
+            guess.y -= 4;
 
-                is_testing = false;
-                startGuess(); // repeat for the next word
-              } else {
-                message.setText('You got ' + score + '/10. Congrats!');
-                setTimeout(backToMenu, 4000);
-              }
-            }, 2250);
+            startGuess(); // repeat for the next word
+          } else {
+            message.setText('You got ' + score + '/10. Congrats!');
+            setTimeout(backToMenu, 4000);
           }
+        }, 2250);
+      }
+    }
+
+    // Function to process text input
+    var startGuess = () => {
+      if (!is_testing) { // keep text box open unless guess was submitted
+        this.rexUI.edit(guess, {}, function () {
+          startGuess();
         });
       }
     }
@@ -129,72 +144,58 @@ export default class TestScene extends Phaser.Scene {
       .setOrigin(0.5);
 
     var guess = this.add
-      .text(400, 462, 'Click here to guess...', {
-        font: 'italic 40px Helvetica',
+      .text(328, 461, '', {
+        font: '40px Mukta',
         fill: '#000000',
       })
       .setOrigin(0.5)
+      .setFixedSize(520, 50)
       .setInteractive()
       .on('pointerdown', () => {
         startGuess();
       });
 
-    // this.add
-    //   .text(400, 450, 'Click to play the audio:', {
-    //     font: '18px Helvetica',
-    //   })
-    //   .setOrigin(0.5);
-
-    var audioButtons = this.rexUI.add.buttons({
-      orientation: 0,
-      buttons: [speaker_off, speaker_on],
-      expand: false,
-      align: undefined,
-      click: {
-        mode: 'pointerup',
-        clickInterval: 100,
-      },
-    });
-
-    var backButtons = this.rexUI.add.buttons({
-      orientation: 0,
-      buttons: [back, back1],
-      expand: false,
-      align: undefined,
-      click: {
-        mode: 'pointerup',
-        clickInterval: 100,
-      },
-    });
-
-    audioButtons
-      .on('button.click', () => {
-        this.sound.play(randomWord);
-      })
-      .on('button.over', () => {
-        audioButtons.hideButton(0);
-        audioButtons.showButton(1);
-      })
-      .on('button.out', () => {
-        audioButtons.hideButton(1);
-        audioButtons.showButton(0);
+    const addButtons = (button1, button2) => {
+      const newButtons = this.rexUI.add.buttons({
+        orientation: 0,
+        buttons: [button1, button2],
+        expand: false,
+        align: undefined,
+        click: {
+          mode: 'pointerup',
+          clickInterval: 100,
+        },
       });
+      return newButtons;
+    }
 
-    backButtons
-      .on('button.click', () => {
-        this.scene.start('menu');
-      })
-      .on('button.over', () => {
-        backButtons.hideButton(0);
-        backButtons.showButton(1);
-      })
-      .on('button.out', () => {
-        backButtons.hideButton(1);
-        backButtons.showButton(0);
-      });
+    const initButtons = (buttons, click_function) => {
+      buttons
+        .on('button.click', click_function)
+        .on('button.over', () => {
+          buttons.hideButton(0);
+          buttons.showButton(1);
+        })
+        .on('button.out', () => {
+          buttons.hideButton(1);
+          buttons.showButton(0);
+        });
+        buttons.hideButton(1);
+    }
 
-    audioButtons.hideButton(1);
-    backButtons.hideButton(1);
+    var audioButtons = addButtons(speaker_off, speaker_on);
+    var backButtons = addButtons(back, back1);
+    var submitButtons = addButtons(submit, submit1);
+
+    initButtons(audioButtons, () => {
+      this.sound.play(randomWord);
+    });
+    initButtons(backButtons, () => {
+      this.scene.start('menu');
+    });
+    initButtons(submitButtons, () => {
+      processGuess();
+    });
 
     // Initialise guessing function
     startGuess();
