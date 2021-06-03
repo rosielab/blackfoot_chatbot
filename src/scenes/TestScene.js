@@ -6,6 +6,7 @@ export default class TestScene extends Phaser.Scene {
   }
 
   preload() {
+    // Preload audio for all words in the current test
     Object.keys(scene_dict).forEach((sound) => {
       this.load.audio(sound, '../assets/sounds/' + sound.replace("?", "_") + '.wav');
     });
@@ -49,44 +50,59 @@ export default class TestScene extends Phaser.Scene {
       document.cookie = score_cookie;
     }
 
-    this.input.keyboard.on('keydown-ENTER', function () { processGuess(); });
+    let backToMenu = () => {
+      this.scene.start('menu');
+    };
 
+    // Main function to process submitted guess
     function processGuess() {
+      guess.setText(guess.text.trim()); // Prevent blank input or extra whitespace
       if (guess.text != '' && !is_testing) {
         is_testing = true;
+        var toTransitionTime = 0;
 
         // Fix misalignment from text edit plugin
         guess.x += 2;
         guess.y += 4;
 
-        if (guess.text.toLowerCase() == randomWord) {
+        // TODO: Use regex to fiter out special characters
+        if (guess.text.toLowerCase() === currentWord) {
           score++;
           message.setText('Correct!');
           score_text.setText('Score ' + score + '/10');
           scores[current_test.scene] = Math.max(scores[current_test.scene], score);
           updateScoreCookie();
+          toTransitionTime = 1250;
         } else {
-          message.setText("Sorry, it's " + randomWord);
+          message.setText("Sorry, it's " + currentWord);
+          toTransitionTime = 1750;
         }
 
         setTimeout(() => {
-          message.setText(message.text + '.');
-        }, 750);
+          for (var i = 50; i <= 500; i += 50) {
+            setTimeout(() => {
+              message.alpha -= 0.1;
+            }, i);
+          }
+        }, toTransitionTime);
         setTimeout(() => {
-          message.setText(message.text + '.');
-        }, 1500);
-        setTimeout(() => {
+          for (var i = 50; i <= 500; i += 50) {
+            setTimeout(() => {
+              message.alpha += 0.1;
+            }, i);
+          }
           if (word_index < 10) { // test another word
             word_index++;
-            var previous_word = randomWord;
+            var previousWord = currentWord;
 
             // Prevent testing the same word back-to-back unless dictionary only has 1 word
-            while (randomWord === previous_word && keys.length > 1) {
-              randomWord = keys[Math.floor(Math.random() * keys.length)];
+            while (currentWord === previousWord && Object.keys(scene_dict).length > 1) {
+              currentWord = getRandomWord(scene_dict);
             }
             message.setText(
-              'What is ' + scene_dict[randomWord][0].toLowerCase().replace("?", "") + '?'
+              'What is ' + scene_dict[currentWord][0].toLowerCase().replace("?", "") + '?'
             );
+
             guess.setText('');
             progress_text.setText('Word ' + word_index + ' of 10');
 
@@ -101,7 +117,7 @@ export default class TestScene extends Phaser.Scene {
             message.setText('You got ' + score + '/10. Congrats!');
             setTimeout(backToMenu, 4000);
           }
-        }, 2250);
+        }, toTransitionTime + 500);
       }
     }
 
@@ -114,13 +130,16 @@ export default class TestScene extends Phaser.Scene {
       }
     }
 
-    let backToMenu = () => {
-      this.scene.start('menu');
-    };
-
     // choose a random word from dictionary
-    var keys = Object.keys(scene_dict);
-    var randomWord = keys[Math.floor(Math.random() * keys.length)];
+    function getRandomWord(dict) {
+      const keys = Object.keys(dict);
+      return keys[Math.floor(Math.random() * keys.length)];
+    }
+
+    // Submit guess on Enter keypress
+    this.input.keyboard.on('keydown-ENTER', function () { processGuess(); });
+
+    var currentWord = getRandomWord(scene_dict);
 
     var progress_text = this.add
       .text(110, 182, 'Word ' + word_index + ' of 10', {
@@ -137,7 +156,7 @@ export default class TestScene extends Phaser.Scene {
       .setOrigin(0.5);
 
     var message = this.add
-      .text(400, 258, 'What is ' + scene_dict[randomWord][0].toLowerCase().replace("?", "") + '?', {
+      .text(400, 258, 'What is ' + scene_dict[currentWord][0].toLowerCase().replace("?", "") + '?', {
         font: '60px Mukta',
         color: '#754F37',
       })
@@ -188,7 +207,7 @@ export default class TestScene extends Phaser.Scene {
     var submitButtons = addButtons(submit, submit1);
 
     initButtons(audioButtons, () => {
-      this.sound.play(randomWord);
+      this.sound.play(currentWord);
     });
     initButtons(backButtons, () => {
       this.scene.start('menu');
