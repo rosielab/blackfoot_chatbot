@@ -1,3 +1,5 @@
+import Phaser from 'phaser';
+
 import { scene_dict, current_test, scenes, scores } from './util.js';
 
 export default class TestScene extends Phaser.Scene {
@@ -44,8 +46,10 @@ export default class TestScene extends Phaser.Scene {
       for (var i = 0; i < scenes.length; i++) {
         score_cookie = score_cookie.concat(scores[scenes[i]].toString(16));
       }
+
+      // set expiry date to 2 years
       const date = new Date();
-      date.setFullYear(date.getFullYear() + 2); // add 2 years to the current date
+      date.setFullYear(date.getFullYear() + 2);
       score_cookie = score_cookie.concat("; expires=" + date.toUTCString());
       document.cookie = score_cookie;
     }
@@ -53,6 +57,10 @@ export default class TestScene extends Phaser.Scene {
     let backToMenu = () => {
       this.scene.start('menu');
     };
+
+    let isSceneOpen = (scene) => {
+      return this.scene.isActive(scene);
+    }
 
     // Main function to process submitted guess
     function processGuess() {
@@ -68,14 +76,17 @@ export default class TestScene extends Phaser.Scene {
         // TODO: Use regex to fiter out special characters
         if (guess.text.toLowerCase() === currentWord) {
           score++;
-          message.setText('Correct!');
           score_text.setText('Score ' + score + '/10');
           scores[current_test.scene] = Math.max(scores[current_test.scene], score);
           updateScoreCookie();
+
+          message.setText('Correct!');
+          message.setColor('#20a31c');
           toTransitionTime = 1250;
         } else {
+          // TODO: capitalise letter I (very minor bug)
           message.setText("Sorry, it's " + currentWord);
-          toTransitionTime = 1750;
+          toTransitionTime = 1750; // Wait longer to help with memorisation
         }
 
         setTimeout(() => {
@@ -86,36 +97,46 @@ export default class TestScene extends Phaser.Scene {
           }
         }, toTransitionTime);
         setTimeout(() => {
-          for (var i = 50; i <= 500; i += 50) {
-            setTimeout(() => {
-              message.alpha += 0.1;
-            }, i);
-          }
-          if (word_index < 10) { // test another word
-            word_index++;
-            var previousWord = currentWord;
-
-            // Prevent testing the same word back-to-back unless dictionary only has 1 word
-            while (currentWord === previousWord && Object.keys(scene_dict).length > 1) {
-              currentWord = getRandomWord(scene_dict);
+          if (isSceneOpen('test')) { // stop processing if the user exited
+            message.setColor('#754F37');
+            for (var i = 50; i <= 500; i += 50) {
+              setTimeout(() => {
+                message.alpha += 0.1;
+              }, i);
             }
-            message.setText(
-              'What is ' + scene_dict[currentWord][0].toLowerCase().replace("?", "") + '?'
-            );
-
-            guess.setText('');
-            progress_text.setText('Word ' + word_index + ' of 10');
-
-            is_testing = false;
-
-            // Reset misalignment fix
-            guess.x -= 2;
-            guess.y -= 4;
-
-            startGuess(); // repeat for the next word
-          } else {
-            message.setText('You got ' + score + '/10. Congrats!');
-            setTimeout(backToMenu, 4000);
+            if (word_index < 10) { // test another word
+              word_index++;
+              var previousWord = currentWord;
+  
+              // Prevent testing the same word back-to-back unless dictionary only has 1 word
+              while (currentWord === previousWord && Object.keys(scene_dict).length > 1) {
+                currentWord = getRandomWord(scene_dict);
+              }
+              message.setText(
+                'What is ' + scene_dict[currentWord][0].toLowerCase().replace("?", "") + '?'
+              );
+  
+              guess.setText('');
+              progress_text.setText('Word ' + word_index + ' of 10');
+  
+              is_testing = false;
+  
+              // Reset misalignment fix
+              guess.x -= 2;
+              guess.y -= 4;
+  
+              startGuess(); // repeat for the next word
+            } else {
+              message.setText('You got ' + score + '/10. Congrats!');
+              setTimeout(() => {
+                for (var i = 50; i <= 500; i += 50) {
+                  setTimeout(() => {
+                    message.alpha -= 0.1;
+                  }, i);
+                }
+              }, 3250);
+              setTimeout(backToMenu, 4000);
+            }
           }
         }, toTransitionTime + 500);
       }
@@ -156,7 +177,7 @@ export default class TestScene extends Phaser.Scene {
       .setOrigin(0.5);
 
     var message = this.add
-      .text(400, 258, 'What is ' + scene_dict[currentWord][0].toLowerCase().replace("?", "") + '?', {
+      .text(400, 264, 'What is ' + scene_dict[currentWord][0].toLowerCase().replace("?", "") + '?', {
         font: '60px Mukta',
         color: '#754F37',
       })

@@ -10,7 +10,6 @@ export default class MenuScene extends Phaser.Scene {
 
     this.load.image('learn', '../assets/images/MenuScene/learn-b.png');
     this.load.image('learn1', '../assets/images/MenuScene/learn-b-rollover.png');
-
     this.load.image('test', '../assets/images/MenuScene/quiz-b.png');
     this.load.image('test1', '../assets/images/MenuScene/quiz-b-rollover.png');
     this.load.image('sentence', '../assets/images/MenuScene/sentence-b.png');
@@ -23,6 +22,7 @@ export default class MenuScene extends Phaser.Scene {
 
   create() {
     this.background = this.add.image(400, 300, 'menuBackground');
+    
     const learn = this.add.image(370, 285, 'learn');
     const learn1 = this.add.image(370, 285, 'learn1');
     const test = this.add.image(370, 351, 'test');

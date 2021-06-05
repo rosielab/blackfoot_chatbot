@@ -4,6 +4,7 @@ All global variables for TestScene, ScoresScene, PreTestScenes, etc. are declare
 
 /*
 Important: List all currently used scenes in lowercase
+Order of scenes determines order of scores in ScoresScene
 -Keep "all" scene at the end for now
 */
 const scenes = ['town', 'restaurant', 'home', 'family', 'greetings', 'all'];

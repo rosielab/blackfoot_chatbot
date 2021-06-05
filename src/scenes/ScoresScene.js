@@ -9,18 +9,16 @@ export default class ScoresScene extends Phaser.Scene {
 
   preload() {
     this.load.image('scoreBackground', '../assets/images/ScoresScene/scores.png');
+
     this.load.image('back', '../assets/images/ScoresScene/back-b.png');
     this.load.image('back1', '../assets/images/ScoresScene/back-b-rollover.png');
-    // this.load.image('scores_background', '../assets/images/scores_background.png');
   }
 
   create() {
     this.background = this.add.image(400, 300, 'scoreBackground');
+
     const back = this.add.image(53, 548, 'back');
     const back1 = this.add.image(53, 548, 'back1');
-    // this.add.image(400, 350, 'scores_background');
-
-    // this.cameras.main.setBackgroundColor('#97cdf7');
 
     function scrollDownScores(scenes_index, scores_txt) {
       if (scenes_index + 5 < scenes.length-1) {
@@ -46,8 +44,8 @@ export default class ScoresScene extends Phaser.Scene {
       return scenes_index;
     }
 
-    function checkCookie(cookie, all_cookies) {
-      const split_cookies = all_cookies.split(";");
+    function checkCookie(cookie) {
+      const split_cookies = document.cookie.split(";");
       for (var i = 0; i < split_cookies.length; i++) {
         if (split_cookies[i].includes(cookie + "=")) {
           return i;
@@ -61,33 +59,28 @@ export default class ScoresScene extends Phaser.Scene {
       for (var i = 0; i < scenes.length; i++) {
         score_cookie = score_cookie.concat(scores[scenes[i]].toString(16));
       }
+
+      // set expiry date to 2 years
       const date = new Date();
-      date.setFullYear(date.getFullYear() + 2); // add 2 years to the current date
+      date.setFullYear(date.getFullYear() + 2);
       score_cookie = score_cookie.concat("; expires=" + date.toUTCString());
       document.cookie = score_cookie;
     }
 
     // Check if scores have been saved previously
-    const cookie_index = checkCookie("score", document.cookie);
+    const cookie_index = checkCookie("score");
     if (cookie_index != -1) {
       const cookie_score = document.cookie.split(";")[cookie_index].trim().slice(6);
-      if (cookie_score.length == scenes.length) {
+      if (cookie_score.length === scenes.length) {
         for (var i = 0; i < cookie_score.length; i++) {
           scores[scenes[i]] = parseInt(cookie_score[i], 16);
         }
       } else {
-        console.log("Error: Saved score may be outdated. Will not be used!");
+        console.log("Error: Saved score(s) may be outdated. Will not be used!");
       }
     }
 
     var scenes_index = 0;
-
-    // this.add
-    //   .text(400, 130, 'High Scores', {
-    //     font: 'bold 55px Cambria',
-    //     color: '#000000',
-    //   })
-    //   .setOrigin(0.5);
 
     const top_scores_text = this.add
       .text(400, 295, 'Town: ' + scores.town + '/10\n'
