@@ -68,6 +68,7 @@ export default class TestScene extends Phaser.Scene {
       if (guess.text != '' && !is_testing) {
         is_testing = true;
         var toTransitionTime = 0;
+        message.setFontSize(60);
 
         // Fix misalignment from text edit plugin
         guess.x += 2;
@@ -116,6 +117,12 @@ export default class TestScene extends Phaser.Scene {
                 'What is ' + scene_dict[currentWord][0].toLowerCase().replace("?", "") + '?'
               );
   
+              // Prevent larger words going off-screen
+              // TODO: Dynamically shrink text, initial scaling
+              if (scene_dict[currentWord][0].length > 16) {
+                message.setFontSize(50);
+              }
+
               guess.setText('');
               progress_text.setText('Word ' + word_index + ' of 10');
   
