@@ -117,7 +117,7 @@ export default class SentenceScene extends Phaser.Scene {
         button.y = dragY;
       });
       button.on('dragend', function (pointer, dragX, dragY, dropped) {
-        if (button.y < 200) {
+        if (button.y < 270) {
           if (button.x < 139) {
             button.x = 139;
           } else if (button.x > 565) {
@@ -126,7 +126,7 @@ export default class SentenceScene extends Phaser.Scene {
           button.y = 200;
           insertButton(name, button, wordArry);
           console.log(wordArry);
-        } else if (button.y >= 200) {
+        } else if (button.y >= 270) {
           removeButton(name, wordArry);
           console.log(wordArry);
         }
