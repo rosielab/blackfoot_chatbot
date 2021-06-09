@@ -13,7 +13,7 @@ export default class TestScene extends Phaser.Scene {
       this.load.audio(sound, '../assets/sounds/' + sound.replace("?", "_") + '.wav');
     });
 
-    this.load.image('testBackground', '../assets/images/TestScene/quiz.png');
+    this.load.image('testBackground', '../assets/images/TestScene/Quiz.png');
 
     this.load.image('back', '../assets/images/TestScene/back-b.png');
     this.load.image('back1', '../assets/images/TestScene/back-b-rollover.png');

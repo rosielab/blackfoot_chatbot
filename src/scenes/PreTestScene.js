@@ -8,7 +8,7 @@ export default class PreTestScene extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image('pretestBackground', '../assets/images/PreTestScene/quiz-main.png');
+    this.load.image('pretestBackground', '../assets/images/PreTestScene/Quiz-Main.png');
 
     this.load.image('back', '../assets/images/PreTestScene/back-b.png');
     this.load.image('back1', '../assets/images/PreTestScene/back-b-rollover.png');

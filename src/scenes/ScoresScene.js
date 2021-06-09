@@ -8,7 +8,7 @@ export default class ScoresScene extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image('scoreBackground', '../assets/images/ScoresScene/scores.png');
+    this.load.image('scoreBackground', '../assets/images/ScoresScene/Scores.png');
 
     this.load.image('back', '../assets/images/ScoresScene/back-b.png');
     this.load.image('back1', '../assets/images/ScoresScene/back-b-rollover.png');
