@@ -6,36 +6,37 @@ export default class MoveScene extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image('moveBackground', '../assets/images/moveBackground.png');
-    this.load.image('back', '../assets/images/back.png');
-    this.load.image('back1', '../assets/images/back2.png');
-    this.load.image('town', '../assets/images/town2.png');
-    this.load.image('town1', '../assets/images/town1.png');
+    // this.load.image('moveBackground', '../assets/images/moveBackground.png');
+    this.load.image('moveBackground', '../assets/images/LearnScene/Learn.png');
+    this.load.image('back', '../assets/images/LearnScene/learn-main-page-buttons/regular-state/back-b.png');
+    this.load.image('back1', '../assets/images/LearnScene/learn-main-page-buttons/rollover-state/back-b-rollover.png');
+    this.load.image('town', '../assets/images/PreTestScene/town-b.png');
+    this.load.image('town1', '../assets/images/PreTestScene/town-b-rollover.png');
 
-    this.load.image('home', '../assets/images/home2.png');
-    this.load.image('home1', '../assets/images/home1.png');
-    this.load.image('family', '../assets/images/family.png');
-    this.load.image('family1', '../assets/images/family1.png');
-    this.load.image('greetings', '../assets/images/greetings.png');
-    this.load.image('greetings1', '../assets/images/greetings1.png');
-    this.load.image('restaurant', '../assets/images/restaurant2.png');
-    this.load.image('restaurant1', '../assets/images/restaurant1.png');
+    this.load.image('home', '../assets/images/LearnScene/learn-main-page-buttons/regular-state/home-b.png');
+    this.load.image('home1', '../assets/images/LearnScene/learn-main-page-buttons/rollover-state/home-b-rollover.png');
+    this.load.image('family', '../assets/images/LearnScene/learn-main-page-buttons/regular-state/family-b.png');
+    this.load.image('family1', '../assets/images/LearnScene/learn-main-page-buttons/rollover-state/family-b-rollover.png');
+    this.load.image('greetings', '../assets/images/LearnScene/learn-main-page-buttons/regular-state/greetings-b.png');
+    this.load.image('greetings1', '../assets/images/LearnScene/learn-main-page-buttons/rollover-state/greetings-b-rollover.png');
+    this.load.image('restaurant', '../assets/images/PreTestScene/restaurant-b.png');
+    this.load.image('restaurant1', '../assets/images/PreTestScene/restaurant-b-rollover.png');
   }
 
   create() {
     this.background = this.add.image(400, 300, 'moveBackground');
-    const back = this.add.image(63, 56, 'back');
-    const back1 = this.add.image(63, 56, 'back1');
-    const town = this.add.image(122, 296, 'town');
-    const town1 = this.add.image(122, 296, 'town1');
-    const home = this.add.image(378, 436, 'home');
-    const home1 = this.add.image(378, 436, 'home1');
-    const restaurant = this.add.image(378, 193, 'restaurant');
-    const restaurant1 = this.add.image(378, 193, 'restaurant1');
-    const family = this.add.image(625, 196, 'family');
-    const family1 = this.add.image(625, 196, 'family1');
-    const greetings = this.add.image(625, 436, 'greetings');
-    const greetings1 = this.add.image(625, 436, 'greetings1');
+    const back = this.add.image(45, 550, 'back');
+    const back1 = this.add.image(45, 550, 'back1');
+    const town = this.add.image(270, 250, 'town');
+    const town1 = this.add.image(270, 250, 'town1');
+    const home = this.add.image(214, 174, 'home');
+    const home1 = this.add.image(214, 174, 'home1');
+    const restaurant = this.add.image(470, 250, 'restaurant');
+    const restaurant1 = this.add.image(470, 250, 'restaurant1');
+    const family = this.add.image(395, 174, 'family');
+    const family1 = this.add.image(395, 174, 'family1');
+    const greetings = this.add.image(585, 174, 'greetings');
+    const greetings1 = this.add.image(585, 174, 'greetings1');
 
     var backButtons = this.rexUI.add.buttons({
       orientation: 0,

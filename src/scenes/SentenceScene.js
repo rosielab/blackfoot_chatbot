@@ -8,33 +8,33 @@ export default class SentenceScene extends Phaser.Scene {
   preload() {
     this.load.image(
       'sentenceBackground',
-      '../assets/images/sentenceBackground.png'
+      '../assets/images/SentenceScene/Sentence.png'
     );
 
-    this.load.image('today', '../assets/images/today.png');
-    this.load.image('Iwilleat', '../assets/images/Iwilleat.png');
-    this.load.image('apple', '../assets/images/apple.png');
-    this.load.image('Iwillgo', '../assets/images/Iwillgo.png');
-    this.load.image('Iwent', '../assets/images/Iwent.png');
-    this.load.image('thismorning', '../assets/images/thismorning.png');
-    this.load.image('media', '../assets/images/media.png');
-    this.load.image('clean', '../assets/images/clean.png');
-    this.load.image('back', '../assets/images/back.png');
-    this.load.image('back1', '../assets/images/back2.png');
+    this.load.image('today', '../assets/images/SentenceScene/sentence-page-buttons/normal-state/today-b.png');
+    this.load.image('Iwilleat', '../assets/images/SentenceScene/sentence-page-buttons/normal-state/iwilleat-b.png');
+    this.load.image('back', '../assets/images/LearnScene/learn-main-page-buttons/regular-state/back-b.png');
+    this.load.image('back1', '../assets/images/LearnScene/learn-main-page-buttons/rollover-state/back-b-rollover.png');
+    this.load.image('apple', '../assets/images/SentenceScene/sentence-page-buttons/normal-state/apple-b.png');
+    this.load.image('Iwillgo', '../assets/images/SentenceScene/sentence-page-buttons/normal-state/iwillgo-b.png');
+    this.load.image('Iwent', '../assets/images/SentenceScene/sentence-page-buttons/normal-state/iwent-b.png');
+    this.load.image('thismorning', '../assets/images/SentenceScene/sentence-page-buttons/normal-state/thismorning-b.png');
+    this.load.image('media', '../assets/images/SentenceScene/sentence-page-buttons/normal-state/play-b.png');
+    this.load.image('clean', '../assets/images/SentenceScene/sentence-page-buttons/normal-state/clear-b.png');
   }
 
   create() {
     this.background = this.add.image(400, 300, 'sentenceBackground');
-    const back = this.add.image(63, 56, 'back');
-    const back1 = this.add.image(63, 56, 'back1');
-    var today = this.add.image(185, 118, 'today');
-    var Iwilleat = this.add.image(380, 118, 'Iwilleat');
-    var apple = this.add.image(573, 118, 'apple');
-    var Iwillgo = this.add.image(380, 192, 'Iwillgo');
-    var Iwent = this.add.image(380, 266, 'Iwent');
-    var thismorning = this.add.image(185, 192, 'thismorning');
-    var media = this.add.image(748, 409, 'media');
-    var clean = this.add.image(32, 373, 'clean');
+    const back = this.add.image(53, 550, 'back');
+    const back1 = this.add.image(53, 550, 'back1');
+    var today = this.add.image(322, 345, 'today');
+    var Iwilleat = this.add.image(138, 398, 'Iwilleat');
+    var apple = this.add.image(506, 345, 'apple');
+    var Iwillgo = this.add.image(139, 345, 'Iwillgo');
+    var Iwent = this.add.image(137, 450, 'Iwent');
+    var thismorning = this.add.image(320, 401, 'thismorning');
+    var media = this.add.image(710, 226, 'media');
+    var clean = this.add.image(100, 260, 'clean');
 
     const data = require('../assets/all_words_address.json');
 
@@ -117,16 +117,16 @@ export default class SentenceScene extends Phaser.Scene {
         button.y = dragY;
       });
       button.on('dragend', function (pointer, dragX, dragY, dropped) {
-        if (button.y > 360) {
-          if (button.x < 120) {
-            button.x = 120;
-          } else if (button.x > 660) {
-            button.x = 660;
+        if (button.y < 200) {
+          if (button.x < 139) {
+            button.x = 139;
+          } else if (button.x > 565) {
+            button.x = 565;
           }
-          button.y = 408;
+          button.y = 200;
           insertButton(name, button, wordArry);
           console.log(wordArry);
-        } else if (button.y <= 360) {
+        } else if (button.y >= 200) {
           removeButton(name, wordArry);
           console.log(wordArry);
         }
