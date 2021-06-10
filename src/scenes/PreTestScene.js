@@ -31,16 +31,16 @@ export default class PreTestScene extends Phaser.Scene {
 
     const back = this.add.image(39, 548, 'back');
     const back1 = this.add.image(39, 548, 'back1');
-    const town_t = this.add.image(173, 322, 'town_t');
-    const town1_t = this.add.image(173, 322, 'town1_t');
-    const restaurant_t = this.add.image(400, 322, 'restaurant_t');
-    const restaurant1_t = this.add.image(400, 322, 'restaurant1_t');
-    const home_t = this.add.image(627, 322, 'home_t');
-    const home1_t = this.add.image(627, 322, 'home1_t');
-    const family_t = this.add.image(173, 418, 'family_t');
-    const family1_t = this.add.image(173, 418, 'family1_t');
-    const greetings_t = this.add.image(400, 418, 'greetings_t');
-    const greetings1_t = this.add.image(400, 418, 'greetings1_t');
+    const town_t = this.add.image(173, 418, 'town_t');
+    const town1_t = this.add.image(173, 418, 'town1_t');
+    const restaurant_t = this.add.image(400, 418, 'restaurant_t');
+    const restaurant1_t = this.add.image(400, 418, 'restaurant1_t');
+    const home_t = this.add.image(173, 322, 'home_t');
+    const home1_t = this.add.image(173, 322, 'home1_t');
+    const family_t = this.add.image(400, 322, 'family_t');
+    const family1_t = this.add.image(400, 322, 'family1_t');
+    const greetings_t = this.add.image(627, 322, 'greetings_t');
+    const greetings1_t = this.add.image(627, 322, 'greetings1_t');
     const all_t = this.add.image(627, 418, 'all_t');
     const all1_t = this.add.image(627, 418, 'all1_t');
 
