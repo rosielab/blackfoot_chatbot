@@ -1,7 +1,44 @@
 import Phaser from 'phaser';
 
-var path2 = '../assets/images/SentenceScene/1x/'
-var cardsArr = ['today', 'this morning', 'tomorrow', 'this evening', 'yesterday', 'and', 'please pass the', 'where', 'who', 'i will go', 'i went', 'i will eat', 'cafe', 'apples', 'burger', 'coffee', 'dessert', 'eggs', 'fish', 'dog', 'night club','tipi', 'store', 'window', 'bathroom', 'car','elevator','kitchen', 'mother', 'father', 'boy', 'girl', 'child', 'woman', 'house', 'movie']
+var path2 = '../assets/images/SentenceScene/1x/';
+var cardsArr = [
+  'today',
+  'this morning',
+  'tomorrow',
+  'this evening',
+  'yesterday',
+  'and',
+  'please pass the',
+  'where',
+  'who',
+  'i will go',
+  'i went',
+  'i will eat',
+  'cafe',
+  'apples',
+  'burger',
+  'coffee',
+  'dessert',
+  'eggs',
+  'fish',
+  'dog',
+  'night club',
+  'tipi',
+  'store',
+  'window',
+  'bathroom',
+  'car',
+  'elevator',
+  'kitchen',
+  'mother',
+  'father',
+  'boy',
+  'girl',
+  'child',
+  'woman',
+  'house',
+  'movie',
+];
 export default class SentenceScene extends Phaser.Scene {
   constructor() {
     super('sentence');
@@ -12,10 +49,9 @@ export default class SentenceScene extends Phaser.Scene {
       'sentenceBackground',
       '../assets/images/SentenceScene/Sentence.png'
     );
-    for (var i = 0; i < cardsArr.length; i++)
-    {
-      this.load.image(cardsArr[i]+'sen', path2+cardsArr[i]+'.png');
-    };
+    for (var i = 0; i < cardsArr.length; i++) {
+      this.load.image(cardsArr[i] + 'sen', path2 + cardsArr[i] + '.png');
+    }
     // this.load.image(
     //   'today',
     //   '../assets/images/SentenceScene/1x/today.png'
@@ -64,43 +100,42 @@ export default class SentenceScene extends Phaser.Scene {
     const back1 = this.add.image(53, 550, 'back1');
     var media = this.add.image(710, 226, 'media');
     var clean = this.add.image(100, 260, 'clean');
-    var today = this.add.image(87, 330, cardsArr[0]+'sen');
-    var thismorning = this.add.image(199, 330, cardsArr[1]+'sen');
-    var tomorrow = this.add.image(338, 330, cardsArr[2]+'sen');
-    var thisevening = this.add.image(470, 330, cardsArr[3]+'sen');
-    var yesterday = this.add.image(598, 330, cardsArr[4]+'sen');
-    var and = this.add.image(691, 330, cardsArr[5]+'sen');
-    var pleasepassthe = this.add.image(130, 368, cardsArr[6]+'sen');
-    var where = this.add.image(259, 368, cardsArr[7]+'sen');
-    var who = this.add.image(334, 368, cardsArr[8]+'sen');
-    var iwillgo = this.add.image(417, 368, cardsArr[9]+'sen');
-    var iwent = this.add.image(511, 368, cardsArr[10]+'sen');
-    var iwilleat = this.add.image(607, 368, cardsArr[11]+'sen');
-    var cafe = this.add.image(695, 368, cardsArr[12]+'sen');
-    var apples = this.add.image(95, 406, cardsArr[13]+'sen');
-    var burger = this.add.image(184, 406, cardsArr[14]+"sen");
-    var coffee = this.add.image(268, 406, cardsArr[15]+"sen");
-    var dessert = this.add.image(355, 406, cardsArr[16]+"sen");
-    var eggs = this.add.image(440, 406, cardsArr[17]+"sen");
-    var fish = this.add.image(504, 406, cardsArr[18]+"sen");
-    var dog = this.add.image(570, 406, cardsArr[19]+"sen");
-    var nightclub = this.add.image(665, 406, cardsArr[20]+"sen");
-    var tipi = this.add.image(84, 444, cardsArr[21]+"sen");
-    var store = this.add.image(156, 444, cardsArr[22]+"sen");
-    var window = this.add.image(242, 444, cardsArr[23]+"sen");
-    var bathroom = this.add.image(346, 444, cardsArr[24]+"sen");
-    var car = this.add.image(426, 444, cardsArr[25]+"sen");
-    var elevator = this.add.image(498, 444, cardsArr[26]+"sen");
-    var kitchen = this.add.image(594, 444, cardsArr[27]+"sen");
-    var mother = this.add.image(95, 482, cardsArr[28]+"sen");
-    var father = this.add.image(179, 482, cardsArr[29]+"sen");
-    var boy = this.add.image(248, 482, cardsArr[30]+"sen");
-    var girl = this.add.image(306, 482, cardsArr[31]+"sen");
-    var child = this.add.image(370, 482, cardsArr[32]+"sen");
-    var woman = this.add.image(448, 482, cardsArr[33]+"sen");
-    var house = this.add.image(539, 482, cardsArr[34]+"sen");
-    var movie = this.add.image(621, 482, cardsArr[35]+"sen");
-
+    var today = this.add.image(87, 330, cardsArr[0] + 'sen');
+    var thismorning = this.add.image(199, 330, cardsArr[1] + 'sen');
+    var tomorrow = this.add.image(338, 330, cardsArr[2] + 'sen');
+    var thisevening = this.add.image(470, 330, cardsArr[3] + 'sen');
+    var yesterday = this.add.image(598, 330, cardsArr[4] + 'sen');
+    var and = this.add.image(691, 330, cardsArr[5] + 'sen');
+    var pleasepassthe = this.add.image(130, 368, cardsArr[6] + 'sen');
+    var where = this.add.image(259, 368, cardsArr[7] + 'sen');
+    var who = this.add.image(334, 368, cardsArr[8] + 'sen');
+    var iwillgo = this.add.image(417, 368, cardsArr[9] + 'sen');
+    var iwent = this.add.image(511, 368, cardsArr[10] + 'sen');
+    var iwilleat = this.add.image(607, 368, cardsArr[11] + 'sen');
+    var cafe = this.add.image(695, 368, cardsArr[12] + 'sen');
+    var apples = this.add.image(95, 406, cardsArr[13] + 'sen');
+    var burger = this.add.image(184, 406, cardsArr[14] + 'sen');
+    var coffee = this.add.image(268, 406, cardsArr[15] + 'sen');
+    var dessert = this.add.image(355, 406, cardsArr[16] + 'sen');
+    var eggs = this.add.image(440, 406, cardsArr[17] + 'sen');
+    var fish = this.add.image(504, 406, cardsArr[18] + 'sen');
+    var dog = this.add.image(570, 406, cardsArr[19] + 'sen');
+    var nightclub = this.add.image(665, 406, cardsArr[20] + 'sen');
+    var tipi = this.add.image(84, 444, cardsArr[21] + 'sen');
+    var store = this.add.image(156, 444, cardsArr[22] + 'sen');
+    var window = this.add.image(242, 444, cardsArr[23] + 'sen');
+    var bathroom = this.add.image(346, 444, cardsArr[24] + 'sen');
+    var car = this.add.image(426, 444, cardsArr[25] + 'sen');
+    var elevator = this.add.image(498, 444, cardsArr[26] + 'sen');
+    var kitchen = this.add.image(594, 444, cardsArr[27] + 'sen');
+    var mother = this.add.image(95, 482, cardsArr[28] + 'sen');
+    var father = this.add.image(179, 482, cardsArr[29] + 'sen');
+    var boy = this.add.image(248, 482, cardsArr[30] + 'sen');
+    var girl = this.add.image(306, 482, cardsArr[31] + 'sen');
+    var child = this.add.image(370, 482, cardsArr[32] + 'sen');
+    var woman = this.add.image(448, 482, cardsArr[33] + 'sen');
+    var house = this.add.image(539, 482, cardsArr[34] + 'sen');
+    var movie = this.add.image(621, 482, cardsArr[35] + 'sen');
 
     const data = require('../assets/all_words_address.json');
 

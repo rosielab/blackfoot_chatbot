@@ -46,9 +46,14 @@ export default class TestScene extends Phaser.Scene {
     const submit = this.add.image(675, 461, 'submit');
     const submit1 = this.add.image(675, 461, 'submit1');
 
-    var word_index = 1;
+    var word_index = 0;
     var is_testing = false;
     var score = 0;
+
+    // Submit guess on Enter keypress
+    this.input.keyboard.on('keydown-ENTER', function () {
+      processGuess();
+    });
 
     function updateScoreCookie() {
       var score_cookie = 'score=';
@@ -71,111 +76,8 @@ export default class TestScene extends Phaser.Scene {
       return this.scene.isActive(scene);
     };
 
-    // Main function to process submitted guess
-    function processGuess() {
-      guess.setText(guess.text.trim()); // Prevent blank input or extra whitespace
-      if (guess.text != '' && !is_testing) {
-        is_testing = true;
-        var toTransitionTime = 0;
-        message.setFontSize(60);
-
-        // Fix misalignment from text edit plugin
-        guess.x += 2;
-        guess.y += 4;
-
-        // TODO: Use regex to fiter out special characters
-        if (guess.text.toLowerCase() === currentWord) {
-          score++;
-          score_text.setText('Score ' + score + '/10');
-          scores[current_test.scene] = Math.max(
-            scores[current_test.scene],
-            score
-          );
-          updateScoreCookie();
-
-          message.setText('Correct!');
-          message.setColor('#20a31c');
-          toTransitionTime = 1250;
-        } else {
-          // TODO: capitalise letter I (very minor bug)
-          message.setText("Sorry, it's " + currentWord);
-          toTransitionTime = 1750; // Wait longer to help with memorisation
-        }
-
-        setTimeout(() => {
-          for (var i = 50; i <= 500; i += 50) {
-            setTimeout(() => {
-              message.alpha -= 0.1;
-            }, i);
-          }
-        }, toTransitionTime);
-        setTimeout(() => {
-          if (isSceneOpen('test')) {
-            // stop processing if the user exited
-            message.setColor('#754F37');
-            for (var i = 50; i <= 500; i += 50) {
-              setTimeout(() => {
-                message.alpha += 0.1;
-              }, i);
-            }
-            if (word_index < 10) {
-              // test another word
-              word_index++;
-              var previousWord = currentWord;
-
-              // Prevent testing the same word back-to-back unless dictionary only has 1 word
-              while (
-                currentWord === previousWord &&
-                Object.keys(scene_dict).length > 1
-              ) {
-                currentWord = getRandomWord(scene_dict);
-              }
-              message.setText(
-                'What is ' +
-                  scene_dict[currentWord][0].toLowerCase().replace('?', '') +
-                  '?'
-              );
-
-              // Prevent larger words going off-screen
-              // TODO: Dynamically shrink text, initial scaling
-              if (scene_dict[currentWord][0].length > 16) {
-                message.setFontSize(50);
-              }
-
-              guess.setText('');
-              progress_text.setText('Word ' + word_index + ' of 10');
-
-              is_testing = false;
-
-              // Reset misalignment fix
-              guess.x -= 2;
-              guess.y -= 4;
-
-              startGuess(); // repeat for the next word
-            } else {
-              message.setText('You got ' + score + '/10. Congrats!');
-              setTimeout(() => {
-                for (var i = 50; i <= 500; i += 50) {
-                  setTimeout(() => {
-                    message.alpha -= 0.1;
-                  }, i);
-                }
-              }, 3250);
-              setTimeout(backToMenu, 4000);
-            }
-          }
-        }, toTransitionTime + 500);
-      }
-    }
-
-    // Function to process text input
-    var startGuess = () => {
-      if (!is_testing) {
-        // keep text box open unless guess was submitted
-        this.rexUI.edit(guess, {}, function () {
-          startGuess();
-        });
-      }
+    let playAudio = (audio) => {
+      this.sound.play(audio);
     };
 
     // choose a random word from dictionary
@@ -184,12 +86,126 @@ export default class TestScene extends Phaser.Scene {
       return keys[Math.floor(Math.random() * keys.length)];
     }
 
-    // Submit guess on Enter keypress
-    this.input.keyboard.on('keydown-ENTER', function () {
-      processGuess();
-    });
-
+    // init current word
     var currentWord = getRandomWord(scene_dict);
+
+    function nextWord() {
+      if (isSceneOpen('test')) {
+        // stop processing if the user exited
+        guessPrompt.setColor('#754F37');
+        for (var i = 50; i <= 500; i += 50) {
+          setTimeout(() => {
+            guessPrompt.alpha += 0.1;
+          }, i);
+        }
+        if (word_index < 10) {
+          // test another word
+          word_index++;
+          var previousWord = currentWord;
+
+          // Prevent testing the same word back-to-back unless dictionary only has 1 word
+          while (
+            currentWord === previousWord &&
+            Object.keys(scene_dict).length > 1
+          ) {
+            currentWord = getRandomWord(scene_dict);
+          }
+          guessPrompt.setText(
+            'What is ' +
+              scene_dict[currentWord][0].toLowerCase().replace('?', '') +
+              '?'
+          );
+
+          // Play the Blackfoot for the word
+          playAudio(currentWord);
+
+          // Prevent larger words going off-screen
+          // TODO: Dynamically shrink text
+          if (scene_dict[currentWord][0].length > 16) {
+            guessPrompt.setFontSize(50);
+          }
+
+          guessInput.setText('');
+          progress_text.setText('Word ' + word_index + ' of 10');
+
+          is_testing = false;
+
+          // Reset misalignment fix
+          guessInput.x -= 2;
+          guessInput.y -= 4;
+
+          startGuess(); // repeat for the next word
+        } else {
+          guessPrompt.setText('You got ' + score + '/10. Congrats!');
+          setTimeout(() => {
+            for (var i = 50; i <= 500; i += 50) {
+              setTimeout(() => {
+                guessPrompt.alpha -= 0.1;
+              }, i);
+            }
+          }, 3250);
+          setTimeout(backToMenu, 4000);
+        }
+      }
+    }
+
+    // Main function to process submitted guess
+    function processGuess() {
+      guessInput.setText(guessInput.text.trim()); // Prevent blank input or extra whitespace
+      if (guessInput.text != '' && !is_testing) {
+        is_testing = true;
+        var toTransitionTime = 0;
+        guessPrompt.setFontSize(60);
+
+        // Fix misalignment from text edit plugin
+        guessInput.x += 2;
+        guessInput.y += 4;
+
+        // TODO: Use regex to fiter out special characters
+        if (guessInput.text.toLowerCase() === currentWord) {
+          score++;
+          score_text.setText('Score ' + score + '/10');
+          scores[current_test.scene] = Math.max(
+            scores[current_test.scene],
+            score
+          );
+          updateScoreCookie();
+
+          guessPrompt.setText('Correct!');
+          guessPrompt.setColor('#20a31c');
+          toTransitionTime = 1250;
+        } else {
+          // TODO: capitalise letter I (very minor bug)
+          guessPrompt.setText("Sorry, it's " + currentWord);
+
+          // Play the Blackfoot and wait longer, to help with memorisation
+          playAudio(currentWord);
+          toTransitionTime = 1750;
+        }
+
+        setTimeout(() => {
+          for (var i = 50; i <= 500; i += 50) {
+            setTimeout(() => {
+              guessPrompt.alpha -= 0.1;
+            }, i);
+          }
+        }, toTransitionTime);
+
+        setTimeout(() => {
+          nextWord();
+        }, toTransitionTime + 500);
+      }
+    }
+
+    // Function to process text input
+    var startGuess = () => {
+      if (!is_testing) {
+        // keep text box open unless guess was submitted
+        this.rexUI.edit(guessInput, {}, function () {
+          startGuess();
+        });
+      }
+    };
 
     var progress_text = this.add
       .text(110, 182, 'Word ' + word_index + ' of 10', {
@@ -205,22 +221,15 @@ export default class TestScene extends Phaser.Scene {
       })
       .setOrigin(0.5);
 
-    var message = this.add
-      .text(
-        400,
-        264,
-        'What is ' +
-          scene_dict[currentWord][0].toLowerCase().replace('?', '') +
-          '?',
-        {
-          font: '60px Mukta',
-          color: '#754F37',
-        }
-      )
+    var guessPrompt = this.add
+      .text(400, 264, '', {
+        font: '60px Mukta',
+        color: '#754F37',
+      })
       .setOrigin(0.5);
 
-    var guess = this.add
-      .text(328, 461, '', {
+    var guessInput = this.add
+      .text(330, 465, '', {
         font: '40px Mukta',
         fill: '#000000',
       })
@@ -264,7 +273,7 @@ export default class TestScene extends Phaser.Scene {
     var submitButtons = addButtons(submit, submit1);
 
     initButtons(audioButtons, () => {
-      this.sound.play(currentWord);
+      playAudio(currentWord);
     });
     initButtons(backButtons, () => {
       this.scene.start('menu');
@@ -273,7 +282,11 @@ export default class TestScene extends Phaser.Scene {
       processGuess();
     });
 
-    // Initialise guessing function
+    // Initialise guessing functions
+    // setTimeout 0 to allow scene to load completely
+    setTimeout(() => {
+      nextWord();
+    }, 0);
     startGuess();
   }
 

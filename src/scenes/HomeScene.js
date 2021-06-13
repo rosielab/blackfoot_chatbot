@@ -5,8 +5,12 @@ export default class HomeScene extends Phaser.Scene {
     super('home');
   }
   preload() {
-    this.load.image('homeBackground', '../assets/images/LearnScene/Learn-home.png');
-    var path = "../assets/images/LearnScene/Learn-all-tiles/unpressed-state/png-files/"
+    this.load.image(
+      'homeBackground',
+      '../assets/images/LearnScene/Learn-home.png'
+    );
+    var path =
+      '../assets/images/LearnScene/Learn-all-tiles/unpressed-state/png-files/';
     this.load.image('car', path + 'tile-car-unpressed.png');
     this.load.image('car1', path + 'tile-car-pressed.png');
     this.load.image('dog', path + 'tile-dog-unpressed.png');
@@ -20,8 +24,14 @@ export default class HomeScene extends Phaser.Scene {
     this.load.image('elevator', path + 'tile-elevator-unpressed.png');
     this.load.image('elevator1', path + 'tile-elevator-pressed.png');
 
-    this.load.image('back', '../assets/images/LearnScene/learn-main-page-buttons/regular-state/back-b.png');
-    this.load.image('back1', '../assets/images/LearnScene/learn-main-page-buttons/rollover-state/back-b-rollover.png');
+    this.load.image(
+      'back',
+      '../assets/images/LearnScene/learn-main-page-buttons/regular-state/back-b.png'
+    );
+    this.load.image(
+      'back1',
+      '../assets/images/LearnScene/learn-main-page-buttons/rollover-state/back-b-rollover.png'
+    );
     this.load.audio('bathroomwav', '../assets/sounds/bathroom.wav');
     this.load.audio('carwav', '../assets/sounds/car.wav');
     this.load.audio('dogwav', '../assets/sounds/dog.wav');
@@ -53,7 +63,6 @@ export default class HomeScene extends Phaser.Scene {
     const elevator1 = this.add.image(634, 409, 'elevator1');
     const elevator2 = this.add.image(634, 409, 'elevator1');
 
-    
     const addButtons = (button, button1) => {
       const newButtons = this.rexUI.add.buttons({
         orientation: 0,
@@ -68,7 +77,7 @@ export default class HomeScene extends Phaser.Scene {
       return newButtons;
     };
 
-    const addButtons2 = (button,button1, button2) => {
+    const addButtons2 = (button, button1, button2) => {
       const newButtons = this.rexUI.add.buttons({
         orientation: 0,
         buttons: [button, button1, button2],
@@ -81,8 +90,6 @@ export default class HomeScene extends Phaser.Scene {
       });
       return newButtons;
     };
-
-    
 
     let buttonsEffect = (buttons, temp, sound) => {
       buttons.on('button.click', (button, index, pointer, event) => {
@@ -103,10 +110,10 @@ export default class HomeScene extends Phaser.Scene {
       });
 
       buttons.on('button.out', (button, index, pointer, event) => {
-        if(temp){
+        if (temp) {
           buttons.hideButton(0);
           buttons.hideButton(1);
-        }else{
+        } else {
           buttons.hideButton(1);
           buttons.showButton(0);
         }
@@ -166,6 +173,5 @@ export default class HomeScene extends Phaser.Scene {
     buttonsEffect(kitchenButtons, kitchenTemp, 'kitchenwav');
 
     buttonsEffect2(backButtons, 'move');
-
   }
 }
