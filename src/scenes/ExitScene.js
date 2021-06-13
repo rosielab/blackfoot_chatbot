@@ -11,7 +11,7 @@ export default class ExitScene extends Phaser.Scene {
     this.add
       .text(400, 300, 'Thanks for playing! :)', {
         font: '50px Trebuchet MS',
-        color: '#000000'
+        color: '#000000',
       })
       .setOrigin(0.5);
   }

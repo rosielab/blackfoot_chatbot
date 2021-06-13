@@ -8,19 +8,52 @@ export default class MoveScene extends Phaser.Scene {
   preload() {
     // this.load.image('moveBackground', '../assets/images/moveBackground.png');
     this.load.image('moveBackground', '../assets/images/LearnScene/Learn.png');
-    this.load.image('back', '../assets/images/LearnScene/learn-main-page-buttons/regular-state/back-b.png');
-    this.load.image('back1', '../assets/images/LearnScene/learn-main-page-buttons/rollover-state/back-b-rollover.png');
+    this.load.image(
+      'back',
+      '../assets/images/LearnScene/learn-main-page-buttons/regular-state/back-b.png'
+    );
+    this.load.image(
+      'back1',
+      '../assets/images/LearnScene/learn-main-page-buttons/rollover-state/back-b-rollover.png'
+    );
     this.load.image('town', '../assets/images/PreTestScene/town-b.png');
-    this.load.image('town1', '../assets/images/PreTestScene/town-b-rollover.png');
+    this.load.image(
+      'town1',
+      '../assets/images/PreTestScene/town-b-rollover.png'
+    );
 
-    this.load.image('home', '../assets/images/LearnScene/learn-main-page-buttons/regular-state/home-b.png');
-    this.load.image('home1', '../assets/images/LearnScene/learn-main-page-buttons/rollover-state/home-b-rollover.png');
-    this.load.image('family', '../assets/images/LearnScene/learn-main-page-buttons/regular-state/family-b.png');
-    this.load.image('family1', '../assets/images/LearnScene/learn-main-page-buttons/rollover-state/family-b-rollover.png');
-    this.load.image('greetings', '../assets/images/LearnScene/learn-main-page-buttons/regular-state/greetings-b.png');
-    this.load.image('greetings1', '../assets/images/LearnScene/learn-main-page-buttons/rollover-state/greetings-b-rollover.png');
-    this.load.image('restaurant', '../assets/images/PreTestScene/restaurant-b.png');
-    this.load.image('restaurant1', '../assets/images/PreTestScene/restaurant-b-rollover.png');
+    this.load.image(
+      'home',
+      '../assets/images/LearnScene/learn-main-page-buttons/regular-state/home-b.png'
+    );
+    this.load.image(
+      'home1',
+      '../assets/images/LearnScene/learn-main-page-buttons/rollover-state/home-b-rollover.png'
+    );
+    this.load.image(
+      'family',
+      '../assets/images/LearnScene/learn-main-page-buttons/regular-state/family-b.png'
+    );
+    this.load.image(
+      'family1',
+      '../assets/images/LearnScene/learn-main-page-buttons/rollover-state/family-b-rollover.png'
+    );
+    this.load.image(
+      'greetings',
+      '../assets/images/LearnScene/learn-main-page-buttons/regular-state/greetings-b.png'
+    );
+    this.load.image(
+      'greetings1',
+      '../assets/images/LearnScene/learn-main-page-buttons/rollover-state/greetings-b-rollover.png'
+    );
+    this.load.image(
+      'restaurant',
+      '../assets/images/PreTestScene/restaurant-b.png'
+    );
+    this.load.image(
+      'restaurant1',
+      '../assets/images/PreTestScene/restaurant-b-rollover.png'
+    );
   }
 
   create() {
@@ -130,10 +163,10 @@ export default class MoveScene extends Phaser.Scene {
     restaurantButtons.hideButton(1);
 
     buttonsEffect(backButtons, 'menu');
-    buttonsEffect(townButtons, 'home');
+    buttonsEffect(townButtons, 'town');
     buttonsEffect(homeButtons, 'home');
-    buttonsEffect(familyButtons, 'home');
-    buttonsEffect(greetingsButtons, 'home');
-    buttonsEffect(restaurantButtons, 'home');
+    buttonsEffect(familyButtons, 'family');
+    buttonsEffect(greetingsButtons, 'greetings');
+    buttonsEffect(restaurantButtons, 'restaurant');
   }
 }

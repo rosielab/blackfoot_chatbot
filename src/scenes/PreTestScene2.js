@@ -36,12 +36,12 @@ export default class PreTestScene extends Phaser.Scene {
         if (full_dict[word][1] == scene) {
           dict[word] = full_dict[word];
         }
-      })
+      });
     }
 
     const title = this.add
       .text(400, 100, 'What would you like to test?', {
-        font: 'bold 40px Helvetica'
+        font: 'bold 40px Helvetica',
       })
       .setOrigin(0.5);
 
@@ -63,7 +63,7 @@ export default class PreTestScene extends Phaser.Scene {
     //     current_test = 'restaurant';
     //     this.scene.start('test');
     //   })
-    
+
     // const home_test = this.add.image(600, 260, 'home')
     //   .setInteractive()
     //   .on('pointerdown', () => {
@@ -91,7 +91,7 @@ export default class PreTestScene extends Phaser.Scene {
     this.add
       .text(400, 300, '(To be added)', {
         font: 'bold 40px Helvetica',
-        fill: '#000000'
+        fill: '#000000',
       })
       .setOrigin(0.5);
 

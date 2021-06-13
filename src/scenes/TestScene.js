@@ -10,7 +10,10 @@ export default class TestScene extends Phaser.Scene {
   preload() {
     // Preload audio for all words in the current test
     Object.keys(scene_dict).forEach((sound) => {
-      this.load.audio(sound, '../assets/sounds/' + sound.replace("?", "_") + '.wav');
+      this.load.audio(
+        sound,
+        '../assets/sounds/' + sound.replace('?', '_') + '.wav'
+      );
     });
 
     this.load.image('testBackground', '../assets/images/TestScene/Quiz.png');
@@ -18,10 +21,16 @@ export default class TestScene extends Phaser.Scene {
     this.load.image('back', '../assets/images/TestScene/back-b.png');
     this.load.image('back1', '../assets/images/TestScene/back-b-rollover.png');
     this.load.image('speaker_off', '../assets/images/TestScene/play-b.png');
-    this.load.image('speaker_on', '../assets/images/TestScene/play-b-rollover.png');
+    this.load.image(
+      'speaker_on',
+      '../assets/images/TestScene/play-b-rollover.png'
+    );
     this.load.image('textInput', '../assets/images/TestScene/input-box.png');
     this.load.image('submit', '../assets/images/TestScene/submit-b.png');
-    this.load.image('submit1', '../assets/images/TestScene/submit-b-rollover.png');
+    this.load.image(
+      'submit1',
+      '../assets/images/TestScene/submit-b-rollover.png'
+    );
   }
 
   create() {
@@ -42,7 +51,7 @@ export default class TestScene extends Phaser.Scene {
     var score = 0;
 
     function updateScoreCookie() {
-      var score_cookie = "score=";
+      var score_cookie = 'score=';
       for (var i = 0; i < scenes.length; i++) {
         score_cookie = score_cookie.concat(scores[scenes[i]].toString(16));
       }
@@ -50,7 +59,7 @@ export default class TestScene extends Phaser.Scene {
       // set expiry date to 2 years
       const date = new Date();
       date.setFullYear(date.getFullYear() + 2);
-      score_cookie = score_cookie.concat("; expires=" + date.toUTCString());
+      score_cookie = score_cookie.concat('; expires=' + date.toUTCString());
       document.cookie = score_cookie;
     }
 
@@ -60,7 +69,7 @@ export default class TestScene extends Phaser.Scene {
 
     let isSceneOpen = (scene) => {
       return this.scene.isActive(scene);
-    }
+    };
 
     // Main function to process submitted guess
     function processGuess() {
@@ -78,7 +87,10 @@ export default class TestScene extends Phaser.Scene {
         if (guess.text.toLowerCase() === currentWord) {
           score++;
           score_text.setText('Score ' + score + '/10');
-          scores[current_test.scene] = Math.max(scores[current_test.scene], score);
+          scores[current_test.scene] = Math.max(
+            scores[current_test.scene],
+            score
+          );
           updateScoreCookie();
 
           message.setText('Correct!');
@@ -98,25 +110,32 @@ export default class TestScene extends Phaser.Scene {
           }
         }, toTransitionTime);
         setTimeout(() => {
-          if (isSceneOpen('test')) { // stop processing if the user exited
+          if (isSceneOpen('test')) {
+            // stop processing if the user exited
             message.setColor('#754F37');
             for (var i = 50; i <= 500; i += 50) {
               setTimeout(() => {
                 message.alpha += 0.1;
               }, i);
             }
-            if (word_index < 10) { // test another word
+            if (word_index < 10) {
+              // test another word
               word_index++;
               var previousWord = currentWord;
-  
+
               // Prevent testing the same word back-to-back unless dictionary only has 1 word
-              while (currentWord === previousWord && Object.keys(scene_dict).length > 1) {
+              while (
+                currentWord === previousWord &&
+                Object.keys(scene_dict).length > 1
+              ) {
                 currentWord = getRandomWord(scene_dict);
               }
               message.setText(
-                'What is ' + scene_dict[currentWord][0].toLowerCase().replace("?", "") + '?'
+                'What is ' +
+                  scene_dict[currentWord][0].toLowerCase().replace('?', '') +
+                  '?'
               );
-  
+
               // Prevent larger words going off-screen
               // TODO: Dynamically shrink text, initial scaling
               if (scene_dict[currentWord][0].length > 16) {
@@ -125,13 +144,13 @@ export default class TestScene extends Phaser.Scene {
 
               guess.setText('');
               progress_text.setText('Word ' + word_index + ' of 10');
-  
+
               is_testing = false;
-  
+
               // Reset misalignment fix
               guess.x -= 2;
               guess.y -= 4;
-  
+
               startGuess(); // repeat for the next word
             } else {
               message.setText('You got ' + score + '/10. Congrats!');
@@ -151,12 +170,13 @@ export default class TestScene extends Phaser.Scene {
 
     // Function to process text input
     var startGuess = () => {
-      if (!is_testing) { // keep text box open unless guess was submitted
+      if (!is_testing) {
+        // keep text box open unless guess was submitted
         this.rexUI.edit(guess, {}, function () {
           startGuess();
         });
       }
-    }
+    };
 
     // choose a random word from dictionary
     function getRandomWord(dict) {
@@ -165,7 +185,9 @@ export default class TestScene extends Phaser.Scene {
     }
 
     // Submit guess on Enter keypress
-    this.input.keyboard.on('keydown-ENTER', function () { processGuess(); });
+    this.input.keyboard.on('keydown-ENTER', function () {
+      processGuess();
+    });
 
     var currentWord = getRandomWord(scene_dict);
 
@@ -175,7 +197,7 @@ export default class TestScene extends Phaser.Scene {
         color: '#479D76',
       })
       .setOrigin(0.5);
-  
+
     var score_text = this.add
       .text(692, 182, 'Score ' + score + '/10', {
         font: '21px Mukta',
@@ -184,10 +206,17 @@ export default class TestScene extends Phaser.Scene {
       .setOrigin(0.5);
 
     var message = this.add
-      .text(400, 264, 'What is ' + scene_dict[currentWord][0].toLowerCase().replace("?", "") + '?', {
-        font: '60px Mukta',
-        color: '#754F37',
-      })
+      .text(
+        400,
+        264,
+        'What is ' +
+          scene_dict[currentWord][0].toLowerCase().replace('?', '') +
+          '?',
+        {
+          font: '60px Mukta',
+          color: '#754F37',
+        }
+      )
       .setOrigin(0.5);
 
     var guess = this.add
@@ -214,7 +243,7 @@ export default class TestScene extends Phaser.Scene {
         },
       });
       return newButtons;
-    }
+    };
 
     const initButtons = (buttons, click_function) => {
       buttons
@@ -227,8 +256,8 @@ export default class TestScene extends Phaser.Scene {
           buttons.hideButton(1);
           buttons.showButton(0);
         });
-        buttons.hideButton(1);
-    }
+      buttons.hideButton(1);
+    };
 
     var audioButtons = addButtons(speaker_off, speaker_on);
     var backButtons = addButtons(back, back1);

@@ -8,22 +8,52 @@ export default class PreTestScene extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image('pretestBackground', '../assets/images/PreTestScene/Quiz-Main.png');
+    this.load.image(
+      'pretestBackground',
+      '../assets/images/PreTestScene/Quiz-Main.png'
+    );
 
     this.load.image('back', '../assets/images/PreTestScene/back-b.png');
-    this.load.image('back1', '../assets/images/PreTestScene/back-b-rollover.png');
+    this.load.image(
+      'back1',
+      '../assets/images/PreTestScene/back-b-rollover.png'
+    );
     this.load.image('town_t', '../assets/images/PreTestScene/town-b.png');
-    this.load.image('town1_t', '../assets/images/PreTestScene/town-b-rollover.png');
-    this.load.image('restaurant_t', '../assets/images/PreTestScene/restaurant-b.png');
-    this.load.image('restaurant1_t', '../assets/images/PreTestScene/restaurant-b-rollover.png');
+    this.load.image(
+      'town1_t',
+      '../assets/images/PreTestScene/town-b-rollover.png'
+    );
+    this.load.image(
+      'restaurant_t',
+      '../assets/images/PreTestScene/restaurant-b.png'
+    );
+    this.load.image(
+      'restaurant1_t',
+      '../assets/images/PreTestScene/restaurant-b-rollover.png'
+    );
     this.load.image('home_t', '../assets/images/PreTestScene/home-b.png');
-    this.load.image('home1_t', '../assets/images/PreTestScene/home-b-rollover.png');
+    this.load.image(
+      'home1_t',
+      '../assets/images/PreTestScene/home-b-rollover.png'
+    );
     this.load.image('family_t', '../assets/images/PreTestScene/family-b.png');
-    this.load.image('family1_t', '../assets/images/PreTestScene/family-b-rollover.png');
-    this.load.image('greetings_t', '../assets/images/PreTestScene/greetings-b.png');
-    this.load.image('greetings1_t', '../assets/images/PreTestScene/greetings-b-rollover.png');
+    this.load.image(
+      'family1_t',
+      '../assets/images/PreTestScene/family-b-rollover.png'
+    );
+    this.load.image(
+      'greetings_t',
+      '../assets/images/PreTestScene/greetings-b.png'
+    );
+    this.load.image(
+      'greetings1_t',
+      '../assets/images/PreTestScene/greetings-b-rollover.png'
+    );
     this.load.image('all_t', '../assets/images/PreTestScene/all-b.png');
-    this.load.image('all1_t', '../assets/images/PreTestScene/all-b-rollover.png');
+    this.load.image(
+      'all1_t',
+      '../assets/images/PreTestScene/all-b-rollover.png'
+    );
   }
 
   create() {
@@ -54,7 +84,7 @@ export default class PreTestScene extends Phaser.Scene {
         if (full_dict[word][1] == scene) {
           dict[word] = full_dict[word];
         }
-      })
+      });
     }
 
     // Fill dict with all words from full_dict
@@ -65,7 +95,7 @@ export default class PreTestScene extends Phaser.Scene {
 
       Object.keys(full_dict).forEach((word) => {
         dict[word] = full_dict[word];
-      })
+      });
     }
 
     // Init scene_dict with all words
@@ -84,7 +114,7 @@ export default class PreTestScene extends Phaser.Scene {
         },
       });
       return newButtons;
-    }
+    };
 
     const initButtons = (buttons, click_function) => {
       buttons
@@ -97,8 +127,8 @@ export default class PreTestScene extends Phaser.Scene {
           buttons.hideButton(1);
           buttons.showButton(0);
         });
-        buttons.hideButton(1);
-    }
+      buttons.hideButton(1);
+    };
 
     var backButtons = addButtons(back, back1);
     var townButtons = addButtons(town_t, town1_t);

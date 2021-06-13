@@ -22,7 +22,7 @@ for (var scene of scenes) {
 // Init current testing scene
 const current_test = {
   scene: 'all',
-}
+};
 
 // used for TestScene & PreTestScenes
 export { scene_dict };

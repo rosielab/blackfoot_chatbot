@@ -21,6 +21,7 @@
   "dependencies": {
     "express": "^4.16.4",
     "phaser": "^3.53.1",
+    "phaser-ui-tools": "^2.0.0-beta",
     "phaser3-rex-plugins": "^1.1.42",
     "webpack": "^4.2.0"
   },

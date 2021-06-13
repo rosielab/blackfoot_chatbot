@@ -9,20 +9,29 @@ export default class MenuScene extends Phaser.Scene {
     this.load.image('menuBackground', '../assets/images/MenuScene/Start.png');
 
     this.load.image('learn', '../assets/images/MenuScene/learn-b.png');
-    this.load.image('learn1', '../assets/images/MenuScene/learn-b-rollover.png');
+    this.load.image(
+      'learn1',
+      '../assets/images/MenuScene/learn-b-rollover.png'
+    );
     this.load.image('test', '../assets/images/MenuScene/quiz-b.png');
     this.load.image('test1', '../assets/images/MenuScene/quiz-b-rollover.png');
     this.load.image('sentence', '../assets/images/MenuScene/sentence-b.png');
-    this.load.image('sentence1', '../assets/images/MenuScene/sentence-b-rollover.png');
+    this.load.image(
+      'sentence1',
+      '../assets/images/MenuScene/sentence-b-rollover.png'
+    );
     this.load.image('score', '../assets/images/MenuScene/scores-b.png');
-    this.load.image('score1', '../assets/images/MenuScene/scores-b-rollover.png');
+    this.load.image(
+      'score1',
+      '../assets/images/MenuScene/scores-b-rollover.png'
+    );
     this.load.image('exit', '../assets/images/MenuScene/exit-b.png');
     this.load.image('exit1', '../assets/images/MenuScene/exit-b-rollover.png');
   }
 
   create() {
     this.background = this.add.image(400, 300, 'menuBackground');
-    
+
     const learn = this.add.image(370, 285, 'learn');
     const learn1 = this.add.image(370, 285, 'learn1');
     const test = this.add.image(370, 351, 'test');
