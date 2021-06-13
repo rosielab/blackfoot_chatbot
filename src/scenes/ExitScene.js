@@ -4,15 +4,14 @@ export default class ExitScene extends Phaser.Scene {
   constructor() {
     super('exit');
   }
-  preload() {}
+  preload() {
+    this.load.image(
+      'exitBackground',
+      '../assets/images/exit.png'
+    );
+  }
 
   create() {
-    this.cameras.main.setBackgroundColor('#d9c793');
-    this.add
-      .text(400, 300, 'Thanks for playing! :)', {
-        font: '50px Trebuchet MS',
-        color: '#000000',
-      })
-      .setOrigin(0.5);
+    this.background = this.add.image(400, 300, 'exitBackground');
   }
 }
