@@ -17,8 +17,8 @@ export default class HomeScene extends Phaser.Scene {
     this.load.image('card20_1', path + 'tile-house-pressed.png');
     this.load.image('card21', path + 'tile-tipi-unpressed.png');
     this.load.image('card21_1', path + 'tile-tipi-pressed.png');
-    this.load.image('card22', path + 'tile-movie-unpressed.png');
-    this.load.image('card22_1', path + 'tile-movie-pressed.png');
+    this.load.image('card22', path + 'tile-cinema-unpressed.png');
+    this.load.image('card22_1', path + 'tile-cinema-pressed.png');
     this.load.image('card23', path + 'tile-nightclub-unpressed.png');
     this.load.image('card23_1', path + 'tile-nightclub-pressed.png');
     this.load.image('card24', path + 'tile-store-unpressed.png');
@@ -35,7 +35,7 @@ export default class HomeScene extends Phaser.Scene {
     this.load.audio('card19_wav', '../assets/sounds/cafe.wav');
     this.load.audio('card20_wav', '../assets/sounds/house.wav');
     this.load.audio('card21_wav', '../assets/sounds/tipi.wav');
-    this.load.audio('card22_wav', '../assets/sounds/movie.wav');
+    this.load.audio('card22_wav', '../assets/sounds/cinema.wav');
     this.load.audio('card23_wav', '../assets/sounds/night club.wav');
     this.load.audio('card24_wav', '../assets/sounds/store.wav');
   }
