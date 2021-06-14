@@ -19,7 +19,7 @@ import DragPlugin from 'phaser3-rex-plugins/plugins/drag-plugin.js';
 
 const config = {
   type: Phaser.AUTO,
-  pixelArt: false,
+  pixelArt: true,
   roundPixels: false,
   width: 800,
   height: 600,
