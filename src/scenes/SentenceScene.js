@@ -37,7 +37,7 @@ var cardsArr = [
   'child',
   'woman',
   'house',
-  'movie',
+  'cinema',
 ];
 export default class SentenceScene extends Phaser.Scene {
   constructor() {
@@ -135,7 +135,7 @@ export default class SentenceScene extends Phaser.Scene {
     var child = this.add.image(370, 482, cardsArr[32] + 'sen');
     var woman = this.add.image(448, 482, cardsArr[33] + 'sen');
     var house = this.add.image(539, 482, cardsArr[34] + 'sen');
-    var movie = this.add.image(621, 482, cardsArr[35] + 'sen');
+    var cinema = this.add.image(621, 482, cardsArr[35] + 'sen');
 
     const data = require('../assets/all_words_address.json');
 
@@ -322,7 +322,7 @@ export default class SentenceScene extends Phaser.Scene {
     buttonsEffect(child, cardsArr[32]);
     buttonsEffect(woman, cardsArr[33]);
     buttonsEffect(house, cardsArr[34]);
-    buttonsEffect(movie, cardsArr[35]);
+    buttonsEffect(cinema, cardsArr[35]);
     mediaEffect(mediaButtons);
   }
 }
