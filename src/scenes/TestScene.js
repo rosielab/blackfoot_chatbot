@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 
-import { scene_dict, current_test, scenes, scores } from './util.js';
+import { scene_dict, current_test, scenes } from './util.js';
 
 export default class TestScene extends Phaser.Scene {
   constructor() {
@@ -55,19 +55,6 @@ export default class TestScene extends Phaser.Scene {
       processGuess();
     });
 
-    function updateScoreCookie() {
-      var score_cookie = 'score=';
-      for (var i = 0; i < scenes.length; i++) {
-        score_cookie = score_cookie.concat(scores[scenes[i]].toString(16));
-      }
-
-      // set expiry date to 2 years
-      const date = new Date();
-      date.setFullYear(date.getFullYear() + 2);
-      score_cookie = score_cookie.concat('; expires=' + date.toUTCString());
-      document.cookie = score_cookie;
-    }
-
     let backToMenu = () => {
       this.scene.start('menu');
     };
@@ -80,12 +67,16 @@ export default class TestScene extends Phaser.Scene {
       this.sound.play(audio);
     };
 
+    function getScore(scene) {
+      return parseInt(localStorage.getItem(scene));
+    }
+
     // choose a random word from dictionary
     function getRandomWord(dict) {
       const keys = Object.keys(dict);
       return keys[Math.floor(Math.random() * keys.length)];
     }
-
+    
     // init current word
     var currentWord = getRandomWord(scene_dict);
 
@@ -152,7 +143,7 @@ export default class TestScene extends Phaser.Scene {
     // Main function to process submitted guess
     function processGuess() {
       guessInput.setText(guessInput.text.trim()); // Prevent blank input or extra whitespace
-      if (guessInput.text != '' && !is_testing) {
+      if (guessInput.text !== '' && !is_testing) {
         is_testing = true;
         var toTransitionTime = 0;
         guessPrompt.setFontSize(60);
@@ -165,11 +156,7 @@ export default class TestScene extends Phaser.Scene {
         if (guessInput.text.toLowerCase() === currentWord) {
           score++;
           score_text.setText('Score ' + score + '/10');
-          scores[current_test.scene] = Math.max(
-            scores[current_test.scene],
-            score
-          );
-          updateScoreCookie();
+          localStorage.setItem(current_test.scene, Math.max(score, getScore(current_test.scene)).toString());
 
           guessPrompt.setText('Correct!');
           guessPrompt.setColor('#20a31c');
