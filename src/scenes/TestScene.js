@@ -43,8 +43,8 @@ export default class TestScene extends Phaser.Scene {
     const speaker_off = this.add.image(400, 365, 'speaker_off');
     const speaker_on = this.add.image(400, 365, 'speaker_on');
     const textInput = this.add.image(328, 461, 'textInput');
-    const submit = this.add.image(675, 461, 'submit');
-    const submit1 = this.add.image(675, 461, 'submit1');
+    const submit = this.add.image(675, 462, 'submit');
+    const submit1 = this.add.image(675, 462, 'submit1');
 
     var word_index = 0;
     var is_testing = false;
@@ -81,12 +81,13 @@ export default class TestScene extends Phaser.Scene {
     var currentWord = getRandomWord(scene_dict);
 
     function nextWord() {
+      // stop processing if the user exited
       if (isSceneOpen('test')) {
-        // stop processing if the user exited
+        var fadeTime = 500; // pass as parameter?
         guessPrompt.setColor('#754F37');
-        for (var i = 50; i <= 500; i += 50) {
+        for (var i = 10; i <= fadeTime; i += 10) {
           setTimeout(() => {
-            guessPrompt.alpha += 0.1;
+            guessPrompt.alpha += 0.02;
           }, i);
         }
         if (word_index < 10) {
@@ -125,13 +126,13 @@ export default class TestScene extends Phaser.Scene {
           guessInput.x -= 2;
           guessInput.y -= 4;
 
-          startGuess(); // repeat for the next word
+          inputEditor = startGuess(); // repeat for the next word
         } else {
           guessPrompt.setText('You got ' + score + '/10. Congrats!');
           setTimeout(() => {
-            for (var i = 50; i <= 500; i += 50) {
+            for (var i = 10; i <= fadeTime; i += 10) {
               setTimeout(() => {
-                guessPrompt.alpha -= 0.1;
+                guessPrompt.alpha -= 0.02;
               }, i);
             }
           }, 3250);
@@ -144,8 +145,11 @@ export default class TestScene extends Phaser.Scene {
     function processGuess() {
       guessInput.setText(guessInput.text.trim()); // Prevent blank input or extra whitespace
       if (guessInput.text !== '' && !is_testing) {
+        var toTransitionTime;
+        var fadeTime = 500;
         is_testing = true;
-        var toTransitionTime = 0;
+        inputEditor.close(); // Prevent input after submitting
+        
         guessPrompt.setFontSize(60);
 
         // Fix misalignment from text edit plugin
@@ -171,16 +175,16 @@ export default class TestScene extends Phaser.Scene {
         }
 
         setTimeout(() => {
-          for (var i = 50; i <= 500; i += 50) {
+          for (var i = 10; i <= fadeTime; i += 10) {
             setTimeout(() => {
-              guessPrompt.alpha -= 0.1;
+              guessPrompt.alpha -= 0.02;
             }, i);
           }
         }, toTransitionTime);
 
         setTimeout(() => {
           nextWord();
-        }, toTransitionTime + 500);
+        }, fadeTime + toTransitionTime);
       }
     }
 
@@ -188,9 +192,10 @@ export default class TestScene extends Phaser.Scene {
     var startGuess = () => {
       if (!is_testing) {
         // keep text box open unless guess was submitted
-        this.rexUI.edit(guessInput, {}, function () {
+        const inputEditor = this.rexUI.edit(guessInput, {}, function () {
           startGuess();
         });
+        return inputEditor;
       }
     };
 
@@ -216,7 +221,7 @@ export default class TestScene extends Phaser.Scene {
       .setOrigin(0.5);
 
     var guessInput = this.add
-      .text(330, 465, '', {
+      .text(330, 466, '', {
         font: '40px Mukta',
         fill: '#000000',
       })
@@ -274,7 +279,7 @@ export default class TestScene extends Phaser.Scene {
     setTimeout(() => {
       nextWord();
     }, 0);
-    startGuess();
+    var inputEditor = startGuess();
   }
 
   update() {}
