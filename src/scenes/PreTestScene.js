@@ -168,6 +168,13 @@ export default class PreTestScene extends Phaser.Scene {
     });
     initButtons(allButtons, () => {
       fillDict(scene_dict, full_dict);
+      // Remove synthesis words from testing
+      for (var word of Object.keys(scene_dict)) {
+        if (full_dict[word][1] === 'time' || full_dict[word][1] === 'verb') {
+          delete scene_dict[word];
+        }
+      }
+      console.log(scene_dict);
       current_test.scene = 'all';
       this.scene.start('test');
     });

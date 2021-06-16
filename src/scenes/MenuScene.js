@@ -6,6 +6,9 @@ export default class MenuScene extends Phaser.Scene {
   }
 
   preload() {
+    // Allow sound to play while out of focus
+    this.sound.pauseOnBlur = false;
+
     this.load.image('menuBackground', '../assets/images/MenuScene/Start.png');
 
     this.load.image('learn', '../assets/images/MenuScene/learn-b.png');

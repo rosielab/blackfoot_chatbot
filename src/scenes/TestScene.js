@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 
-import { scene_dict, current_test, scenes } from './util.js';
+import { scene_dict, current_test } from './util.js';
 
 export default class TestScene extends Phaser.Scene {
   constructor() {

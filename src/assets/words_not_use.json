@@ -1,12 +1,15 @@
- { "door": ["kitsim", "home"],
-    "man": ["ninaa", "family"],
-    "i'm doing good. you?": ["tsikohssokopii. kistoo?", "greetings"],
-    "let's go": ["okí", "greetings"],
-    "movie": ["aisaiksisttoo", "town"],
-    "oranges": ["aotahkoinammiksi", "restaurant"],
-    "fries": ["paataakistsi", "restaurant"],
-    "bread": ["napayin", "restaurant"],
-    "tea": ["siksikimmii", "restaurant"],
-    "meat": ["i'ksisako", "restaurant"],
-    "salt": ["isttsiksipoko", "restaurant"],
-    "sugar": ["naapiiniiwan", "restaurant"]}
+ {
+   "door": ["kitsim", "home"],
+   "man": ["ninaa", "family"],
+   "i'm doing good. you?": ["tsikohssokopii. kistoo?", "greetings"],
+   "let's go": ["okí", "greetings"],
+   "movie": ["aisaiksisttoo", "town"],
+   "oranges": ["aotahkoinammiksi", "restaurant"],
+   "fries": ["paataakistsi", "restaurant"],
+   "bread": ["napayin", "restaurant"],
+   "tea": ["siksikimmii", "restaurant"],
+   "meat": ["i'ksisako", "restaurant"],
+   "salt": ["isttsiksipoko", "restaurant"],
+   "sugar": ["naapiiniiwan", "restaurant"],
+   "water": ["aohkii", "restaurant"]
+}
