@@ -28,8 +28,6 @@ const current_test = {
 // used for TestScene & PreTestScenes
 export { scene_dict };
 export { current_test };
-// used for TestScene & ScoresScene
-//export { scores };
 // used for ScoresScene
 export { scenes };
 // used for PreTestScenes

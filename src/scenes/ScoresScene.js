@@ -29,36 +29,35 @@ export default class ScoresScene extends Phaser.Scene {
     /*
       These two functions need to be redone once more scenes are added
     */
-    // function scrollDownScores(scenes_index, scores_txt) {
-    //   if (scenes_index + 5 < scenes.length - 1) {
-    //     var scoresText = '';
-    //     for (var i = scenes_index + 5; i < scenes_index + 10; i++) {
-    //       if (i < scenes.length - 1) {
-    //         // only append the "all" score to the end
-    //         scoresText = scoresText.concat(
-    //           scenes[i][0].toUpperCase() +
-    //             scenes[i].slice(1) +
-    //             ': ' +
-    //             scores[scenes[i]] +
-    //             '/10\n'
-    //         );
-    //       } else {
-    //         scoresText = scoresText.concat('\n');
-    //       }
-    //     }
-    //     scoresText = scoresText.concat('All: ' + scores.all + '/10');
-    //     scores_txt.setText(scoresText);
-    //     return scenes_index + 5;
-    //   }
-    //   return scenes_index;
-    // }
+    function scrollDownScores(page) {
+      if (page*5 + 1 < scenes.length && page >= 0) {
+        scenesText.setText('');
+        scoresText.setText('');
+        for (var i = page*5; i < page*5 + 5; i++) {
+          if (i + 1 < scenes.length) {
+            // only append the "all" score to the end
+            scenesText.setText(scenesText.text +
+            scenes[i][0].toUpperCase() +
+            scenes[i].slice(1) +
+            ':\n');
 
-    // function scrollUpScores(scenes_index, scores_txt) {
-    //   if (scenes_index - 5 >= 0) {
-    //     return scrollDownScores(scenes_index - 10, scores_txt);
-    //   }
-    //   return scenes_index;
-    // }
+            scoresText.setText(scoresText.text + localStorage.getItem(scenes[i]) + '/10\n')
+          } else {
+            scenesText.setText(scenesText.text + '\n');
+            scoresText.setText(scoresText.text + '\n');
+          }
+        }
+        scenesText.setText(scenesText.text + 'All:');
+        scoresText.setText(scoresText.text + localStorage.getItem('all') + '/10');
+        return ++page;
+      } else {
+        return Math.max(page, 1);
+      }
+    }
+
+    function scrollUpScores(page) {
+      return scrollDownScores(page-2);
+    }
 
     // remove old score cookie
     document.cookie = "score= ;expires=Thu, 01 Jan 1970 00:00:00 GMT";
@@ -67,7 +66,7 @@ export default class ScoresScene extends Phaser.Scene {
       return parseInt(localStorage.getItem(scene));
     }
 
-    var scenes_index = 0;
+    var currentPage = 1;
 
     // const top_scores_text = this.add
     //   .text(
@@ -126,6 +125,7 @@ export default class ScoresScene extends Phaser.Scene {
         font: '50px Mukta',
         color: '#479D76',
         align: 'right',
+        fixedWidth: '115',
       })
       .setOrigin(0.5);
 
@@ -134,25 +134,25 @@ export default class ScoresScene extends Phaser.Scene {
     //   // Up arrow (placeholders)
     //   this.add
     //     .text(590, 130, '/\\', {
-    //       font: '30px Trebuchet MS',
+    //       font: '30px Mukta',
     //       color: '#000000',
     //     })
     //     .setOrigin(0.5)
     //     .setInteractive()
     //     .on('pointerdown', () => {
-    //       scenes_index = scrollUpScores(scenes_index, top_scores_text);
+    //       currentPage = scrollUpScores(currentPage);
     //     });
 
     //   // Down arrow
     //   this.add
     //     .text(590, 460, '\\/', {
-    //       font: '30px Trebuchet MS',
+    //       font: '30px Mukta',
     //       color: '#000000',
     //     })
     //     .setOrigin(0.5)
     //     .setInteractive()
     //     .on('pointerdown', () => {
-    //       scenes_index = scrollDownScores(scenes_index, top_scores_text);
+    //       currentPage = scrollDownScores(currentPage);
     //     });
     // }
 
