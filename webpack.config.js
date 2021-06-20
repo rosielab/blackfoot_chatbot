@@ -48,12 +48,16 @@ module.exports = {
         baseDir: './public',
       },
     }),
-    new CopyWebpackPlugin([
+      new CopyWebpackPlugin(
       {
-        from: path.resolve(__dirname, 'src/assets'),
-        to: path.resolve(__dirname, 'public/assets'),
-      },
-    ]),
+        patterns: [
+          {
+            from: path.resolve(__dirname, 'src/assets'),
+            to: path.resolve(__dirname, 'public/assets')
+          }
+        ]
+      }
+    ),
   ],
   module: {
     rules: [
