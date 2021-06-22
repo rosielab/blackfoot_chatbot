@@ -32,14 +32,25 @@
       body {
         margin: 0;
         padding: 0;
+        background-color: #E2DFC7;
       }
       .main-content {
-        height: 100vh;
+        height: 100%;
         width: 100%;
+      }
+      #title {
+        text-align: center;
+        font-family: Mukta, Helvetica, sans-serif;
+        font-size: 80px;
+        font-weight: bold;
+        line-height: 0.6;
+        letter-spacing: 5px;
+        color: #754F37;
       }
       #canvas-container {
         height: 100%;
         width: 100%;
+        padding: 100px 0px;
       }
     </style>
   </head>
@@ -50,7 +61,9 @@
     <!-- End Google Tag Manager (noscript) -->
     <noscript>Please enable javascript to play this Game.</noscript>
     <section class="main-content">
-      <div id="canvas-container"></div>
+      <div id="canvas-container">
+        <p id="title">Blackfoot Chatbot</p>
+      </div>
     </section>
   </body>
 </html>

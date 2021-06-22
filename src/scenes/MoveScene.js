@@ -57,7 +57,7 @@ export default class MoveScene extends Phaser.Scene {
   }
 
   create() {
-    this.background = this.add.image(400, 300, 'moveBackground');
+    this.background = this.add.image(399, 299, 'moveBackground');
     const back = this.add.image(45, 550, 'back');
     const back1 = this.add.image(45, 550, 'back1');
     const town = this.add.image(270, 250, 'town');

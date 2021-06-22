@@ -95,7 +95,7 @@ export default class SentenceScene extends Phaser.Scene {
   }
 
   create() {
-    this.background = this.add.image(400, 300, 'sentenceBackground');
+    this.background = this.add.image(399, 300, 'sentenceBackground');
     const back = this.add.image(53, 552, 'back');
     const back1 = this.add.image(53, 552, 'back1');
     var media = this.add.image(710, 226, 'media');

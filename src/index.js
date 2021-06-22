@@ -21,16 +21,12 @@ const config = {
   type: Phaser.AUTO,
   pixelArt: true,
   roundPixels: false,
+  scale: {
+    autoCenter: Phaser.Scale.CENTER_HORIZONTALLY
+  },
   width: 800,
   height: 600,
   parent: 'canvas-container',
-  physics: {
-    default: 'arcade',
-    arcade: {
-      gravity: { y: 200 },
-      debug: false,
-    },
-  },
   dom: {
     createContainer: true,
   },

@@ -37,7 +37,7 @@ export default class TestScene extends Phaser.Scene {
     Object.keys(scene_dict).forEach((sound) => {
       this.sound.add(sound);
     });
-    this.background = this.add.image(400, 300, 'testBackground');
+    this.background = this.add.image(399, 300, 'testBackground');
     const back = this.add.image(53, 548, 'back');
     const back1 = this.add.image(53, 548, 'back1');
     const speaker_off = this.add.image(400, 365, 'speaker_off');
