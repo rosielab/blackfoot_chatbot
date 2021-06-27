@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+
 import PreTestScene from './scenes/PreTestScene';
 import PreTestScene2 from './scenes/PreTestScene2';
 import TestScene from './scenes/TestScene';
@@ -12,6 +13,8 @@ import MoveScene from './scenes/MoveScene';
 import SentenceScene from './scenes/SentenceScene';
 import ScoresScene from './scenes/ScoresScene';
 import ExitScene from './scenes/ExitScene';
+import PreLearnScene from './scenes/PreLearnScene';
+import GrammarScene from './scenes/GrammarScene';
 
 import RexUIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin';
 import UIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin.js';
@@ -63,6 +66,8 @@ const config = {
     SentenceScene,
     ScoresScene,
     ExitScene,
+    PreLearnScene,
+    GrammarScene
   ],
 };
 
