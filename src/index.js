@@ -15,6 +15,7 @@ import ScoresScene from './scenes/ScoresScene';
 import ExitScene from './scenes/ExitScene';
 import PreLearnScene from './scenes/PreLearnScene';
 import GrammarScene from './scenes/GrammarScene';
+import util from './scenes/util';
 
 import RexUIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin';
 import UIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin.js';
@@ -53,6 +54,7 @@ const config = {
     ],
   },
   scene: [
+    util,
     MenuScene,
     MoveScene,
     HomeScene,

@@ -1,5 +1,7 @@
+import Phaser from 'phaser';
+
 /*
-All global variables for TestScene, ScoresScene, PreTestScenes, etc. are declared here.
+  All global variables for TestScene, ScoresScene, PreTestScenes, etc. are declared here.
 */
 
 /*
@@ -32,3 +34,15 @@ export { current_test };
 export { scenes };
 // used for PreTestScenes
 export { full_dict };
+
+export default class util extends Phaser.Scene {
+  preload() {
+    // Allow sound to play while out of focus
+    this.sound.pauseOnBlur = false;
+  }
+
+  create() {
+    // Move to the main menu after changing settings
+    this.scene.start('menu');
+  }
+}

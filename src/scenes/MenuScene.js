@@ -6,9 +6,6 @@ export default class MenuScene extends Phaser.Scene {
   }
 
   preload() {
-    // Allow sound to play while out of focus
-    this.sound.pauseOnBlur = false;
-
     this.load.image('menuBackground', '../assets/images/MenuScene/Start.png');
 
     this.load.image('learn', '../assets/images/MenuScene/learn-b.png');
@@ -60,13 +57,7 @@ export default class MenuScene extends Phaser.Scene {
       return newButtons;
     };
 
-    const learnButtons = addButtons(learn, learn1);
-    const testButtons = addButtons(test, test1);
-    const sentenceButtons = addButtons(sentence, sentence1);
-    const scoreButtons = addButtons(score, score1);
-    const exitButtons = addButtons(exit, exit1);
-
-    let initSceneButtons = (buttons, scene) => {
+    const initSceneButtons = (buttons, scene) => {
       buttons.hideButton(1);
 
       buttons.on('button.click', () => {
@@ -85,7 +76,13 @@ export default class MenuScene extends Phaser.Scene {
           buttons.emitButtonClick(button);
         }
       })
-    }
+    };
+
+    const learnButtons = addButtons(learn, learn1);
+    const testButtons = addButtons(test, test1);
+    const sentenceButtons = addButtons(sentence, sentence1);
+    const scoreButtons = addButtons(score, score1);
+    const exitButtons = addButtons(exit, exit1);
 
     initSceneButtons(learnButtons, 'move');
     initSceneButtons(testButtons, 'pretest');

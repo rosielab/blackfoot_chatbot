@@ -70,80 +70,28 @@ export default class MoveScene extends Phaser.Scene {
     const greetings = this.add.image(585, 174, 'greetings');
     const greetings1 = this.add.image(585, 174, 'greetings1');
 
-    var backButtons = this.rexUI.add.buttons({
-      orientation: 0,
-      // Elements
-      buttons: [back, back1],
-      expand: false,
-      align: undefined,
-      click: {
-        mode: 'pointerup',
-        clickInterval: 100,
-      },
-    });
-
-    var townButtons = this.rexUI.add.buttons({
-      orientation: 0,
-      // Elements
-      buttons: [town, town1],
-      expand: false,
-      align: undefined,
-      click: {
-        mode: 'pointerup',
-        clickInterval: 100,
-      },
-    });
-
-    var homeButtons = this.rexUI.add.buttons({
-      orientation: 0,
-      buttons: [home, home1],
-      expand: false,
-      align: undefined,
-      click: {
-        mode: 'pointerup',
-        clickInterval: 100,
-      },
-    });
-
-    var restaurantButtons = this.rexUI.add.buttons({
-      orientation: 0,
-      buttons: [restaurant, restaurant1],
-      expand: false,
-      align: undefined,
-      click: {
-        mode: 'pointerup',
-        clickInterval: 100,
-      },
-    });
-
-    var familyButtons = this.rexUI.add.buttons({
-      orientation: 0,
-      buttons: [family, family1],
-      expand: false,
-      align: undefined,
-      click: {
-        mode: 'pointerup',
-        clickInterval: 100,
-      },
-    });
-
-    var greetingsButtons = this.rexUI.add.buttons({
-      orientation: 0,
-      buttons: [greetings, greetings1],
-      expand: false,
-      align: undefined,
-      click: {
-        mode: 'pointerup',
-        clickInterval: 100,
-      },
-    });
-
-    let buttonsEffect = (buttons, scene) => {
-      buttons.on('button.click', (button, index, pointer, event) => {
-        this.scene.start(scene);
+    const addButtons = (main, rollover) => {
+      const newButtons = this.rexUI.add.buttons({
+        orientation: 0,
+        buttons: [main, rollover],
+        expand: false,
+        align: undefined,
+        click: {
+          mode: 'pointerup',
+          clickInterval: 100,
+        },
       });
+      return newButtons;
+    };
 
-      buttons.on('button.over', (button, index, pointer, event) => {
+    const initSceneButtons = (buttons, scene) => {
+      buttons.hideButton(1);
+
+      buttons.on('button.click', () => {
+        this.scene.start(scene);
+      })
+
+      buttons.on('button.over', () => {
         buttons.hideButton(0);
         buttons.showButton(1);
       });
@@ -151,21 +99,24 @@ export default class MoveScene extends Phaser.Scene {
       buttons.on('button.out', (button, index, pointer, event) => {
         buttons.hideButton(1);
         buttons.showButton(0);
-      });
+        if (!this.sys.game.device.os.desktop && !pointer.isDown) {
+          buttons.emitButtonClick(button);
+        }
+      })
     };
 
-    backButtons.hideButton(1);
-    townButtons.hideButton(1);
-    homeButtons.hideButton(1);
-    familyButtons.hideButton(1);
-    greetingsButtons.hideButton(1);
-    restaurantButtons.hideButton(1);
+    const backButtons = addButtons(back, back1);
+    const townButtons = addButtons(town, town1);
+    const homeButtons = addButtons(home, home1);
+    const restaurantButtons = addButtons(restaurant, restaurant1);
+    const familyButtons = addButtons(family, family1);
+    const greetingsButtons = addButtons(greetings, greetings1);
 
-    buttonsEffect(backButtons, 'menu');
-    buttonsEffect(townButtons, 'town');
-    buttonsEffect(homeButtons, 'home');
-    buttonsEffect(familyButtons, 'family');
-    buttonsEffect(greetingsButtons, 'greetings');
-    buttonsEffect(restaurantButtons, 'restaurant');
+    initSceneButtons(backButtons, 'menu');
+    initSceneButtons(townButtons, 'town');
+    initSceneButtons(homeButtons, 'home');
+    initSceneButtons(familyButtons, 'family');
+    initSceneButtons(greetingsButtons, 'greetings');
+    initSceneButtons(restaurantButtons, 'restaurant');
   }
 }
