@@ -171,6 +171,13 @@ export default class SentenceScene extends Phaser.Scene {
       }
     }
 
+    this.add
+      .text(295, 143, 'Drag & drop words to form new sentences!', {
+        font: '28px Mukta',
+        color: '#479D76'
+      })
+      .setOrigin(0.5);
+
     var mediaButtons = this.rexUI.add.buttons({
       orientation: 0,
       buttons: [media],
