@@ -81,31 +81,16 @@ export default class PreTestScene extends Phaser.Scene {
       }
 
       Object.keys(full_dict).forEach((word) => {
-        if (full_dict[word][1] == scene) {
+        if (full_dict[word][1] === scene || scene === 'all') {
           dict[word] = full_dict[word];
         }
       });
     }
 
-    // Fill dict with all words from full_dict
-    function fillDict(dict, full_dict) {
-      for (var key of Object.keys(dict)) {
-        delete dict[key];
-      }
-
-      Object.keys(full_dict).forEach((word) => {
-        dict[word] = full_dict[word];
-      });
-    }
-
-    // Init scene_dict with all words
-    // Can be done here as test scene comes after pretest
-    fillDict(scene_dict, full_dict);
-
-    const addButtons = (button1, button2) => {
+    const addButtons = (main, rollover) => {
       const newButtons = this.rexUI.add.buttons({
         orientation: 0,
-        buttons: [button1, button2],
+        buttons: [main, rollover],
         expand: false,
         align: undefined,
         click: {
@@ -116,68 +101,73 @@ export default class PreTestScene extends Phaser.Scene {
       return newButtons;
     };
 
-    const initButtons = (buttons, click_function) => {
-      buttons
-        .on('button.click', click_function)
-        .on('button.over', () => {
-          buttons.hideButton(0);
-          buttons.showButton(1);
-        })
-        .on('button.out', () => {
-          buttons.hideButton(1);
-          buttons.showButton(0);
-        });
+    const initSceneButtons = (buttons, scene) => {
       buttons.hideButton(1);
+
+      buttons.on('button.click', () => {
+        this.scene.start(scene);
+      })
+
+      buttons.on('button.over', () => {
+        buttons.hideButton(0);
+        buttons.showButton(1);
+      });
+
+      buttons.on('button.out', (button, index, pointer, event) => {
+        buttons.hideButton(1);
+        buttons.showButton(0);
+        if (!this.sys.game.device.os.desktop && !pointer.isDown) {
+          buttons.emitButtonClick(button);
+        }
+      })
     };
 
-    var backButtons = addButtons(back, back1);
-    var townButtons = addButtons(town_t, town1_t);
-    var restaurantButtons = addButtons(restaurant_t, restaurant1_t);
-    var homeButtons = addButtons(home_t, home1_t);
-    var familyButtons = addButtons(family_t, family1_t);
-    var greetingsButtons = addButtons(greetings_t, greetings1_t);
-    var allButtons = addButtons(all_t, all1_t);
+    const initTestButtons = (buttons, scene) => {
+      buttons.hideButton(1);
 
-    initButtons(backButtons, () => {
-      this.scene.start('menu');
-    });
-    initButtons(townButtons, () => {
-      changeDict(scene_dict, full_dict, 'town');
-      current_test.scene = 'town';
-      this.scene.start('test');
-    });
-    initButtons(restaurantButtons, () => {
-      changeDict(scene_dict, full_dict, 'restaurant');
-      current_test.scene = 'restaurant';
-      this.scene.start('test');
-    });
-    initButtons(homeButtons, () => {
-      changeDict(scene_dict, full_dict, 'home');
-      current_test.scene = 'home';
-      this.scene.start('test');
-    });
-    initButtons(familyButtons, () => {
-      changeDict(scene_dict, full_dict, 'family');
-      current_test.scene = 'family';
-      this.scene.start('test');
-    });
-    initButtons(greetingsButtons, () => {
-      changeDict(scene_dict, full_dict, 'greetings');
-      current_test.scene = 'greetings';
-      this.scene.start('test');
-    });
-    initButtons(allButtons, () => {
-      fillDict(scene_dict, full_dict);
-      // Remove synthesis words from testing
-      for (var word of Object.keys(scene_dict)) {
-        if (full_dict[word][1] === 'time' || full_dict[word][1] === 'verb') {
-          delete scene_dict[word];
+      buttons.on('button.click', () => {
+        changeDict(scene_dict, full_dict, scene);
+        current_test.scene = scene;
+        if (scene === 'all') {
+          // Remove synthesis words from testing
+          for (var word of Object.keys(scene_dict)) {
+            if (full_dict[word][1] === 'time' || full_dict[word][1] === 'verb') {
+              delete scene_dict[word];
+            }
+          }
         }
-      }
-      console.log(scene_dict);
-      current_test.scene = 'all';
-      this.scene.start('test');
-    });
+        this.scene.start('test');
+      })
+
+      buttons.on('button.over', () => {
+        buttons.hideButton(0);
+        buttons.showButton(1);
+      });
+
+      buttons.on('button.out', (button, index, pointer, event) => {
+        buttons.hideButton(1);
+        buttons.showButton(0);
+        if (!this.sys.game.device.os.desktop && !pointer.isDown) {
+          buttons.emitButtonClick(button);
+        }
+      })
+    };
+
+    const backButtons = addButtons(back, back1);
+    const townButtons = addButtons(town_t, town1_t);
+    const restaurantButtons = addButtons(restaurant_t, restaurant1_t);
+    const homeButtons = addButtons(home_t, home1_t);
+    const familyButtons = addButtons(family_t, family1_t);
+    const greetingsButtons = addButtons(greetings_t, greetings1_t);
+    const allButtons = addButtons(all_t, all1_t);
+
+    initSceneButtons(backButtons, 'menu');
+    initTestButtons(townButtons, 'town');
+    initTestButtons(restaurantButtons, 'restaurant');
+    initTestButtons(homeButtons, 'home');
+    initTestButtons(familyButtons, 'family');
+    initTestButtons(greetingsButtons, 'greetings');
+    initTestButtons(allButtons, 'all');
   }
 
   update() {}
