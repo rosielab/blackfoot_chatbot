@@ -37,7 +37,9 @@ export default class TestScene extends Phaser.Scene {
     Object.keys(scene_dict).forEach((sound) => {
       this.sound.add(sound);
     });
+
     this.background = this.add.image(399, 300, 'testBackground');
+
     const back = this.add.image(53, 548, 'back');
     const back1 = this.add.image(53, 548, 'back1');
     const speaker_off = this.add.image(400, 365, 'speaker_off');
@@ -51,9 +53,16 @@ export default class TestScene extends Phaser.Scene {
     var score = 0;
 
     // Submit guess on Enter keypress
-    this.input.keyboard.on('keydown-ENTER', function () {
+    this.input.keyboard.on('keydown-ENTER', function() {
       processGuess();
     });
+
+    // Open input box on any keypress, if not already opened
+    this.input.keyboard.on('keydown', function() {
+      if (!inputEditor.isOpened) {
+        startGuess();
+      }
+    })
 
     let backToMenu = () => {
       this.scene.start('menu');
@@ -122,10 +131,6 @@ export default class TestScene extends Phaser.Scene {
 
           is_testing = false;
 
-          // Reset misalignment fix
-          guessInput.x -= 2;
-          guessInput.y -= 4;
-
           inputEditor = startGuess(); // repeat for the next word
         } else {
           guessPrompt.setText('You got ' + score + '/10. Congrats!');
@@ -151,10 +156,6 @@ export default class TestScene extends Phaser.Scene {
         inputEditor.close(); // Prevent input after submitting
         
         guessPrompt.setFontSize(60);
-
-        // Fix misalignment from text edit plugin
-        guessInput.x += 2;
-        guessInput.y += 4;
 
         // TODO: Use regex to fiter out special characters
         if (guessInput.text.toLowerCase() === currentWord) {
@@ -191,9 +192,15 @@ export default class TestScene extends Phaser.Scene {
     // Function to process text input
     var startGuess = () => {
       if (!is_testing) {
+        // Reset misalignment fix
+        guessInput.x -= 2;
+        guessInput.y -= 4;
+
         // keep text box open unless guess was submitted
         const inputEditor = this.rexUI.edit(guessInput, {}, function () {
-          startGuess();
+          // Fix misalignment from text edit plugin
+          guessInput.x += 2;
+          guessInput.y += 4;
         });
         return inputEditor;
       }
