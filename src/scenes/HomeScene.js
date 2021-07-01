@@ -4,11 +4,13 @@ export default class HomeScene extends Phaser.Scene {
   constructor() {
     super('home');
   }
+
   preload() {
     this.load.image(
       'homeBackground',
       '../assets/images/LearnScene/Learn-home.png'
     );
+
     var path =
       '../assets/images/LearnScene/Learn-all-tiles/unpressed-state/png-files/';
     this.load.image('car', path + 'tile-car-unpressed.png');
@@ -23,7 +25,6 @@ export default class HomeScene extends Phaser.Scene {
     this.load.image('window1', path + 'tile-window-pressed.png');
     this.load.image('elevator', path + 'tile-elevator-unpressed.png');
     this.load.image('elevator1', path + 'tile-elevator-pressed.png');
-
     this.load.image(
       'back',
       '../assets/images/LearnScene/learn-main-page-buttons/regular-state/back-b.png'
@@ -32,6 +33,7 @@ export default class HomeScene extends Phaser.Scene {
       'back1',
       '../assets/images/LearnScene/learn-main-page-buttons/rollover-state/back-b-rollover.png'
     );
+
     this.load.audio('bathroomwav', '../assets/sounds/bathroom.wav');
     this.load.audio('carwav', '../assets/sounds/car.wav');
     this.load.audio('dogwav', '../assets/sounds/dog.wav');
@@ -42,6 +44,7 @@ export default class HomeScene extends Phaser.Scene {
 
   create() {
     this.background = this.add.image(400, 300, 'homeBackground');
+
     const back = this.add.image(53, 545, 'back');
     const back1 = this.add.image(53, 545, 'back1');
     const bathroom = this.add.image(180, 228, 'bathroom');
@@ -63,10 +66,10 @@ export default class HomeScene extends Phaser.Scene {
     const elevator1 = this.add.image(634, 409, 'elevator1');
     const elevator2 = this.add.image(634, 409, 'elevator1');
 
-    const addButtons = (button, button1) => {
+    const addButtons = (main, rollover) => {
       const newButtons = this.rexUI.add.buttons({
         orientation: 0,
-        buttons: [button, button1],
+        buttons: [main, rollover],
         expand: false,
         align: undefined,
         click: {
@@ -77,10 +80,10 @@ export default class HomeScene extends Phaser.Scene {
       return newButtons;
     };
 
-    const addButtons2 = (button, button1, button2) => {
+    const addButtons2 = (main, rollover, rollover2) => {
       const newButtons = this.rexUI.add.buttons({
         orientation: 0,
-        buttons: [button, button1, button2],
+        buttons: [main, rollover, rollover2],
         expand: false,
         align: undefined,
         click: {
@@ -91,41 +94,14 @@ export default class HomeScene extends Phaser.Scene {
       return newButtons;
     };
 
-    let buttonsEffect = (buttons, temp, sound) => {
-      buttons.on('button.click', (button, index, pointer, event) => {
-        this.sound.play(sound);
-        if (temp) {
-          buttons.hideButton(2);
-          buttons.showButton(0);
-          temp = false;
-        } else {
-          buttons.showButton(2);
-          temp = true;
-        }
-      });
+    const initSceneButtons = (buttons, scene) => {
+      buttons.hideButton(1);
 
-      buttons.on('button.over', (button, index, pointer, event) => {
-        buttons.hideButton(0);
-        buttons.showButton(1);
-      });
-
-      buttons.on('button.out', (button, index, pointer, event) => {
-        if (temp) {
-          buttons.hideButton(0);
-          buttons.hideButton(1);
-        } else {
-          buttons.hideButton(1);
-          buttons.showButton(0);
-        }
-      });
-    };
-
-    let buttonsEffect2 = (buttons, scene) => {
-      buttons.on('button.click', (button, index, pointer, event) => {
+      buttons.on('button.click', () => {
         this.scene.start(scene);
-      });
+      })
 
-      buttons.on('button.over', (button, index, pointer, event) => {
+      buttons.on('button.over', () => {
         buttons.hideButton(0);
         buttons.showButton(1);
       });
@@ -133,45 +109,60 @@ export default class HomeScene extends Phaser.Scene {
       buttons.on('button.out', (button, index, pointer, event) => {
         buttons.hideButton(1);
         buttons.showButton(0);
-      });
+        if (!this.sys.game.device.os.desktop && !pointer.isDown) {
+          buttons.emitButtonClick(button);
+        }
+      })
     };
 
-    var backButtons = addButtons(back, back1);
-    var bathroomButtons = addButtons2(bathroom, bathroom1, bathroom2);
-    var dogButtons = addButtons2(dog, dog1, dog2);
-    var carButtons = addButtons2(car, car1, car2);
-    var kitchenButtons = addButtons2(kitchen, kitchen1, kitchen2);
-    var windowButtons = addButtons2(window, window1, window2);
-    var elevatorButtons = addButtons2(elevator, elevator1, elevator2);
+    const initLearnButtons = (buttons, sound) => {
+      buttons.hideButton(1);
+      buttons.hideButton(2);
 
-    backButtons.hideButton(1);
-    bathroomButtons.hideButton(1);
-    bathroomButtons.hideButton(2);
-    dogButtons.hideButton(1);
-    dogButtons.hideButton(2);
-    carButtons.hideButton(1);
-    carButtons.hideButton(2);
-    kitchenButtons.hideButton(1);
-    kitchenButtons.hideButton(2);
-    windowButtons.hideButton(1);
-    windowButtons.hideButton(2);
-    elevatorButtons.hideButton(1);
-    elevatorButtons.hideButton(2);
+      buttons.on('button.click', (button, index, pointer, event) => {
+        this.sound.play(sound);
+        if (index === 1) { // unselected
+          buttons.showButton(2);
+        } else { // already selected
+          buttons.hideButton(2);
+          if (!this.sys.game.device.os.desktop && !pointer.isDown) {
+            buttons.hideButton(1);
+            buttons.showButton(0);
+          }
+        }
+      });
 
-    var bathroomTemp = false;
-    var dogTemp = false;
-    var carTemp = false;
-    var kitchenTemp = false;
-    var windowTemp = false;
-    var elevatorTemp = false;
+      buttons.on('button.over', () => { // show Blackfoot while hovering
+        buttons.hideButton(0);
+        buttons.showButton(1);
+      });
 
-    buttonsEffect(bathroomButtons, bathroomTemp, 'bathroomwav');
-    buttonsEffect(windowButtons, windowTemp, 'windowwav');
-    buttonsEffect(carButtons, carTemp, 'carwav');
-    buttonsEffect(dogButtons, dogTemp, 'dogwav');
-    buttonsEffect(elevatorButtons, elevatorTemp, 'elevatorwav');
-    buttonsEffect(kitchenButtons, kitchenTemp, 'kitchenwav');
+      buttons.on('button.out', (button, index, pointer, event) => {
+        if (!this.sys.game.device.os.desktop && !pointer.isDown) {
+          buttons.emitButtonClick(button);
+        } else if (index === 1) { // unselected
+          buttons.hideButton(1);
+          buttons.showButton(0);
+        } else { // already selected
+          buttons.hideButton(1);
+        }
+      })
+    }
 
-    buttonsEffect2(backButtons, 'move');
+    const backButtons = addButtons(back, back1);
+    const bathroomButtons = addButtons2(bathroom, bathroom1, bathroom2);
+    const dogButtons = addButtons2(dog, dog1, dog2);
+    const carButtons = addButtons2(car, car1, car2);
+    const kitchenButtons = addButtons2(kitchen, kitchen1, kitchen2);
+    const windowButtons = addButtons2(window, window1, window2);
+    const elevatorButtons = addButtons2(elevator, elevator1, elevator2);
+
+    initSceneButtons(backButtons, 'move');
+    initLearnButtons(bathroomButtons, 'bathroomwav');
+    initLearnButtons(dogButtons, 'dogwav');
+    initLearnButtons(carButtons, 'carwav');
+    initLearnButtons(kitchenButtons, 'kitchenwav');
+    initLearnButtons(windowButtons, 'windowwav');
+    initLearnButtons(elevatorButtons, 'elevatorwav');
   }
 }
