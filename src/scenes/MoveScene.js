@@ -96,12 +96,9 @@ export default class MoveScene extends Phaser.Scene {
         buttons.showButton(1);
       });
 
-      buttons.on('button.out', (button, index, pointer, event) => {
+      buttons.on('button.out', () => {
         buttons.hideButton(1);
         buttons.showButton(0);
-        if (!this.sys.game.device.os.desktop && !pointer.isDown) {
-          buttons.emitButtonClick(button);
-        }
       })
     };
 

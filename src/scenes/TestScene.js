@@ -57,10 +57,10 @@ export default class TestScene extends Phaser.Scene {
       processGuess();
     });
 
-    // Open input box on any keypress, if not already opened
+    // Open input box on any keypress, if not testing
     this.input.keyboard.on('keydown', function() {
-      if (!inputEditor.isOpened) {
-        startGuess();
+      if (!is_testing && !inputEditor.isOpened) {
+        inputEditor = startGuess();
       }
     })
 
