@@ -39,6 +39,12 @@ export default class util extends Phaser.Scene {
   preload() {
     // Allow sound to play while out of focus
     this.sound.pauseOnBlur = false;
+
+    // Allow scrolling inside the chatbot on desktop and mobile
+    this.input.mouse.preventDefaultWheel = false;
+    if (!this.sys.game.device.os.desktop) {
+      this.input.manager.touch.capture = false;
+    }
   }
 
   create() {

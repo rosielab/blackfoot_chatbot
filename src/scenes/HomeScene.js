@@ -106,29 +106,31 @@ export default class HomeScene extends Phaser.Scene {
         buttons.showButton(1);
       });
 
-      buttons.on('button.out', (button, index, pointer, event) => {
+      buttons.on('button.out', () => {
         buttons.hideButton(1);
         buttons.showButton(0);
-        if (!this.sys.game.device.os.desktop && !pointer.isDown) {
-          buttons.emitButtonClick(button);
-        }
       })
     };
 
     const initLearnButtons = (buttons, sound) => {
       buttons.hideButton(1);
       buttons.hideButton(2);
+      var toggled = false;
 
-      buttons.on('button.click', (button, index, pointer, event) => {
+      buttons.on('button.click', () => {
         this.sound.play(sound);
-        if (index === 1) { // unselected
+        if (!toggled) {
           buttons.showButton(2);
-        } else { // already selected
-          buttons.hideButton(2);
-          if (!this.sys.game.device.os.desktop && !pointer.isDown) {
-            buttons.hideButton(1);
-            buttons.showButton(0);
-          }
+          toggled = true;
+        } else {
+          setTimeout(() => { // prevent double-tap on mobile
+            buttons.hideButton(2);
+            if (!this.sys.game.device.os.desktop) {
+              buttons.hideButton(1);
+              buttons.showButton(0);
+            }
+            toggled = false;
+          }, 0);
         }
       });
 
@@ -138,13 +140,16 @@ export default class HomeScene extends Phaser.Scene {
       });
 
       buttons.on('button.out', (button, index, pointer, event) => {
-        if (!this.sys.game.device.os.desktop && !pointer.isDown) {
-          buttons.emitButtonClick(button);
-        } else if (index === 1) { // unselected
-          buttons.hideButton(1);
-          buttons.showButton(0);
-        } else { // already selected
-          buttons.hideButton(1);
+        // only trigger when pointer is actually outside the button
+        if (pointer.x <= button.x-button.width/2 || pointer.x >= button.x+button.width/2 || pointer.y <= button.y-button.height/2 || pointer.y >= button.y+button.height/2) {
+          if (!toggled) {
+            buttons.hideButton(1);
+            buttons.hideButton(2);
+            buttons.showButton(0);
+          } else if (toggled) {
+            buttons.hideButton(1);
+            buttons.showButton(2);
+          }
         }
       })
     }
