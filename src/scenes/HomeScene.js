@@ -118,25 +118,29 @@ export default class HomeScene extends Phaser.Scene {
       var toggled = false;
 
       buttons.on('button.click', () => {
+        buttons.setButtonEnable(false);
         this.sound.play(sound);
         if (!toggled) {
           buttons.showButton(2);
           toggled = true;
         } else {
-          setTimeout(() => { // prevent double-tap on mobile
             buttons.hideButton(2);
             if (!this.sys.game.device.os.desktop) {
-              buttons.hideButton(1);
-              buttons.showButton(0);
+                buttons.hideButton(1);
+                buttons.showButton(0);
             }
             toggled = false;
-          }, 0);
         }
+        setTimeout(() => { // prevent double-tap on mobile
+          buttons.setButtonEnable(true);
+        }, 50);
       });
 
-      buttons.on('button.over', () => { // show Blackfoot while hovering
-        buttons.hideButton(0);
-        buttons.showButton(1);
+      buttons.on('button.over', (button, index, pointer, event) => { // show Blackfoot while hovering
+        if (pointer.isDown || this.sys.game.device.os.desktop) {
+          buttons.hideButton(0);
+          buttons.showButton(1);
+        }
       });
 
       buttons.on('button.out', (button, index, pointer, event) => {

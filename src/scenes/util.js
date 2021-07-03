@@ -45,6 +45,11 @@ export default class util extends Phaser.Scene {
     if (!this.sys.game.device.os.desktop) {
       this.input.manager.touch.capture = false;
     }
+
+    // Resize the canvas when switching from landscape/portrait
+    this.scale.on('orientationchange', () => {
+      this.scale.resize(Math.min(window.innerWidth, 800), Math.min(window.innerHeight, 600));
+    });
   }
 
   create() {
