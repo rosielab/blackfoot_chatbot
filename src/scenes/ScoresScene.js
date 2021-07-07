@@ -59,9 +59,6 @@ export default class ScoresScene extends Phaser.Scene {
       return scrollDownScores(page-2);
     }
 
-    // remove old score cookie
-    document.cookie = "score= ;expires=Thu, 01 Jan 1970 00:00:00 GMT";
-
     function getScore(scene) {
       return parseInt(localStorage.getItem(scene));
     }

@@ -29,7 +29,7 @@ const config = {
     autoCenter: Phaser.Scale.CENTER_HORIZONTALLY
   },
   width: Math.min(window.innerWidth, 800),
-  height: Math.min(window.innerHeight, 600),
+  height: 600,
   parent: 'canvas-container',
   dom: {
     createContainer: true,

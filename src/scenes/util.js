@@ -2,6 +2,7 @@ import Phaser from 'phaser';
 
 /*
   All global variables for TestScene, ScoresScene, PreTestScenes, etc. are declared here.
+  TODO: Pass as data inside scene.start() instead
 */
 
 /*
@@ -48,7 +49,12 @@ export default class util extends Phaser.Scene {
 
     // Resize the canvas when switching from landscape/portrait
     this.scale.on('orientationchange', () => {
-      this.scale.resize(Math.min(window.innerWidth, 800), Math.min(window.innerHeight, 600));
+      this.scale.resize(Math.min(window.innerWidth, 800), 600);
+    });
+
+    // Disable right-click menu
+    document.querySelector("#canvas-container > canvas").addEventListener('contextmenu', (e) => {
+      e.preventDefault();
     });
   }
 
