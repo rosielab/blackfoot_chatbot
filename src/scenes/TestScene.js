@@ -8,6 +8,25 @@ export default class TestScene extends Phaser.Scene {
   }
 
   preload() {
+    // Loading screen
+    const loadingScreen = this.add.image(400, 300, 'loadingScreen');
+    const loadingText = this.add.text(400, 225, 'Loading...', {
+      font: '80px Mukta',
+      color: '#754F37'
+    })
+    .setOrigin(0.5);
+    const loadingGif = this.add.sprite(400, 365, 'loadingGif', 'loadingGif.png');
+    this.anims.create({ key: 'loading', frames: this.anims.generateFrameNames('loadingGif', {
+      start: 0, end: 8,
+      prefix: 'frame_', suffix: '_delay-0.01s.png'
+    }), frameRate: 12, repeat: -1 });
+    loadingGif.anims.play('loading');
+    this.load.on('complete', () => {
+      loadingScreen.destroy();
+      loadingText.destroy();
+      loadingGif.destroy();
+    });
+
     // Preload audio for all words in the current test
     Object.keys(scene_dict).forEach((sound) => {
       this.load.audio(

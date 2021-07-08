@@ -34,16 +34,16 @@ export default class MenuScene extends Phaser.Scene {
 
     const isDesktop = this.sys.game.device.os.desktop;
 
-    const learn = this.add.image((isDesktop? 370 : window.innerWidth/2), (isDesktop? 285 : 270), 'learn');
-    const learn1 = this.add.image((isDesktop? 370 : window.innerWidth/2), (isDesktop? 285 : 270), 'learn1');
-    const test = this.add.image((isDesktop? 370 : window.innerWidth/2), (isDesktop? 351 : 336), 'test');
-    const test1 = this.add.image((isDesktop? 370 : window.innerWidth/2), (isDesktop? 351 : 336), 'test1');
-    const sentence = this.add.image((isDesktop? 370 : window.innerWidth/2), (isDesktop? 416 : 401), 'sentence');
-    const sentence1 = this.add.image((isDesktop? 370 : window.innerWidth/2), (isDesktop? 416 : 401), 'sentence1');
-    const score = this.add.image((isDesktop? 370 : window.innerWidth/2), (isDesktop? 482 : 467), 'score');
-    const score1 = this.add.image((isDesktop? 370 : window.innerWidth/2), (isDesktop? 482 : 467), 'score1');
-    const exit = this.add.image((isDesktop? 108 : window.innerWidth/2), 552, 'exit');
-    const exit1 = this.add.image((isDesktop? 108 : window.innerWidth/2), 552, 'exit1');
+    const learn = this.add.image((isDesktop? 370 : Math.min(window.innerWidth/2, 370)), (isDesktop? 285 : 270), 'learn');
+    const learn1 = this.add.image((isDesktop? 370 : Math.min(window.innerWidth/2, 370)), (isDesktop? 285 : 270), 'learn1');
+    const test = this.add.image((isDesktop? 370 : Math.min(window.innerWidth/2, 370)), (isDesktop? 351 : 336), 'test');
+    const test1 = this.add.image((isDesktop? 370 : Math.min(window.innerWidth/2, 370)), (isDesktop? 351 : 336), 'test1');
+    const sentence = this.add.image((isDesktop? 370 : Math.min(window.innerWidth/2, 370)), (isDesktop? 416 : 401), 'sentence');
+    const sentence1 = this.add.image((isDesktop? 370 : Math.min(window.innerWidth/2, 370)), (isDesktop? 416 : 401), 'sentence1');
+    const score = this.add.image((isDesktop? 370 : Math.min(window.innerWidth/2, 370)), (isDesktop? 482 : 467), 'score');
+    const score1 = this.add.image((isDesktop? 370 : Math.min(window.innerWidth/2, 370)), (isDesktop? 482 : 467), 'score1');
+    const exit = this.add.image((isDesktop? 108 : Math.min(window.innerWidth/2, 370)), 552, 'exit');
+    const exit1 = this.add.image((isDesktop? 108 : Math.min(window.innerWidth/2, 370)), 552, 'exit1');
 
     const addButtons = (main, rollover) => {
       const newButtons = this.rexUI.add.buttons({

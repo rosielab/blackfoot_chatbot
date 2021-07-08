@@ -6,6 +6,25 @@ export default class MoveScene extends Phaser.Scene {
   }
 
   preload() {
+    // Loading screen
+    const loadingScreen = this.add.image(400, 300, 'loadingScreen');
+    const loadingText = this.add.text(400, 225, 'Loading...', {
+      font: '80px Mukta',
+      color: '#754F37'
+    })
+    .setOrigin(0.5);
+    const loadingGif = this.add.sprite(400, 365, 'loadingGif', 'loadingGif.png');
+    this.anims.create({ key: 'loading', frames: this.anims.generateFrameNames('loadingGif', {
+      start: 0, end: 8,
+      prefix: 'frame_', suffix: '_delay-0.01s.png'
+    }), frameRate: 12, repeat: -1 });
+    loadingGif.anims.play('loading');
+    this.load.on('complete', () => {
+      loadingScreen.destroy();
+      loadingText.destroy();
+      loadingGif.destroy();
+    });
+
     this.load.image('moveBackground', '../assets/images/LearnScene/Learn.png');
     this.load.image(
       'back',
@@ -58,20 +77,20 @@ export default class MoveScene extends Phaser.Scene {
   create() {
     this.background = this.add.image(399, 299, 'moveBackground');
 
-    const isDesktop = this.sys.game.device.os.desktop;
+    const isDesktop = (this.sys.game.device.os.desktop || window.innerWidth >= 800);
 
     const back = this.add.image(45, 550, 'back');
     const back1 = this.add.image(45, 550, 'back1');
-    const home = this.add.image((isDesktop? 214 : window.innerWidth/4), 174, 'home');
-    const home1 = this.add.image((isDesktop? 214 : window.innerWidth/4), 174, 'home1');
-    const family = this.add.image((isDesktop? 395 : 3*window.innerWidth/4), 174, 'family');
-    const family1 = this.add.image((isDesktop? 395 : 3*window.innerWidth/4), 174, 'family1');
-    const greetings = this.add.image((isDesktop? 585 : window.innerWidth/4), (isDesktop? 174 : 250), 'greetings');
-    const greetings1 = this.add.image((isDesktop? 585 : window.innerWidth/4), (isDesktop? 174 : 250), 'greetings1');
-    const town = this.add.image((isDesktop? 270 : 3*window.innerWidth/4), 250, 'town');
-    const town1 = this.add.image((isDesktop? 270 : 3*window.innerWidth/4), 250, 'town1');
-    const restaurant = this.add.image((isDesktop? 470 : window.innerWidth/2), (isDesktop? 250 : 326), 'restaurant');
-    const restaurant1 = this.add.image((isDesktop? 470 : window.innerWidth/2), (isDesktop? 250 : 326), 'restaurant1');
+    const home = this.add.image((isDesktop? 214 : Math.min(window.innerWidth/4, 214)), 174, 'home');
+    const home1 = this.add.image((isDesktop? 214 : Math.min(window.innerWidth/4, 214)), 174, 'home1');
+    const family = this.add.image((isDesktop? 395 : Math.min(3*window.innerWidth/4, 395)), 174, 'family');
+    const family1 = this.add.image((isDesktop? 395 : Math.min(3*window.innerWidth/4, 395)), 174, 'family1');
+    const greetings = this.add.image((isDesktop? 585 : Math.min(window.innerWidth/4, 585)), (isDesktop? 174 : 250), 'greetings');
+    const greetings1 = this.add.image((isDesktop? 585 : Math.min(window.innerWidth/4, 585)), (isDesktop? 174 : 250), 'greetings1');
+    const town = this.add.image((isDesktop? 270 : Math.min(3*window.innerWidth/4, 270)), 250, 'town');
+    const town1 = this.add.image((isDesktop? 270 : Math.min(3*window.innerWidth/4, 270)), 250, 'town1');
+    const restaurant = this.add.image((isDesktop? 470 : Math.min(window.innerWidth/2, 470)), (isDesktop? 250 : 326), 'restaurant');
+    const restaurant1 = this.add.image((isDesktop? 470 : Math.min(window.innerWidth/2, 470)), (isDesktop? 250 : 326), 'restaurant1');
 
     const addButtons = (main, rollover) => {
       const newButtons = this.rexUI.add.buttons({

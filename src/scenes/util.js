@@ -38,6 +38,10 @@ export { full_dict };
 
 export default class util extends Phaser.Scene {
   preload() {
+    // Preload loading screen assets
+    this.load.image('loadingScreen', '../assets/images/loadingBackground.png');
+    this.load.multiatlas('loadingGif', '../assets/images/loadingGif/loadingGif.json', '../assets/images/loadingGif');
+
     // Allow sound to play while out of focus
     this.sound.pauseOnBlur = false;
 
