@@ -209,6 +209,7 @@ export default class TestScene extends Phaser.Scene {
     }
 
     // Function to process text input
+    // TODO: Fix input on mobile
     var startGuess = () => {
       if (!is_testing) {
         // Reset misalignment fix

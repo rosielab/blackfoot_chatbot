@@ -241,7 +241,7 @@ export default class SentenceScene extends Phaser.Scene {
       button.on('pointerout', function () {
         button.clearTint();
       });
-      button.on('drag', function (pointer, dragX, dragY) {
+      button.on('drag', function (pointer, dragX, dragY) { // TODO: Fix scrolling on mobile
         button.x = dragX;
         button.y = dragY;
       });

@@ -155,23 +155,29 @@ export default class VocabScene extends Phaser.Scene {
     const back = this.add.image(53, 548, 'back');
     const back1 = this.add.image(53, 548, 'back1');
     const card1 = this.add.image(180, 228, 'card1');
-    const card1_1 = this.add.image(180, 228, 'card1_1');
-    const card1_2 = this.add.image(180, 228, 'card1_1');
+    const card1_r = this.add.image(180, 228, 'card1');
+    const card1b = this.add.image(180, 228, 'card1_1');
+    const card1b_r = this.add.image(180, 228, 'card1_1');
     const card2 = this.add.image(407, 228, 'card2');
-    const card2_1 = this.add.image(407, 228, 'card2_1');
-    const card2_2 = this.add.image(407, 228, 'card2_1');
+    const card2_r = this.add.image(407, 228, 'card2');
+    const card2b = this.add.image(407, 228, 'card2_1');
+    const card2b_r = this.add.image(407, 228, 'card2_1');
     const card3 = this.add.image(634, 228, 'card3');
-    const card3_1 = this.add.image(634, 228, 'card3_1');
-    const card3_2 = this.add.image(634, 228, 'card3_1');
+    const card3_r = this.add.image(634, 228, 'card3');
+    const card3b = this.add.image(634, 228, 'card3_1');
+    const card3b_r = this.add.image(634, 228, 'card3_1');
     const card4 = this.add.image(180, 409, 'card4');
-    const card4_1 = this.add.image(180, 409, 'card4_1');
-    const card4_2 = this.add.image(180, 409, 'card4_1');
+    const card4_r = this.add.image(180, 409, 'card4');
+    const card4b = this.add.image(180, 409, 'card4_1');
+    const card4b_r = this.add.image(180, 409, 'card4_1');
     const card5 = this.add.image(407, 409, 'card5');
-    const card5_1 = this.add.image(407, 409, 'card5_1');
-    const card5_2 = this.add.image(407, 409, 'card5_1');
+    const card5_r = this.add.image(407, 409, 'card5');
+    const card5b = this.add.image(407, 409, 'card5_1');
+    const card5b_r = this.add.image(407, 409, 'card5_1');
     const card6 = this.add.image(634, 409, 'card6');
-    const card6_1 = this.add.image(634, 409, 'card6_1');
-    const card6_2 = this.add.image(634, 409, 'card6_1');
+    const card6_r = this.add.image(634, 409, 'card6');
+    const card6b = this.add.image(634, 409, 'card6_1');
+    const card6b_r = this.add.image(634, 409, 'card6_1');
 
     const addButtons = (main, rollover) => {
       const newButtons = this.rexUI.add.buttons({
@@ -187,10 +193,10 @@ export default class VocabScene extends Phaser.Scene {
       return newButtons;
     };
 
-    const addButtons2 = (main, rollover, rollover2) => {
+    const addLearnButtons = (english, english_r, blackfoot, blackfoot_r) => {
       const newButtons = this.rexUI.add.buttons({
         orientation: 0,
-        buttons: [main, rollover, rollover2],
+        buttons: [english, english_r, blackfoot, blackfoot_r],
         expand: false,
         align: undefined,
         click: {
@@ -242,19 +248,26 @@ export default class VocabScene extends Phaser.Scene {
     const initLearnButtons = (buttons, sound) => {
       buttons.hideButton(1);
       buttons.hideButton(2);
+      buttons.hideButton(3);
       var toggled = false;
 
       buttons.on('button.click', () => {
         buttons.setButtonEnable(false);
         this.sound.play(sound);
         if (!toggled) {
+          buttons.hideButton(0);
+          buttons.hideButton(1);
           buttons.showButton(2);
+          if (this.sys.game.device.os.desktop) {
+            buttons.showButton(3);
+          }
           toggled = true;
         } else {
             buttons.hideButton(2);
-            if (!this.sys.game.device.os.desktop) {
-                buttons.hideButton(1);
-                buttons.showButton(0);
+            buttons.hideButton(3);
+            buttons.showButton(0);
+            if (this.sys.game.device.os.desktop) {
+              buttons.showButton(1);
             }
             toggled = false;
         }
@@ -265,8 +278,11 @@ export default class VocabScene extends Phaser.Scene {
 
       buttons.on('button.over', (button, index, pointer, event) => { // show Blackfoot while hovering
         if (pointer.isDown || this.sys.game.device.os.desktop) {
-          buttons.hideButton(0);
-          buttons.showButton(1);
+          if (!toggled) {
+            buttons.showButton(1);
+          } else {
+            buttons.showButton(3);
+          }
         }
       });
 
@@ -275,23 +291,20 @@ export default class VocabScene extends Phaser.Scene {
         if (pointer.x <= button.x-button.width/2 || pointer.x >= button.x+button.width/2 || pointer.y <= button.y-button.height/2 || pointer.y >= button.y+button.height/2) {
           if (!toggled) {
             buttons.hideButton(1);
-            buttons.hideButton(2);
-            buttons.showButton(0);
           } else if (toggled) {
-            buttons.hideButton(1);
-            buttons.showButton(2);
+            buttons.hideButton(3);
           }
         }
       })
     };
 
     const backButtons = addButtons(back, back1);
-    const card1Buttons = addButtons2(card1, card1_1, card1_2);
-    const card2Buttons = addButtons2(card2, card2_1, card2_2);
-    const card3Buttons = addButtons2(card3, card3_1, card3_2);
-    const card4Buttons = addButtons2(card4, card4_1, card4_2);
-    const card5Buttons = addButtons2(card5, card5_1, card5_2);
-    const card6Buttons = addButtons2(card6, card6_1, card6_2);
+    const card1Buttons = addLearnButtons(card1, card1_r, card1b, card1b_r);
+    const card2Buttons = addLearnButtons(card2, card2_r, card2b, card2b_r);
+    const card3Buttons = addLearnButtons(card3, card3_r, card3b, card3b_r);
+    const card4Buttons = addLearnButtons(card4, card4_r, card4b, card4b_r);
+    const card5Buttons = addLearnButtons(card5, card5_r, card5b, card5b_r);
+    const card6Buttons = addLearnButtons(card6, card6_r, card6b, card6b_r);
 
     initSceneButtons(backButtons, 'move');
     initLearnButtons(card1Buttons, 'card1_wav');
