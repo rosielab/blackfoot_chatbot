@@ -34,7 +34,9 @@
         padding: 0;
         background-color: #E2DFC7;
       }
-      .main-content {
+      #main-content {
+        position: relative;
+        overflow: auto;
         height: 100%;
         width: 100%;
       }
@@ -58,8 +60,6 @@
         letter-spacing: 5px;
       }
       #canvas-container {
-        height: 100%;
-        width: 100%;
         padding: 80px 0px 0px 0px;
       }
       #version {
@@ -95,15 +95,32 @@
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
     <noscript>Please enable javascript to play this Game.</noscript>
-    <section class="main-content">
+    <section id="main-content">
       <a id="return" class="text" href="http://blackfoot-revitalization.cs.sfu.ca/">← Back to the Blackfoot Revitalization page</a>
       <div id="canvas-container">
         <p id="title" class="text">Blackfoot Chatbot</p>
       </div>
       <div id="version" class="text">v2.0</div>
       <a id="changelog" class="text" href="https://www.google.ca" target="_blank">Changelog</a> <!-- Will lead to changelog file -->
-      <a id="feedback" class="text" href="https://www.surveymonkey.ca/r/N6XBHLY" target="_blank">Feedback</a>
-      <div id="copyright" class="text">© SIMON FRASER UNIVERSITY</div>
     </section>
+    <div id="footer">
+      <div id="copyright" class="text">© SIMON FRASER UNIVERSITY</div>
+      <a id="feedback" class="text" href="https://www.surveymonkey.ca/r/N6XBHLY" target="_blank">Feedback</a>
+    </div>
+    <script>
+      // Prevent overlap when zooming in
+      function moveFooter() {
+        const footer = document.getElementById('footer');
+        if (window.innerHeight < document.body.clientHeight) {
+          document.body.removeChild(footer);
+          document.getElementById('main-content').appendChild(footer);
+        } else {
+          document.getElementById('main-content').removeChild(footer);
+          document.body.appendChild(footer);
+        }
+      }
+      window.onload = moveFooter;
+      window.addEventListener('resize', moveFooter);
+    </script>
   </body>
 </html>
