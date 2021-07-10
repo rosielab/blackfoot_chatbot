@@ -209,7 +209,6 @@ export default class TestScene extends Phaser.Scene {
     }
 
     // Function to process text input
-    // TODO: Fix input on mobile
     var startGuess = () => {
       if (!is_testing) {
         // Reset misalignment fix
@@ -256,7 +255,14 @@ export default class TestScene extends Phaser.Scene {
       .setFixedSize(520, 50)
       .setInteractive()
       .on('pointerdown', () => {
-        startGuess();
+        if (this.sys.game.device.os.desktop) {
+          startGuess();
+        }
+      })
+      .on('pointerup', () => { // Fix buggy input on mobile
+        if (!this.sys.game.device.os.desktop) {
+          startGuess();
+        }
       });
 
     const addButtons = (button1, button2) => {

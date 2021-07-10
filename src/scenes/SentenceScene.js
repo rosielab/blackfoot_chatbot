@@ -241,11 +241,19 @@ export default class SentenceScene extends Phaser.Scene {
       button.on('pointerout', function () {
         button.clearTint();
       });
-      button.on('drag', function (pointer, dragX, dragY) { // TODO: Fix scrolling on mobile
+      button.on('drag', (pointer, dragX, dragY) => { 
+        if (!this.sys.game.device.os.desktop) { // Fix scrolling on mobile
+          this.input.manager.touch.capture = true;
+        }
+
         button.x = dragX;
         button.y = dragY;
       });
-      button.on('dragend', function (pointer, dragX, dragY, dropped) {
+      button.on('dragend', (pointer, dragX, dragY, dropped) => {
+        if (!this.sys.game.device.os.desktop) {
+          this.input.manager.touch.capture = false;
+        }
+
         if (button.y < 270) {
           if (button.x < 139) {
             button.x = 139;
@@ -254,10 +262,10 @@ export default class SentenceScene extends Phaser.Scene {
           }
           button.y = 200;
           insertButton(name, button, wordArry);
-          console.log(wordArry);
+          // console.log(wordArry);
         } else if (button.y >= 270) {
           removeButton(name, wordArry);
-          console.log(wordArry);
+          // console.log(wordArry);
         }
       });
     };
