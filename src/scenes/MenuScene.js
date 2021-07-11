@@ -50,7 +50,7 @@ export default class MenuScene extends Phaser.Scene {
     const exit = this.add.image((isDesktop? 108 : Math.min(window.innerWidth/2, 370)), 552, 'exit');
     const exit1 = this.add.image((isDesktop? 108 : Math.min(window.innerWidth/2, 370)), 552, 'exit1');
 
-    if (window.innerWidth < 800) {
+    if (window.innerWidth < 800 && this.scale.orientation === Phaser.Scale.PORTRAIT) {
       const mobileNote = this.add.text(window.innerWidth/2, 300, 'NOTE: Landscape mode\nis recommended.', {
         font: 'bold 35px Mukta',
         color: '#754F37',
