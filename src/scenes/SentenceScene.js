@@ -45,6 +45,25 @@ export default class SentenceScene extends Phaser.Scene {
   }
 
   preload() {
+    // Loading screen
+    const loadingScreen = this.add.image(400, 300, 'loadingScreen');
+    const loadingText = this.add.text(400, 225, 'Loading...', {
+      font: '80px Mukta',
+      color: '#754F37'
+    })
+    .setOrigin(0.5);
+    const loadingGif = this.add.sprite(400, 365, 'loadingGif', 'loadingGif.png');
+    this.anims.create({ key: 'loading', frames: this.anims.generateFrameNames('loadingGif', {
+      start: 0, end: 8,
+      prefix: 'frame_', suffix: '_delay-0.01s.png'
+    }), frameRate: 12, repeat: -1 });
+    loadingGif.anims.play('loading');
+    this.load.on('complete', () => {
+      loadingScreen.destroy();
+      loadingText.destroy();
+      loadingGif.destroy();
+    });
+
     this.load.image(
       'sentenceBackground',
       '../assets/images/SentenceScene/Sentence.png'
@@ -171,6 +190,13 @@ export default class SentenceScene extends Phaser.Scene {
       }
     }
 
+    this.add
+      .text(295, 143, 'Drag & drop words to form new sentences!', {
+        font: '28px Mukta',
+        color: '#479D76'
+      })
+      .setOrigin(0.5);
+
     var mediaButtons = this.rexUI.add.buttons({
       orientation: 0,
       buttons: [media],
@@ -215,11 +241,19 @@ export default class SentenceScene extends Phaser.Scene {
       button.on('pointerout', function () {
         button.clearTint();
       });
-      button.on('drag', function (pointer, dragX, dragY) {
+      button.on('drag', (pointer, dragX, dragY) => { 
+        if (!this.sys.game.device.os.desktop) { // Fix scrolling on mobile
+          this.input.manager.touch.capture = true;
+        }
+
         button.x = dragX;
         button.y = dragY;
       });
-      button.on('dragend', function (pointer, dragX, dragY, dropped) {
+      button.on('dragend', (pointer, dragX, dragY, dropped) => {
+        if (!this.sys.game.device.os.desktop) {
+          this.input.manager.touch.capture = false;
+        }
+
         if (button.y < 270) {
           if (button.x < 139) {
             button.x = 139;
@@ -228,10 +262,10 @@ export default class SentenceScene extends Phaser.Scene {
           }
           button.y = 200;
           insertButton(name, button, wordArry);
-          console.log(wordArry);
+          // console.log(wordArry);
         } else if (button.y >= 270) {
           removeButton(name, wordArry);
-          console.log(wordArry);
+          // console.log(wordArry);
         }
       });
     };

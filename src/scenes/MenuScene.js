@@ -6,8 +6,10 @@ export default class MenuScene extends Phaser.Scene {
   }
 
   preload() {
-    // Allow sound to play while out of focus
-    this.sound.pauseOnBlur = false;
+    // Change scaling after rotating
+    this.scale.on('orientationchange', () => {
+      this.scene.restart();
+    });
 
     this.load.image('menuBackground', '../assets/images/MenuScene/Start.png');
 
@@ -35,98 +37,75 @@ export default class MenuScene extends Phaser.Scene {
   create() {
     this.background = this.add.image(400, 300, 'menuBackground');
 
-    const learn = this.add.image(370, 285, 'learn');
-    const learn1 = this.add.image(370, 285, 'learn1');
-    const test = this.add.image(370, 351, 'test');
-    const test1 = this.add.image(370, 351, 'test1');
-    const sentence = this.add.image(370, 416, 'sentence');
-    const sentence1 = this.add.image(370, 416, 'sentence1');
-    const score = this.add.image(370, 482, 'score');
-    const score1 = this.add.image(370, 482, 'score1');
-    const exit = this.add.image(108, 552, 'exit');
-    const exit1 = this.add.image(108, 552, 'exit1');
+    const isDesktop = (window.innerWidth >= 800);
 
-    var learnButtons = this.rexUI.add.buttons({
-      orientation: 0,
-      buttons: [learn, learn1],
-      expand: false,
-      align: undefined,
-      click: {
-        mode: 'pointerup',
-        clickInterval: 100,
-      },
-    });
+    const learn = this.add.image((isDesktop? 370 : Math.min(window.innerWidth/2, 370)), (isDesktop? 285 : 270), 'learn');
+    const learn1 = this.add.image((isDesktop? 370 : Math.min(window.innerWidth/2, 370)), (isDesktop? 285 : 270), 'learn1');
+    const test = this.add.image((isDesktop? 370 : Math.min(window.innerWidth/2, 370)), (isDesktop? 351 : 336), 'test');
+    const test1 = this.add.image((isDesktop? 370 : Math.min(window.innerWidth/2, 370)), (isDesktop? 351 : 336), 'test1');
+    const sentence = this.add.image((isDesktop? 370 : Math.min(window.innerWidth/2, 370)), (isDesktop? 416 : 401), 'sentence');
+    const sentence1 = this.add.image((isDesktop? 370 : Math.min(window.innerWidth/2, 370)), (isDesktop? 416 : 401), 'sentence1');
+    const score = this.add.image((isDesktop? 370 : Math.min(window.innerWidth/2, 370)), (isDesktop? 482 : 467), 'score');
+    const score1 = this.add.image((isDesktop? 370 : Math.min(window.innerWidth/2, 370)), (isDesktop? 482 : 467), 'score1');
+    const exit = this.add.image((isDesktop? 108 : Math.min(window.innerWidth/2, 370)), 552, 'exit');
+    const exit1 = this.add.image((isDesktop? 108 : Math.min(window.innerWidth/2, 370)), 552, 'exit1');
 
-    var testButtons = this.rexUI.add.buttons({
-      orientation: 0,
-      buttons: [test, test1],
-      expand: false,
-      align: undefined,
-      click: {
-        mode: 'pointerup',
-        clickInterval: 100,
-      },
-    });
+    if (window.innerWidth < 800 && this.scale.orientation === Phaser.Scale.PORTRAIT) {
+      const mobileNote = this.add.text(window.innerWidth/2, 300, 'NOTE: Landscape mode\nis recommended.', {
+        font: 'bold 35px Mukta',
+        color: '#754F37',
+        align: 'center'
+      })
+      .setOrigin(0.5);
+      for (var i = 4000; i < 5000; i += 100) {
+        setTimeout(() => {
+          mobileNote.alpha -= 0.1;
+        }, i);
+      }
+    }
 
-    var sentenceButtons = this.rexUI.add.buttons({
-      orientation: 0,
-      buttons: [sentence, sentence1],
-      expand: false,
-      align: undefined,
-      click: {
-        mode: 'pointerup',
-        clickInterval: 100,
-      },
-    });
-
-    var scoreButtons = this.rexUI.add.buttons({
-      orientation: 0,
-      buttons: [score, score1],
-      expand: false,
-      align: undefined,
-      click: {
-        mode: 'pointerup',
-        clickInterval: 100,
-      },
-    });
-
-    var exitButtons = this.rexUI.add.buttons({
-      orientation: 0,
-      buttons: [exit, exit1],
-      expand: false,
-      align: undefined,
-      click: {
-        mode: 'pointerup',
-        clickInterval: 100,
-      },
-    });
-
-    let buttonsEffect = (buttons, scene) => {
-      buttons.on('button.click', (button, index, pointer, event) => {
-        this.scene.start(scene);
+    const addButtons = (main, rollover) => {
+      const newButtons = this.rexUI.add.buttons({
+        orientation: 0,
+        buttons: [main, rollover],
+        expand: false,
+        align: undefined,
+        click: {
+          mode: 'pointerup',
+          clickInterval: 100,
+        },
       });
+      return newButtons;
+    };
 
-      buttons.on('button.over', (button, index, pointer, event) => {
+    const initSceneButtons = (buttons, scene) => {
+      buttons.hideButton(1);
+
+      buttons.on('button.click', () => {
+        this.scene.start(scene);
+      })
+
+      buttons.on('button.over', () => {
         buttons.hideButton(0);
         buttons.showButton(1);
       });
 
-      buttons.on('button.out', (button, index, pointer, event) => {
+      buttons.on('button.out', () => {
         buttons.hideButton(1);
         buttons.showButton(0);
-      });
+      })
     };
 
-    learnButtons.hideButton(1);
-    testButtons.hideButton(1);
-    sentenceButtons.hideButton(1);
-    scoreButtons.hideButton(1);
-    exitButtons.hideButton(1);
+    const learnButtons = addButtons(learn, learn1);
+    const testButtons = addButtons(test, test1);
+    const sentenceButtons = addButtons(sentence, sentence1);
+    const scoreButtons = addButtons(score, score1);
+    const exitButtons = addButtons(exit, exit1);
 
-    buttonsEffect(learnButtons, 'move');
-    buttonsEffect(testButtons, 'pretest');
-    buttonsEffect(sentenceButtons, 'sentence');
-    buttonsEffect(scoreButtons, 'scores');
-    buttonsEffect(exitButtons, 'exit');
+    initSceneButtons(learnButtons, 'move');
+    initSceneButtons(testButtons, 'pretest');
+    initSceneButtons(sentenceButtons, 'sentence');
+    initSceneButtons(scoreButtons, 'scores');
+    initSceneButtons(exitButtons, 'exit');
   }
 }

@@ -6,7 +6,25 @@ export default class MoveScene extends Phaser.Scene {
   }
 
   preload() {
-    // this.load.image('moveBackground', '../assets/images/moveBackground.png');
+    // Loading screen
+    const loadingScreen = this.add.image(400, 300, 'loadingScreen');
+    const loadingText = this.add.text(400, 225, 'Loading...', {
+      font: '80px Mukta',
+      color: '#754F37'
+    })
+    .setOrigin(0.5);
+    const loadingGif = this.add.sprite(400, 365, 'loadingGif', 'loadingGif.png');
+    this.anims.create({ key: 'loading', frames: this.anims.generateFrameNames('loadingGif', {
+      start: 0, end: 8,
+      prefix: 'frame_', suffix: '_delay-0.01s.png'
+    }), frameRate: 12, repeat: -1 });
+    loadingGif.anims.play('loading');
+    this.load.on('complete', () => {
+      loadingScreen.destroy();
+      loadingText.destroy();
+      loadingGif.destroy();
+    });
+
     this.load.image('moveBackground', '../assets/images/LearnScene/Learn.png');
     this.load.image(
       'back',
@@ -58,115 +76,70 @@ export default class MoveScene extends Phaser.Scene {
 
   create() {
     this.background = this.add.image(399, 299, 'moveBackground');
+
+    const isDesktop = true; // TODO: Change mobile scaling for portrait mode
+
     const back = this.add.image(45, 550, 'back');
     const back1 = this.add.image(45, 550, 'back1');
-    const town = this.add.image(270, 250, 'town');
-    const town1 = this.add.image(270, 250, 'town1');
-    const home = this.add.image(214, 174, 'home');
-    const home1 = this.add.image(214, 174, 'home1');
-    const restaurant = this.add.image(470, 250, 'restaurant');
-    const restaurant1 = this.add.image(470, 250, 'restaurant1');
-    const family = this.add.image(395, 174, 'family');
-    const family1 = this.add.image(395, 174, 'family1');
-    const greetings = this.add.image(585, 174, 'greetings');
-    const greetings1 = this.add.image(585, 174, 'greetings1');
+    const home = this.add.image((isDesktop? 214 : window.innerWidth/3), 174, 'home');
+    const home1 = this.add.image((isDesktop? 214 : window.innerWidth/3), 174, 'home1');
+    const family = this.add.image((isDesktop? 395 : 2*window.innerWidth/3), 174, 'family');
+    const family1 = this.add.image((isDesktop? 395 : 2*window.innerWidth/3), 174, 'family1');
+    const greetings = this.add.image((isDesktop? 585 : window.innerWidth/3), (isDesktop? 174 : 250), 'greetings');
+    const greetings1 = this.add.image((isDesktop? 585 : window.innerWidth/3), (isDesktop? 174 : 250), 'greetings1');
+    const town = this.add.image((isDesktop? 270 : 2*window.innerWidth/3), 250, 'town');
+    const town1 = this.add.image((isDesktop? 270 : 2*window.innerWidth/3), 250, 'town1');
+    const restaurant = this.add.image((isDesktop? 470 : window.innerWidth/2), (isDesktop? 250 : 326), 'restaurant');
+    const restaurant1 = this.add.image((isDesktop? 470 : window.innerWidth/2), (isDesktop? 250 : 326), 'restaurant1');
 
-    var backButtons = this.rexUI.add.buttons({
-      orientation: 0,
-      // Elements
-      buttons: [back, back1],
-      expand: false,
-      align: undefined,
-      click: {
-        mode: 'pointerup',
-        clickInterval: 100,
-      },
-    });
-
-    var townButtons = this.rexUI.add.buttons({
-      orientation: 0,
-      // Elements
-      buttons: [town, town1],
-      expand: false,
-      align: undefined,
-      click: {
-        mode: 'pointerup',
-        clickInterval: 100,
-      },
-    });
-
-    var homeButtons = this.rexUI.add.buttons({
-      orientation: 0,
-      buttons: [home, home1],
-      expand: false,
-      align: undefined,
-      click: {
-        mode: 'pointerup',
-        clickInterval: 100,
-      },
-    });
-
-    var restaurantButtons = this.rexUI.add.buttons({
-      orientation: 0,
-      buttons: [restaurant, restaurant1],
-      expand: false,
-      align: undefined,
-      click: {
-        mode: 'pointerup',
-        clickInterval: 100,
-      },
-    });
-
-    var familyButtons = this.rexUI.add.buttons({
-      orientation: 0,
-      buttons: [family, family1],
-      expand: false,
-      align: undefined,
-      click: {
-        mode: 'pointerup',
-        clickInterval: 100,
-      },
-    });
-
-    var greetingsButtons = this.rexUI.add.buttons({
-      orientation: 0,
-      buttons: [greetings, greetings1],
-      expand: false,
-      align: undefined,
-      click: {
-        mode: 'pointerup',
-        clickInterval: 100,
-      },
-    });
-
-    let buttonsEffect = (buttons, scene) => {
-      buttons.on('button.click', (button, index, pointer, event) => {
-        this.scene.start(scene);
+    const addButtons = (main, rollover) => {
+      const newButtons = this.rexUI.add.buttons({
+        orientation: 0,
+        buttons: [main, rollover],
+        expand: false,
+        align: undefined,
+        click: {
+          mode: 'pointerup',
+          clickInterval: 100,
+        },
       });
+      return newButtons;
+    };
 
-      buttons.on('button.over', (button, index, pointer, event) => {
+    const initSceneButtons = (buttons, scene) => {
+      buttons.hideButton(1);
+
+      buttons.on('button.click', () => {
+        if (scene !== 'menu') {
+          this.scene.start('vocab', { scene: scene });
+        } else {
+          this.scene.start('menu');
+        }
+      })
+
+      buttons.on('button.over', () => {
         buttons.hideButton(0);
         buttons.showButton(1);
       });
 
-      buttons.on('button.out', (button, index, pointer, event) => {
+      buttons.on('button.out', () => {
         buttons.hideButton(1);
         buttons.showButton(0);
-      });
+      })
     };
 
-    backButtons.hideButton(1);
-    townButtons.hideButton(1);
-    homeButtons.hideButton(1);
-    familyButtons.hideButton(1);
-    greetingsButtons.hideButton(1);
-    restaurantButtons.hideButton(1);
+    const backButtons = addButtons(back, back1);
+    const townButtons = addButtons(town, town1);
+    const homeButtons = addButtons(home, home1);
+    const restaurantButtons = addButtons(restaurant, restaurant1);
+    const familyButtons = addButtons(family, family1);
+    const greetingsButtons = addButtons(greetings, greetings1);
 
-    buttonsEffect(backButtons, 'menu');
-    buttonsEffect(townButtons, 'town');
-    buttonsEffect(homeButtons, 'home');
-    buttonsEffect(familyButtons, 'family');
-    buttonsEffect(greetingsButtons, 'greetings');
-    buttonsEffect(restaurantButtons, 'restaurant');
+    initSceneButtons(backButtons, 'menu');
+    initSceneButtons(townButtons, 'town');
+    initSceneButtons(homeButtons, 'home');
+    initSceneButtons(familyButtons, 'family');
+    initSceneButtons(greetingsButtons, 'greetings');
+    initSceneButtons(restaurantButtons, 'restaurant');
   }
 }

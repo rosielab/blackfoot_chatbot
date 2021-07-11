@@ -8,6 +8,25 @@ export default class TestScene extends Phaser.Scene {
   }
 
   preload() {
+    // Loading screen
+    const loadingScreen = this.add.image(400, 300, 'loadingScreen');
+    const loadingText = this.add.text(400, 225, 'Loading...', {
+      font: '80px Mukta',
+      color: '#754F37'
+    })
+    .setOrigin(0.5);
+    const loadingGif = this.add.sprite(400, 365, 'loadingGif', 'loadingGif.png');
+    this.anims.create({ key: 'loading', frames: this.anims.generateFrameNames('loadingGif', {
+      start: 0, end: 8,
+      prefix: 'frame_', suffix: '_delay-0.01s.png'
+    }), frameRate: 12, repeat: -1 });
+    loadingGif.anims.play('loading');
+    this.load.on('complete', () => {
+      loadingScreen.destroy();
+      loadingText.destroy();
+      loadingGif.destroy();
+    });
+
     // Preload audio for all words in the current test
     Object.keys(scene_dict).forEach((sound) => {
       this.load.audio(
@@ -37,7 +56,9 @@ export default class TestScene extends Phaser.Scene {
     Object.keys(scene_dict).forEach((sound) => {
       this.sound.add(sound);
     });
+
     this.background = this.add.image(399, 300, 'testBackground');
+
     const back = this.add.image(53, 548, 'back');
     const back1 = this.add.image(53, 548, 'back1');
     const speaker_off = this.add.image(400, 365, 'speaker_off');
@@ -51,9 +72,16 @@ export default class TestScene extends Phaser.Scene {
     var score = 0;
 
     // Submit guess on Enter keypress
-    this.input.keyboard.on('keydown-ENTER', function () {
+    this.input.keyboard.on('keydown-ENTER', function() {
       processGuess();
     });
+
+    // Open input box on any keypress, if not testing
+    this.input.keyboard.on('keydown', function() {
+      if (!is_testing && !inputEditor.isOpened) {
+        inputEditor = startGuess();
+      }
+    })
 
     let backToMenu = () => {
       this.scene.start('menu');
@@ -122,10 +150,6 @@ export default class TestScene extends Phaser.Scene {
 
           is_testing = false;
 
-          // Reset misalignment fix
-          guessInput.x -= 2;
-          guessInput.y -= 4;
-
           inputEditor = startGuess(); // repeat for the next word
         } else {
           guessPrompt.setText('You got ' + score + '/10. Congrats!');
@@ -151,10 +175,6 @@ export default class TestScene extends Phaser.Scene {
         inputEditor.close(); // Prevent input after submitting
         
         guessPrompt.setFontSize(60);
-
-        // Fix misalignment from text edit plugin
-        guessInput.x += 2;
-        guessInput.y += 4;
 
         // TODO: Use regex to fiter out special characters
         if (guessInput.text.toLowerCase() === currentWord) {
@@ -191,9 +211,15 @@ export default class TestScene extends Phaser.Scene {
     // Function to process text input
     var startGuess = () => {
       if (!is_testing) {
+        // Reset misalignment fix
+        guessInput.x -= 2;
+        guessInput.y -= 4;
+
         // keep text box open unless guess was submitted
         const inputEditor = this.rexUI.edit(guessInput, {}, function () {
-          startGuess();
+          // Fix misalignment from text edit plugin
+          guessInput.x += 2;
+          guessInput.y += 4;
         });
         return inputEditor;
       }
@@ -229,7 +255,16 @@ export default class TestScene extends Phaser.Scene {
       .setFixedSize(520, 50)
       .setInteractive()
       .on('pointerdown', () => {
-        startGuess();
+        if (this.sys.game.device.os.desktop) {
+          startGuess();
+        }
+      })
+      .on('pointerup', () => { // Fix buggy input on mobile
+        if (!this.sys.game.device.os.desktop) {
+          setTimeout(() => {
+            startGuess();
+          }, 50);
+        }
       });
 
     const addButtons = (button1, button2) => {
@@ -263,6 +298,19 @@ export default class TestScene extends Phaser.Scene {
     var audioButtons = addButtons(speaker_off, speaker_on);
     var backButtons = addButtons(back, back1);
     var submitButtons = addButtons(submit, submit1);
+
+    if (!this.sys.game.device.os.desktop) {
+      submitButtons = this.rexUI.add.buttons({
+        orientation: 0,
+        buttons: [submit, submit1],
+        expand: false,
+        align: undefined,
+        click: {
+          mode: 'pointerdown',
+          clickInterval: 100,
+        },
+      });
+    }
 
     initButtons(audioButtons, () => {
       playAudio(currentWord);

@@ -1,17 +1,17 @@
 import Phaser from 'phaser';
+
 import PreTestScene from './scenes/PreTestScene';
-import PreTestScene2 from './scenes/PreTestScene2';
+// import PreTestScene2 from './scenes/PreTestScene2';
 import TestScene from './scenes/TestScene';
-import HomeScene from './scenes/HomeScene';
-import FamilyScene from './scenes/FamilyScene';
-import GreetingsScene from './scenes/GreetingsScene';
-import TownScene from './scenes/TownScene';
-import RestaurantScene from './scenes/RestaurantScene';
 import MenuScene from './scenes/MenuScene';
 import MoveScene from './scenes/MoveScene';
 import SentenceScene from './scenes/SentenceScene';
 import ScoresScene from './scenes/ScoresScene';
 import ExitScene from './scenes/ExitScene';
+import PreLearnScene from './scenes/PreLearnScene';
+import GrammarScene from './scenes/GrammarScene';
+import VocabScene from './scenes/VocabScene';
+import util from './scenes/util';
 
 import RexUIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin';
 import UIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin.js';
@@ -24,7 +24,7 @@ const config = {
   scale: {
     autoCenter: Phaser.Scale.CENTER_HORIZONTALLY
   },
-  width: 800,
+  width: Math.min(window.innerWidth, 800),
   height: 600,
   parent: 'canvas-container',
   dom: {
@@ -50,19 +50,18 @@ const config = {
     ],
   },
   scene: [
+    util,
     MenuScene,
     MoveScene,
-    HomeScene,
-    FamilyScene,
-    RestaurantScene,
-    TownScene,
-    GreetingsScene,
     PreTestScene,
-    PreTestScene2,
+    // PreTestScene2,
     TestScene,
     SentenceScene,
     ScoresScene,
     ExitScene,
+    PreLearnScene,
+    GrammarScene,
+    VocabScene
   ],
 };
 
