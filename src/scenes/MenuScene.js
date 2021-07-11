@@ -6,6 +6,11 @@ export default class MenuScene extends Phaser.Scene {
   }
 
   preload() {
+    // Change scaling after rotating
+    this.scale.on('orientationchange', () => {
+      this.scene.restart();
+    });
+
     this.load.image('menuBackground', '../assets/images/MenuScene/Start.png');
 
     this.load.image('learn', '../assets/images/MenuScene/learn-b.png');
@@ -32,7 +37,7 @@ export default class MenuScene extends Phaser.Scene {
   create() {
     this.background = this.add.image(400, 300, 'menuBackground');
 
-    const isDesktop = this.sys.game.device.os.desktop;
+    const isDesktop = (window.innerWidth >= 800);
 
     const learn = this.add.image((isDesktop? 370 : Math.min(window.innerWidth/2, 370)), (isDesktop? 285 : 270), 'learn');
     const learn1 = this.add.image((isDesktop? 370 : Math.min(window.innerWidth/2, 370)), (isDesktop? 285 : 270), 'learn1');
@@ -44,6 +49,20 @@ export default class MenuScene extends Phaser.Scene {
     const score1 = this.add.image((isDesktop? 370 : Math.min(window.innerWidth/2, 370)), (isDesktop? 482 : 467), 'score1');
     const exit = this.add.image((isDesktop? 108 : Math.min(window.innerWidth/2, 370)), 552, 'exit');
     const exit1 = this.add.image((isDesktop? 108 : Math.min(window.innerWidth/2, 370)), 552, 'exit1');
+
+    if (window.innerWidth < 800) {
+      const mobileNote = this.add.text(window.innerWidth/2, 300, 'NOTE: Landscape mode\nis recommended.', {
+        font: 'bold 35px Mukta',
+        color: '#754F37',
+        align: 'center'
+      })
+      .setOrigin(0.5);
+      for (var i = 4000; i < 5000; i += 100) {
+        setTimeout(() => {
+          mobileNote.alpha -= 0.1;
+        }, i);
+      }
+    }
 
     const addButtons = (main, rollover) => {
       const newButtons = this.rexUI.add.buttons({

@@ -261,7 +261,9 @@ export default class TestScene extends Phaser.Scene {
       })
       .on('pointerup', () => { // Fix buggy input on mobile
         if (!this.sys.game.device.os.desktop) {
-          startGuess();
+          setTimeout(() => {
+            startGuess();
+          }, 50);
         }
       });
 
@@ -296,6 +298,19 @@ export default class TestScene extends Phaser.Scene {
     var audioButtons = addButtons(speaker_off, speaker_on);
     var backButtons = addButtons(back, back1);
     var submitButtons = addButtons(submit, submit1);
+
+    if (!this.sys.game.device.os.desktop) {
+      submitButtons = this.rexUI.add.buttons({
+        orientation: 0,
+        buttons: [submit, submit1],
+        expand: false,
+        align: undefined,
+        click: {
+          mode: 'pointerdown',
+          clickInterval: 100,
+        },
+      });
+    }
 
     initButtons(audioButtons, () => {
       playAudio(currentWord);

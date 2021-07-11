@@ -45,7 +45,7 @@
         font-weight: bold;
         color: #754F37;
       }
-      @media screen and (max-width: 800px) {
+      @media screen and (max-width: 600px) {
         #feedback {
           visibility: hidden;
         }
@@ -114,7 +114,7 @@
         if (window.innerHeight < document.body.clientHeight) {
           document.body.removeChild(footer);
           document.getElementById('main-content').appendChild(footer);
-        } else {
+        } else if (document.getElementById('main-content').contains(footer)) {
           document.getElementById('main-content').removeChild(footer);
           document.body.appendChild(footer);
         }

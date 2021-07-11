@@ -77,20 +77,20 @@ export default class MoveScene extends Phaser.Scene {
   create() {
     this.background = this.add.image(399, 299, 'moveBackground');
 
-    const isDesktop = (this.sys.game.device.os.desktop || window.innerWidth >= 800);
+    const isDesktop = true; // TODO: Change mobile scaling for portrait mode
 
     const back = this.add.image(45, 550, 'back');
     const back1 = this.add.image(45, 550, 'back1');
-    const home = this.add.image((isDesktop? 214 : Math.min(window.innerWidth/4, 214)), 174, 'home');
-    const home1 = this.add.image((isDesktop? 214 : Math.min(window.innerWidth/4, 214)), 174, 'home1');
-    const family = this.add.image((isDesktop? 395 : Math.min(3*window.innerWidth/4, 395)), 174, 'family');
-    const family1 = this.add.image((isDesktop? 395 : Math.min(3*window.innerWidth/4, 395)), 174, 'family1');
-    const greetings = this.add.image((isDesktop? 585 : Math.min(window.innerWidth/4, 585)), (isDesktop? 174 : 250), 'greetings');
-    const greetings1 = this.add.image((isDesktop? 585 : Math.min(window.innerWidth/4, 585)), (isDesktop? 174 : 250), 'greetings1');
-    const town = this.add.image((isDesktop? 270 : Math.min(3*window.innerWidth/4, 270)), 250, 'town');
-    const town1 = this.add.image((isDesktop? 270 : Math.min(3*window.innerWidth/4, 270)), 250, 'town1');
-    const restaurant = this.add.image((isDesktop? 470 : Math.min(window.innerWidth/2, 470)), (isDesktop? 250 : 326), 'restaurant');
-    const restaurant1 = this.add.image((isDesktop? 470 : Math.min(window.innerWidth/2, 470)), (isDesktop? 250 : 326), 'restaurant1');
+    const home = this.add.image((isDesktop? 214 : window.innerWidth/3), 174, 'home');
+    const home1 = this.add.image((isDesktop? 214 : window.innerWidth/3), 174, 'home1');
+    const family = this.add.image((isDesktop? 395 : 2*window.innerWidth/3), 174, 'family');
+    const family1 = this.add.image((isDesktop? 395 : 2*window.innerWidth/3), 174, 'family1');
+    const greetings = this.add.image((isDesktop? 585 : window.innerWidth/3), (isDesktop? 174 : 250), 'greetings');
+    const greetings1 = this.add.image((isDesktop? 585 : window.innerWidth/3), (isDesktop? 174 : 250), 'greetings1');
+    const town = this.add.image((isDesktop? 270 : 2*window.innerWidth/3), 250, 'town');
+    const town1 = this.add.image((isDesktop? 270 : 2*window.innerWidth/3), 250, 'town1');
+    const restaurant = this.add.image((isDesktop? 470 : window.innerWidth/2), (isDesktop? 250 : 326), 'restaurant');
+    const restaurant1 = this.add.image((isDesktop? 470 : window.innerWidth/2), (isDesktop? 250 : 326), 'restaurant1');
 
     const addButtons = (main, rollover) => {
       const newButtons = this.rexUI.add.buttons({
