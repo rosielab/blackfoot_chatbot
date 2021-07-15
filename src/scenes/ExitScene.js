@@ -48,7 +48,12 @@ export default class ExitScene extends Phaser.Scene {
       .setInteractive({ useHandCursor: true })
       .setOrigin(0.5)
       .on('pointerup', () => {
+        // Fix double tab open on mobile
+        feedbackLink.disableInteractive();
         window.open('https://www.surveymonkey.ca/r/N6XBHLY');
+        setTimeout(() => {
+          feedbackLink.setInteractive();
+        }, 100);
       })
       .on('pointerover', () => {
         linkUnderline.setVisible(true);

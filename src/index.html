@@ -26,6 +26,7 @@
       crossorigin
     />
     <link rel="stylesheet" type="text/css" href="assets/font.css" />
+    <link rel="shortcut icon" href="assets/favicon.ico">
 
     <style>
       html,
@@ -71,8 +72,9 @@
         padding: 0px 10px;
       }
       #changelog {
-        text-align: center;
-        display: block;
+        /* display: inline-block; */
+        /* text-align: center; */
+        /* display: block; */
         font-size: 20px;
       }
       #feedback {
@@ -101,7 +103,9 @@
         <p id="title" class="text">Blackfoot Chatbot</p>
       </div>
       <div id="version" class="text">v2.0</div>
-      <a id="changelog" class="text" href="https://github.com/rosielab/blackfoot_chatbot/blob/main/CHANGELOG.md" target="_blank">Changelog</a>
+      <div style="text-align: center;">
+        <a id="changelog" class="text" href="https://github.com/rosielab/blackfoot_chatbot/blob/main/CHANGELOG.md" target="_blank">Changelog</a>
+      </div>
     </section>
     <div id="footer">
       <div id="copyright" class="text">© SIMON FRASER UNIVERSITY</div>
@@ -111,7 +115,7 @@
       // Prevent overlap when zooming in
       function moveFooter() {
         const footer = document.getElementById('footer');
-        if (window.innerHeight < document.body.clientHeight) {
+        if (window.innerHeight < document.body.clientHeight && document.body.contains(footer)) {
           document.body.removeChild(footer);
           document.getElementById('main-content').appendChild(footer);
         } else if (document.getElementById('main-content').contains(footer)) {
