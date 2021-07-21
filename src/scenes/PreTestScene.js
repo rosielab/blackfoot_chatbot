@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 
-import { scene_dict, full_dict, current_test } from './util.js';
+import { scenes, scene_dict, full_dict, current_test } from './util.js';
 
 export default class PreTestScene extends Phaser.Scene {
   constructor() {
@@ -73,6 +73,7 @@ export default class PreTestScene extends Phaser.Scene {
       'all1_t',
       '../assets/images/PreTestScene/all-b-rollover.png'
     );
+    this.load.image('lock', '../assets/images/MoveScene/lock.png');
   }
 
   create() {
@@ -141,29 +142,35 @@ export default class PreTestScene extends Phaser.Scene {
     const initTestButtons = (buttons, scene) => {
       buttons.hideButton(1);
 
-      buttons.on('button.click', () => {
-        changeDict(scene_dict, full_dict, scene);
-        current_test.scene = scene;
-        if (scene === 'all') {
-          // Remove synthesis words from testing
-          for (var word of Object.keys(scene_dict)) {
-            if (full_dict[word][1] === 'time' || full_dict[word][1] === 'verb') {
-              delete scene_dict[word];
+      if (scene === 'all' || scenes.indexOf(scene) === 0 || localStorage.getItem(scenes[scenes.indexOf(scene)-1]) == 10 || localStorage.getItem('all') == 10) {
+        buttons.on('button.click', () => {
+          changeDict(scene_dict, full_dict, scene);
+          current_test.scene = scene;
+          if (scene === 'all') {
+            // Remove synthesis words from testing
+            for (var word of Object.keys(scene_dict)) {
+              if (full_dict[word][1] === 'time' || full_dict[word][1] === 'verb') {
+                delete scene_dict[word];
+              }
             }
           }
-        }
-        this.scene.start('test');
-      })
-
-      buttons.on('button.over', () => {
-        buttons.hideButton(0);
-        buttons.showButton(1);
-      });
-
-      buttons.on('button.out', () => {
-        buttons.hideButton(1);
-        buttons.showButton(0);
-      })
+          this.scene.start('test');
+        })
+  
+        buttons.on('button.over', () => {
+          buttons.hideButton(0);
+          buttons.showButton(1);
+        });
+  
+        buttons.on('button.out', () => {
+          buttons.hideButton(1);
+          buttons.showButton(0);
+        })
+      } else {
+        const button = buttons.getElement('buttons[0]')
+        button.setTint('0x808080');
+        this.add.image(button.x, button.y, 'lock');
+      }
     };
 
     const backButtons = addButtons(back, back1);

@@ -1,5 +1,7 @@
 import Phaser from 'phaser';
 
+import { scenes } from './util';
+
 export default class MoveScene extends Phaser.Scene {
   constructor() {
     super('move');
@@ -72,6 +74,7 @@ export default class MoveScene extends Phaser.Scene {
       'restaurant1',
       '../assets/images/PreTestScene/restaurant-b-rollover.png'
     );
+    this.load.image('lock', '../assets/images/MoveScene/lock.png');
   }
 
   create() {
@@ -109,23 +112,29 @@ export default class MoveScene extends Phaser.Scene {
     const initSceneButtons = (buttons, scene) => {
       buttons.hideButton(1);
 
-      buttons.on('button.click', () => {
-        if (scene !== 'menu') {
-          this.scene.start('vocab', { scene: scene });
-        } else {
-          this.scene.start('menu');
-        }
-      })
-
-      buttons.on('button.over', () => {
-        buttons.hideButton(0);
-        buttons.showButton(1);
-      });
-
-      buttons.on('button.out', () => {
-        buttons.hideButton(1);
-        buttons.showButton(0);
-      })
+      if (scene === 'menu' || scenes.indexOf(scene) === 0 || localStorage.getItem(scenes[scenes.indexOf(scene)-1]) == 10 || localStorage.getItem('all') == 10) {
+        buttons.on('button.click', () => {
+          if (scene !== 'menu') {
+            this.scene.start('vocab', { scene: scene });
+          } else {
+            this.scene.start('menu');
+          }
+        })
+  
+        buttons.on('button.over', () => {
+          buttons.hideButton(0);
+          buttons.showButton(1);
+        });
+  
+        buttons.on('button.out', () => {
+          buttons.hideButton(1);
+          buttons.showButton(0);
+        })
+      } else {
+        const button = buttons.getElement('buttons[0]')
+        button.setTint('0x808080');
+        this.add.image(button.x, button.y, 'lock');
+      }
     };
 
     const backButtons = addButtons(back, back1);
