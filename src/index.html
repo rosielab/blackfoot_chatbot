@@ -33,7 +33,7 @@
       body {
         margin: 0;
         padding: 0;
-        background-color: #E2DFC7;
+        background-color: #d9dbb2;
       }
       #main-content {
         position: relative;
@@ -70,6 +70,8 @@
       #return {
         font-size: 20px;
         padding: 0px 10px;
+        position: fixed;
+        z-index: 1;
       }
       #changelog {
         font-size: 20px;
@@ -86,6 +88,13 @@
         left: 15px;
         font-size: 15px;
       }
+      #column {
+        max-width: 960px;
+        background-color: #E2DFC7;
+        min-height: 100vh;
+        margin: 0px auto;
+        position: relative;
+      }
     </style>
   </head>
   <body>
@@ -96,19 +105,21 @@
     <noscript>Please enable javascript to play this Game.</noscript>
     <section id="main-content">
       <a id="return" class="text" href="http://blackfoot-revitalization.cs.sfu.ca/">← Back to the Blackfoot Revitalization page</a>
-      <div id="canvas-container">
-        <p id="title" class="text">Blackfoot Chatbot</p>
-      </div>
-      <div id="version" class="text">v2.0</div>
-      <div style="text-align: center;">
-        <a id="changelog" class="text" href="https://github.com/rosielab/blackfoot_chatbot/blob/main/CHANGELOG.md" target="_blank">Changelog</a>
+      <div id="column">
+        <div id="canvas-container">
+          <p id="title" class="text">Blackfoot Chatbot</p>
+        </div>
+        <div id="version" class="text">v2.1.0</div>
+        <div style="text-align: center;">
+          <a id="changelog" class="text" href="https://github.com/rosielab/blackfoot_chatbot/blob/main/CHANGELOG.md" target="_blank">Changelog</a>
+        </div>
+        <!-- <div id="footer"> -->
+          <div id="copyright" class="text">© SIMON FRASER UNIVERSITY</div>
+          <a id="feedback" class="text" href="https://www.surveymonkey.ca/r/N6XBHLY" target="_blank">Feedback</a>
+        <!-- </div> -->
       </div>
     </section>
-    <div id="footer">
-      <div id="copyright" class="text">© SIMON FRASER UNIVERSITY</div>
-      <a id="feedback" class="text" href="https://www.surveymonkey.ca/r/N6XBHLY" target="_blank">Feedback</a>
-    </div>
-    <script>
+    <!-- <script>
       // Prevent overlap when zooming in
       function moveFooter() {
         const footer = document.getElementById('footer');
@@ -122,6 +133,6 @@
       }
       window.onload = moveFooter;
       window.addEventListener('resize', moveFooter);
-    </script>
+    </script> -->
   </body>
 </html>
