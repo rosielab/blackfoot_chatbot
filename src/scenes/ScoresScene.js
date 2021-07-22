@@ -37,6 +37,7 @@ export default class ScoresScene extends Phaser.Scene {
       'back1',
       '../assets/images/ScoresScene/back-b-rollover.png'
     );
+    this.load.image('trophy', '../assets/images/ScoresScene/trophy.png');
   }
 
   create() {
@@ -116,7 +117,7 @@ export default class ScoresScene extends Phaser.Scene {
 
     // right-aligned for now as text is hard to read left-aligned
     const scenesText = this.add
-      .text(340, 295, 'Home:\n'
+      .text(326, 295, 'Home:\n'
                     + 'Family:\n'
                     + 'Greetings:\n'
                     + 'Town:\n'
@@ -131,7 +132,7 @@ export default class ScoresScene extends Phaser.Scene {
       .setOrigin(0.5);
 
     const scoresText = this.add
-      .text(540, 295, getScore('home') + '/10\n'
+      .text(526, 295, getScore('home') + '/10\n'
                     + getScore('family') + '/10\n'
                     + getScore('greetings') + '/10\n'
                     + getScore('town') + '/10\n'
@@ -144,6 +145,19 @@ export default class ScoresScene extends Phaser.Scene {
         fixedWidth: '115',
       })
       .setOrigin(0.5);
+
+    const refreshTrophies = () => {
+      for (var i = currentPage-1; i < Math.min(currentPage*5, scenes.length); i++) {
+        if (localStorage.getItem(scenes[i]) == 10) {
+          this.add.image(597, 160+54*i, 'trophy');
+        }
+      }
+      if (localStorage.getItem('all') == 10) {
+        this.add.image(597, 430, 'trophy');
+      }
+    }
+
+    refreshTrophies();
 
     // Will be updated once more scenes are added
     // if (scenes.length > 6) {
