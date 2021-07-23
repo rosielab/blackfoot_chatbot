@@ -157,20 +157,6 @@ export default class MoveScene extends Phaser.Scene {
       }
     };
 
-    const levelReminder = this.add.rexBBCodeText(400, 300, '', {
-      fontSize: '20px',
-      fontFamily: 'Mukta',
-      color: '#754F37',
-      backgroundColor: '#FFFFFF',
-      backgroundCornerRadius: 6,
-      padding: {
-        left: 6,
-        right: 6,
-        top: 6,
-        buttom: 6
-      }
-    }).setAlpha(0).setOrigin(0.5);
-
     const backButtons = addButtons(back, back1);
     const townButtons = addButtons(town, town1);
     const homeButtons = addButtons(home, home1);
@@ -184,5 +170,19 @@ export default class MoveScene extends Phaser.Scene {
     initSceneButtons(familyButtons, 'family');
     initSceneButtons(greetingsButtons, 'greetings');
     initSceneButtons(restaurantButtons, 'restaurant');
+
+    const levelReminder = this.add.rexBBCodeText(400, 300, '', {
+      fontSize: '20px',
+      fontFamily: 'Mukta',
+      color: '#754F37',
+      backgroundColor: '#FFFFFF',
+      backgroundCornerRadius: 6,
+      padding: {
+        left: 6,
+        right: 6,
+        top: 6,
+        buttom: 6
+      }
+    }).setAlpha(0).setOrigin(0.5);
   }
 }

@@ -119,20 +119,35 @@
         <!-- </div> -->
       </div>
     </section>
-    <!-- <script>
+    <script>
       // Prevent overlap when zooming in
-      function moveFooter() {
-        const footer = document.getElementById('footer');
-        if (window.innerHeight < document.body.clientHeight && document.body.contains(footer)) {
-          document.body.removeChild(footer);
-          document.getElementById('main-content').appendChild(footer);
-        } else if (document.getElementById('main-content').contains(footer)) {
-          document.getElementById('main-content').removeChild(footer);
-          document.body.appendChild(footer);
+      // function moveFooter() {
+      //   const footer = document.getElementById('footer');
+      //   if (window.innerHeight < document.body.clientHeight && document.body.contains(footer)) {
+      //     document.body.removeChild(footer);
+      //     document.getElementById('main-content').appendChild(footer);
+      //   } else if (document.getElementById('main-content').contains(footer)) {
+      //     document.getElementById('main-content').removeChild(footer);
+      //     document.body.appendChild(footer);
+      //   }
+      // }
+      function moveHeader() {
+        const header = document.getElementById('return');
+        const main_content = document.getElementById('main-content');
+        const column = document.getElementById('column');
+        const canvas = document.getElementById('canvas-container');
+        if (window.innerHeight < document.body.clientHeight && main_content.contains(header) && !column.contains(header)) {
+          header.style.position = 'relative';
+          main_content.removeChild(header);
+          column.insertBefore(header, canvas);
+        } else if (column.contains(header)) {
+          header.style.position = 'fixed';
+          column.removeChild(header);
+          main_content.insertBefore(header, column);
         }
       }
-      window.onload = moveFooter;
-      window.addEventListener('resize', moveFooter);
-    </script> -->
+      window.onload = moveHeader;
+      window.addEventListener('resize', moveHeader);
+    </script>
   </body>
 </html>
