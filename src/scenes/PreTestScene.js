@@ -142,7 +142,7 @@ export default class PreTestScene extends Phaser.Scene {
     const initTestButtons = (buttons, scene) => {
       buttons.hideButton(1);
 
-      if (scene === 'all' || scenes.indexOf(scene) === 0 || localStorage.getItem(scenes[scenes.indexOf(scene)-1]) == 10 || localStorage.getItem('all') == 10) {
+      if (scene === 'all' || scenes.indexOf(scene) === 0 || localStorage.getItem(scenes[scenes.indexOf(scene)-1]) >= 8 || localStorage.getItem('all') == 10) {
         buttons.on('button.click', () => {
           changeDict(scene_dict, full_dict, scene);
           current_test.scene = scene;
@@ -170,8 +170,42 @@ export default class PreTestScene extends Phaser.Scene {
         const button = buttons.getElement('buttons[0]')
         button.setTint('0x808080');
         this.add.image(button.x, button.y, 'lock');
+
+        buttons.on('button.over', () => {
+          const lastScene = scenes[scenes.indexOf(scene)-1]
+          levelReminder.x = button.x;
+          levelReminder.y = button.y + 50;
+          levelReminder.setText('Get 8/10 on the ' + '[b]' + lastScene[0].toUpperCase() + lastScene.slice(1) + '[/b] quiz to unlock!');
+          for (var i = 0; i < 100; i += 10) {
+            setTimeout(() => {
+              levelReminder.alpha += 0.1;
+            }, i); 
+          }
+        });
+
+        buttons.on('button.out', () => {
+          for (var i = 0; i < 100; i += 10) {
+            setTimeout(() => {
+              levelReminder.alpha -= 0.1;
+            }, i); 
+          }
+        });
       }
     };
+
+    const levelReminder = this.add.rexBBCodeText(400, 300, '', {
+      fontSize: '20px',
+      fontFamily: 'Mukta',
+      color: '#754F37',
+      backgroundColor: '#FFFFFF',
+      backgroundCornerRadius: 6,
+      padding: {
+        left: 6,
+        right: 6,
+        top: 6,
+        buttom: 6
+      }
+    }).setAlpha(0).setOrigin(0.5);
 
     const backButtons = addButtons(back, back1);
     const townButtons = addButtons(town_t, town1_t);
