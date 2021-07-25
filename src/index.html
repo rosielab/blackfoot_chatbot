@@ -50,9 +50,9 @@
         #feedback {
           visibility: hidden;
         }
-        #copyright {
+        /* #copyright {
           visibility: hidden;
-        }
+        } */
       }
       #title {
         text-align: center;
@@ -140,7 +140,7 @@
           header.style.position = 'relative';
           main_content.removeChild(header);
           column.insertBefore(header, canvas);
-        } else if (column.contains(header)) {
+        } else if (window.innerHeight >= document.body.clientHeight && column.contains(header)) {
           header.style.position = 'fixed';
           column.removeChild(header);
           main_content.insertBefore(header, column);

@@ -142,7 +142,7 @@ export default class PreTestScene extends Phaser.Scene {
     const initTestButtons = (buttons, scene) => {
       buttons.hideButton(1);
 
-      if (scene === 'all' || scenes.indexOf(scene) === 0 || localStorage.getItem(scenes[scenes.indexOf(scene)-1]) >= 8 || localStorage.getItem('all') == 10) {
+      if (scene === 'all' || scenes.indexOf(scene) <= 1 || localStorage.getItem(scenes[scenes.indexOf(scene)-1]) >= 8 || localStorage.getItem('all') == 10) {
         buttons.on('button.click', () => {
           changeDict(scene_dict, full_dict, scene);
           current_test.scene = scene;
