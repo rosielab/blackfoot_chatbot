@@ -233,12 +233,12 @@ export default class SentenceScene extends Phaser.Scene {
     }).layout();
 
     sceneScroll.getElement('panel')
+      .add(newScrollButton('Transition', synthesisWords))
       .add(newScrollButton('Home', homeWords))
       .add(newScrollButton('Family', familyWords))
       // .add(newScrollButton('Greetings'))
       .add(newScrollButton('Town', townWords))
-      .add(newScrollButton('Restaurant', restaurantWords))
-      .add(newScrollButton('Transition', synthesisWords));
+      .add(newScrollButton('Restaurant', restaurantWords));
     sceneScroll.layout();
 
     // Reminder text

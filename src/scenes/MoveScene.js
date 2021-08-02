@@ -112,7 +112,7 @@ export default class MoveScene extends Phaser.Scene {
     const initSceneButtons = (buttons, scene) => {
       buttons.hideButton(1);
 
-      if (scene === 'menu' || scenes.indexOf(scene) <= 1 || localStorage.getItem(scenes[scenes.indexOf(scene)-1]) >= 8 || localStorage.getItem('all') == 10) {
+      if (scene === 'menu' || scenes.indexOf(scene) <= 1 || localStorage.getItem(scenes[scenes.indexOf(scene)-1]) >= 7 || localStorage.getItem('all') == 10) {
         buttons.on('button.click', () => {
           if (scene !== 'menu') {
             this.scene.start('vocab', { scene: scene });
@@ -139,7 +139,7 @@ export default class MoveScene extends Phaser.Scene {
           const lastScene = scenes[scenes.indexOf(scene)-1]
           levelReminder.x = button.x;
           levelReminder.y = button.y + 50;
-          levelReminder.setText('Get 8/10 on the ' + '[b]' + lastScene[0].toUpperCase() + lastScene.slice(1) + '[/b] quiz to unlock!');
+          levelReminder.setText('Get 7/10 on the ' + '[b]' + lastScene[0].toUpperCase() + lastScene.slice(1) + '[/b] quiz to unlock!');
           for (var i = 0; i < 100; i += 10) {
             setTimeout(() => {
               levelReminder.alpha += 0.1;
