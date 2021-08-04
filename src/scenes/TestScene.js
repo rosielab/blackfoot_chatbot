@@ -126,14 +126,16 @@ export default class TestScene extends Phaser.Scene {
       if (!['counting', 'time', 'money'].includes(scene_dict[actual][1])) {
         return guess === actual;
       } else if (actual.split(' ').length !== 2 || actual.split(' ')[1] !== "o'clock") {
-        return guess === actual || guess === wordsToNumbers(actual);
+        return guess === actual || guess == wordsToNumbers(actual);
       } else {
         return [actual, 
                 wordsToNumbers(actual), 
                 actual.split(' ')[0], 
                 wordsToNumbers(actual.split(' ')[0]), 
                 actual.replace("'", ""), 
-                actual.replace("'", " ")]
+                actual.replace("'", " "),
+                wordsToNumbers(actual.replace("'", "")),
+                wordsToNumbers(actual.replace("'", " "))]
                 .includes(guess);
       }
     }
