@@ -2,13 +2,14 @@ import Phaser from 'phaser';
 
 var path2 = '../assets/images/SentenceScene/1x/';
 
-const synthesisWords = ['today', 'yesterday', 'tomorrow', 'this morning', 'this evening', 'i will go', 'i will eat', 'i went', 'and', 'where', 'who', 'please pass the'];
+const timeWords = ['today', 'yesterday', 'tomorrow', 'this morning', 'this evening'];
+const transitionWords = ['i will go', 'i will eat', 'i went', 'and', 'where', 'who', 'please pass the'];
 const homeWords = ['bathroom', 'dog', 'car', 'kitchen', 'window', 'elevator'];
 const familyWords = ['mother', 'father', 'boy', 'girl', 'child', 'woman'];
 // const greetingsWords = []
 const townWords = ['cafe', 'house', 'tipi', 'cinema', 'night club', 'store'];
 const restaurantWords = ['apples', 'burger', 'coffee', 'dessert', 'eggs', 'fish'];
-const scenesList = [synthesisWords, homeWords, familyWords, townWords, restaurantWords];
+const scenesList = [timeWords, transitionWords, homeWords, familyWords, townWords, restaurantWords];
 
 export default class SentenceScene extends Phaser.Scene {
   constructor() {
@@ -104,6 +105,20 @@ export default class SentenceScene extends Phaser.Scene {
         // imageList.push(this.add.image(465, 467, scene[9] + 'sen'));
         // imageList.push(this.add.image(575, 467, scene[10] + 'sen'));
         // imageList.push(this.add.image(686, 467, scene[11] + 'sen'));
+      } else if (scene.length == 5) {
+        imageList.push(this.add.image(376, 369, scene[0] + 'sen'));
+        imageList.push(this.add.image(508, 369, scene[1] + 'sen'));
+        imageList.push(this.add.image(648, 369, scene[2] + 'sen'));
+        imageList.push(this.add.image(433, 437, scene[3] + 'sen'));
+        imageList.push(this.add.image(601, 437, scene[4] + 'sen'));
+      } else if (scene.length == 7) {
+        imageList.push(this.add.image(348, 369, scene[0] + 'sen'));
+        imageList.push(this.add.image(472, 369, scene[1] + 'sen'));
+        imageList.push(this.add.image(585, 369, scene[2] + 'sen'));
+        imageList.push(this.add.image(684, 369, scene[3] + 'sen'));
+        imageList.push(this.add.image(379, 437, scene[4] + 'sen'));
+        imageList.push(this.add.image(475, 437, scene[5] + 'sen'));
+        imageList.push(this.add.image(614, 437, scene[6] + 'sen'));
       }
     }
 
@@ -212,7 +227,7 @@ export default class SentenceScene extends Phaser.Scene {
         child: this.rexUI.add.fixWidthSizer({
           orientation: 0,
           align: 'center',
-          space: { item: 200, line: 8 }
+          space: { item: 200, line: 5 }
         }),
 
         mask: {
@@ -233,7 +248,8 @@ export default class SentenceScene extends Phaser.Scene {
     }).layout();
 
     sceneScroll.getElement('panel')
-      .add(newScrollButton('Transition', synthesisWords))
+      .add(newScrollButton('Time', timeWords))
+      .add(newScrollButton('Transition', transitionWords))
       .add(newScrollButton('Home', homeWords))
       .add(newScrollButton('Family', familyWords))
       // .add(newScrollButton('Greetings'))
@@ -272,6 +288,7 @@ export default class SentenceScene extends Phaser.Scene {
         button.y = dragY;
       });
       button.on('dragend', (pointer, dragX, dragY, dropped) => {
+        console.log(button.x, button.y);
         if (!this.sys.game.device.os.desktop) {
           this.input.manager.touch.capture = false;
         }

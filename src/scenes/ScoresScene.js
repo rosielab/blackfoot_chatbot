@@ -38,6 +38,7 @@ export default class ScoresScene extends Phaser.Scene {
       '../assets/images/ScoresScene/back-b-rollover.png'
     );
     this.load.image('trophy', '../assets/images/ScoresScene/trophy.png');
+    this.load.image('upArrow', '../assets/images/ScoresScene/upArrow.png');
   }
 
   create() {
@@ -46,9 +47,6 @@ export default class ScoresScene extends Phaser.Scene {
     const back = this.add.image(53, 548, 'back');
     const back1 = this.add.image(53, 548, 'back1');
 
-    /*
-      These two functions need to be redone once more scenes are added
-    */
     function scrollDownScores(page) {
       if (page*5 + 1 < scenes.length && page >= 0) {
         scenesText.setText('');
@@ -61,14 +59,24 @@ export default class ScoresScene extends Phaser.Scene {
             scenes[i].slice(1) +
             ':\n');
 
-            scoresText.setText(scoresText.text + localStorage.getItem(scenes[i]) + '/10\n')
+            if (localStorage.getItem(scenes[i]) === '10') {
+              scoresText.setText(scoresText.text + '[color=goldenrod]' + localStorage.getItem(scenes[i]) + '/10[/color]\n');
+            } else {
+              scoresText.setText(scoresText.text + localStorage.getItem(scenes[i]) + '/10\n');
+            }
           } else {
             scenesText.setText(scenesText.text + '\n');
             scoresText.setText(scoresText.text + '\n');
           }
         }
         scenesText.setText(scenesText.text + 'All:');
-        scoresText.setText(scoresText.text + localStorage.getItem('all') + '/10');
+
+        if (localStorage.getItem('all') === '10') {
+          scoresText.setText(scoresText.text + '[color=goldenrod]' + localStorage.getItem('all') + '/10[/color]');
+        } else {
+          scoresText.setText(scoresText.text + localStorage.getItem('all') + '/10');
+        }
+        refreshTrophies(page+1);
         return ++page;
       } else {
         return Math.max(page, 1);
@@ -84,36 +92,7 @@ export default class ScoresScene extends Phaser.Scene {
     }
 
     var currentPage = 1;
-
-    // const top_scores_text = this.add
-    //   .text(
-    //     400,
-    //     295,
-    //     'Town: ' +
-    //       scores.town +
-    //       '/10\n' +
-    //       'Restaurant: ' +
-    //       scores.restaurant +
-    //       '/10\n' +
-    //       'Home: ' +
-    //       scores.home +
-    //       '/10\n' +
-    //       'Family: ' +
-    //       scores.family +
-    //       '/10\n' +
-    //       'Greetings: ' +
-    //       scores.greetings +
-    //       '/10\n' +
-    //       'All: ' +
-    //       scores.all +
-    //       '/10',
-    //     {
-    //       font: '50px Mukta',
-    //       color: '#479D76',
-    //       align: 'right',
-    //     }
-    //   )
-    //   .setOrigin(0.5);
+    const trophyGroup = this.add.group();
 
     // right-aligned for now as text is hard to read left-aligned
     const scenesText = this.add
@@ -132,59 +111,49 @@ export default class ScoresScene extends Phaser.Scene {
       .setOrigin(0.5);
 
     const scoresText = this.add
-      .text(526, 295, getScore('home') + '/10\n'
-                    + getScore('family') + '/10\n'
-                    + getScore('greetings') + '/10\n'
-                    + getScore('town') + '/10\n'
-                    + getScore('restaurant') + '/10\n'
-                    + getScore('all') + '/10',
+      .rexBBCodeText(526, 295, '',
       {
-        font: '50px Mukta',
+        fontSize: '50px',
+        fontFamily: 'Mukta',
         color: '#479D76',
         align: 'right',
         fixedWidth: '115',
       })
       .setOrigin(0.5);
 
-    const refreshTrophies = () => {
-      for (var i = currentPage-1; i < Math.min(currentPage*5, scenes.length); i++) {
+    const refreshTrophies = (page) => {
+      trophyGroup.clear(true);
+      for (var i = page-1; i < Math.min(page*5, scenes.length); i++) {
         if (localStorage.getItem(scenes[i]) == 10) {
-          this.add.image(597, 160+54*i, 'trophy');
+          trophyGroup.add(this.add.image(597, 160+54*i, 'trophy'));
         }
       }
       if (localStorage.getItem('all') == 10) {
-        this.add.image(597, 430, 'trophy');
+        trophyGroup.add(this.add.image(597, 430, 'trophy'));
       }
     }
 
-    refreshTrophies();
+    scrollDownScores(0);
 
     // Will be updated once more scenes are added
-    // if (scenes.length > 6) {
-    //   // Up arrow (placeholders)
-    //   this.add
-    //     .text(590, 130, '/\\', {
-    //       font: '30px Mukta',
-    //       color: '#000000',
-    //     })
-    //     .setOrigin(0.5)
-    //     .setInteractive()
-    //     .on('pointerdown', () => {
-    //       currentPage = scrollUpScores(currentPage);
-    //     });
+    if (scenes.length > 6) {
+      // Up arrow (placeholders)
+      const upArrow = this.add
+        .image(596, 126, 'upArrow')
+        .setInteractive()
+        .on('pointerdown', () => {
+          currentPage = scrollUpScores(currentPage);
+        });
 
-    //   // Down arrow
-    //   this.add
-    //     .text(590, 460, '\\/', {
-    //       font: '30px Mukta',
-    //       color: '#000000',
-    //     })
-    //     .setOrigin(0.5)
-    //     .setInteractive()
-    //     .on('pointerdown', () => {
-    //       currentPage = scrollDownScores(currentPage);
-    //     });
-    // }
+      // Down arrow
+      const downArrow = this.add
+        .image(596, 464, 'upArrow')
+        .setInteractive()
+        .on('pointerdown', () => {
+          currentPage = scrollDownScores(currentPage);
+        });
+      downArrow.angle = 180;
+    }
 
     const reset_scores = this.add
       .text(400, 540, 'Reset Scores', {
