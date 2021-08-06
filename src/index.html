@@ -50,6 +50,9 @@
         #feedback {
           visibility: hidden;
         }
+        #sourcecode {
+          visibility: hidden;
+        }
         /* #copyright {
           visibility: hidden;
         } */
@@ -78,7 +81,7 @@
       }
       #feedback {
         position: absolute;
-        bottom: 10px;
+        bottom: 8px;
         right: 15px;
         font-size: 25px;
       }
@@ -94,6 +97,12 @@
         min-height: 100vh;
         margin: 0px auto;
         position: relative;
+      }
+      #sourcecode {
+        position: absolute;
+        bottom: 8px;
+        left: 15px;
+        font-size: 20px;
       }
     </style>
   </head>
@@ -115,6 +124,7 @@
         </div>
         <!-- <div id="footer"> -->
           <!-- <div id="copyright" class="text">© SIMON FRASER UNIVERSITY</div> -->
+          <a id="sourcecode" class ="text" href="https://github.com/rosielab/blackfoot_chatbot" target="_blank">Source code</a>
           <a id="feedback" class="text" href="https://www.surveymonkey.ca/r/N6XBHLY" target="_blank">Feedback</a>
         <!-- </div> -->
       </div>

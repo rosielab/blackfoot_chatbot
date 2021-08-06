@@ -112,7 +112,7 @@ export default class MoveScene extends Phaser.Scene {
     const initSceneButtons = (buttons, scene) => {
       buttons.hideButton(1);
 
-      if (scene === 'menu' || scenes.indexOf(scene) <= 1 || localStorage.getItem(scenes[scenes.indexOf(scene)-1]) >= 7 || localStorage.getItem('all') == 10) {
+      if (scene === 'menu' || scenes.indexOf(scene) <= 4 || localStorage.getItem(scenes[scenes.indexOf(scene)-1]) >= 7 || localStorage.getItem('all') == 10) {
         buttons.on('button.click', () => {
           if (scene !== 'menu') {
             this.scene.start('vocab', { scene: scene });
