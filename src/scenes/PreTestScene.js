@@ -149,7 +149,7 @@ export default class PreTestScene extends Phaser.Scene {
           if (scene === 'all') {
             // Remove synthesis words from testing
             for (var word of Object.keys(scene_dict)) {
-              if (full_dict[word][1] === 'time' || full_dict[word][1] === 'verb') {
+              if (full_dict[word][1] === 'transition') {
                 delete scene_dict[word];
               }
             }

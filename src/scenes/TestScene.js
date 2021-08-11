@@ -172,9 +172,9 @@ export default class TestScene extends Phaser.Scene {
           playAudio(currentWord);
 
           // Prevent larger words going off-screen
-          // TODO: Dynamically shrink text
-          if (scene_dict[currentWord][0].length > 16) {
-            guessPrompt.setFontSize(50);
+          guessPrompt.setFontSize(60);
+          while (guessPrompt.width > 680) {
+            guessPrompt.setFontSize(guessPrompt.style.fontSize.slice(0, -2)-1);
           }
 
           guessInput.setText('');
@@ -206,7 +206,11 @@ export default class TestScene extends Phaser.Scene {
         is_testing = true;
         inputEditor.close(); // Prevent input after submitting
         
+        // Prevent text going off the screen
         guessPrompt.setFontSize(60);
+        while (guessPrompt.width > 680) {
+          guessPrompt.setFontSize(guessPrompt.style.fontSize.slice(0, -2)-1);
+        }
 
         // TODO: Use regex to fiter out special characters
         if (isCorrectGuess(guessInput.text.toLowerCase(), currentWord)) {

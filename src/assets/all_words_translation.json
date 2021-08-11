@@ -120,17 +120,17 @@
   "noon": ["ihtatsikaiksistsikoo", "time"],
   "midnight": ["ihtatsikaikookoo", "time"],
   "day before yesterday": ["miistapatonnii", "time"],
-
-  "today": ["annohk", "time"],
-  "this morning": ["ksisskanaotonni", "time"],
   "tomorrow": ["apinako’ssi", "time"],
-  "this evening": ["otakosi", "time"],
-  "i will go": ["nitaakitapoo", "verb"],
-  "i will eat": ["nitaaksoyi", "verb"],
-  "and": ["kii", "verb"],
-  "i went": ["niitsitapo", "verb"],
-  "please pass the": ["kipahkokkit", "verb"],
-  "where": ["tsima", "verb"],
-  "who": ["takaa", "verb"],
-  "yesterday": ["matonnii", "time"]
+  "yesterday": ["matonnii", "time"],
+
+  "today": ["annohk", "transition"],
+  "this morning": ["ksisskanaotonni", "transition"],
+  "this evening": ["otakosi", "transition"],
+  "i will go": ["nitaakitapoo", "transition"],
+  "i will eat": ["nitaaksoyi", "transition"],
+  "and": ["kii", "transition"],
+  "i went": ["niitsitapo", "transition"],
+  "please pass the": ["kipahkokkit", "transition"],
+  "where": ["tsima", "transition"],
+  "who": ["takaa", "transition"]
 }
