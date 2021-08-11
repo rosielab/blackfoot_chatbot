@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
+import wordsToNumbers from 'words-to-numbers';
 
-import { scene_dict, current_test } from './util.js';
+import { scene_dict, current_test, scenes } from './util.js';
 
 export default class TestScene extends Phaser.Scene {
   constructor() {
@@ -102,11 +103,42 @@ export default class TestScene extends Phaser.Scene {
     // choose a random word from dictionary
     function getRandomWord(dict) {
       const keys = Object.keys(dict);
-      return keys[Math.floor(Math.random() * keys.length)];
+      if (current_test.scene !== 'all') {
+        return keys[Math.floor(Math.random() * keys.length)];
+      } else {
+        // Choose words equally between all scenes
+        // Don't choose the 'all' scene
+        const randomScene = scenes[Math.floor(Math.random() * (scenes.length-1))];
+        let randomWord = keys[Math.floor(Math.random() * keys.length)];
+        while (dict[randomWord][1] !== randomScene) {
+          randomWord = keys[Math.floor(Math.random() * keys.length)];
+        }
+        return randomWord;
+      }
     }
     
     // init current word
     var currentWord = getRandomWord(scene_dict);
+
+    function isCorrectGuess(guess, actual) {
+      // Allow number input (10 instead of ten, etc.)
+      // For counting, time, money scenes
+      if (!['counting', 'time', 'money'].includes(scene_dict[actual][1])) {
+        return guess === actual;
+      } else if (actual.split(' ').length !== 2 || actual.split(' ')[1] !== "o'clock") {
+        return guess === actual || guess == wordsToNumbers(actual);
+      } else {
+        return [actual, 
+                wordsToNumbers(actual), 
+                actual.split(' ')[0], 
+                wordsToNumbers(actual.split(' ')[0]), 
+                actual.replace("'", ""), 
+                actual.replace("'", " "),
+                wordsToNumbers(actual.replace("'", "")),
+                wordsToNumbers(actual.replace("'", " "))]
+                .includes(guess);
+      }
+    }
 
     function nextWord() {
       // stop processing if the user exited
@@ -140,9 +172,9 @@ export default class TestScene extends Phaser.Scene {
           playAudio(currentWord);
 
           // Prevent larger words going off-screen
-          // TODO: Dynamically shrink text
-          if (scene_dict[currentWord][0].length > 16) {
-            guessPrompt.setFontSize(50);
+          guessPrompt.setFontSize(60);
+          while (guessPrompt.width > 680) {
+            guessPrompt.setFontSize(guessPrompt.style.fontSize.slice(0, -2)-1);
           }
 
           guessInput.setText('');
@@ -174,10 +206,14 @@ export default class TestScene extends Phaser.Scene {
         is_testing = true;
         inputEditor.close(); // Prevent input after submitting
         
+        // Prevent text going off the screen
         guessPrompt.setFontSize(60);
+        while (guessPrompt.width > 680) {
+          guessPrompt.setFontSize(guessPrompt.style.fontSize.slice(0, -2)-1);
+        }
 
         // TODO: Use regex to fiter out special characters
-        if (guessInput.text.toLowerCase() === currentWord) {
+        if (isCorrectGuess(guessInput.text.toLowerCase(), currentWord)) {
           score++;
           score_text.setText('Score ' + score + '/10');
           localStorage.setItem(current_test.scene, Math.max(score, getScore(current_test.scene)).toString());

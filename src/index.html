@@ -26,13 +26,14 @@
       crossorigin
     />
     <link rel="stylesheet" type="text/css" href="assets/font.css" />
+    <link rel="shortcut icon" href="assets/favicon.ico">
 
     <style>
       html,
       body {
         margin: 0;
         padding: 0;
-        background-color: #E2DFC7;
+        background-color: #d9dbb2;
       }
       #main-content {
         position: relative;
@@ -49,9 +50,12 @@
         #feedback {
           visibility: hidden;
         }
-        #copyright {
+        #sourcecode {
           visibility: hidden;
         }
+        /* #copyright {
+          visibility: hidden;
+        } */
       }
       #title {
         text-align: center;
@@ -69,23 +73,36 @@
       #return {
         font-size: 20px;
         padding: 0px 10px;
+        position: fixed;
+        z-index: 1;
       }
       #changelog {
-        text-align: center;
-        display: block;
         font-size: 20px;
       }
       #feedback {
         position: absolute;
-        bottom: 10px;
+        bottom: 8px;
         right: 15px;
         font-size: 25px;
       }
-      #copyright {
+      /* #copyright {
         position: absolute;
         bottom: 10px;
         left: 15px;
         font-size: 15px;
+      } */
+      #column {
+        max-width: 960px;
+        background-color: #E2DFC7;
+        min-height: 100vh;
+        margin: 0px auto;
+        position: relative;
+      }
+      #sourcecode {
+        position: absolute;
+        bottom: 8px;
+        left: 15px;
+        font-size: 20px;
       }
     </style>
   </head>
@@ -97,30 +114,50 @@
     <noscript>Please enable javascript to play this Game.</noscript>
     <section id="main-content">
       <a id="return" class="text" href="http://blackfoot-revitalization.cs.sfu.ca/">← Back to the Blackfoot Revitalization page</a>
-      <div id="canvas-container">
-        <p id="title" class="text">Blackfoot Chatbot</p>
+      <div id="column">
+        <div id="canvas-container">
+          <p id="title" class="text">Blackfoot Chatbot</p>
+        </div>
+        <div id="version" class="text">v2.1.0</div>
+        <div style="text-align: center;">
+          <a id="changelog" class="text" href="https://github.com/rosielab/blackfoot_chatbot/blob/main/CHANGELOG.md" target="_blank">Changelog</a>
+        </div>
+        <!-- <div id="footer"> -->
+          <!-- <div id="copyright" class="text">© SIMON FRASER UNIVERSITY</div> -->
+          <a id="sourcecode" class ="text" href="https://github.com/rosielab/blackfoot_chatbot" target="_blank">Source code</a>
+          <a id="feedback" class="text" href="https://www.surveymonkey.ca/r/N6XBHLY" target="_blank">Feedback</a>
+        <!-- </div> -->
       </div>
-      <div id="version" class="text">v2.0</div>
-      <a id="changelog" class="text" href="https://github.com/rosielab/blackfoot_chatbot/blob/main/CHANGELOG.md" target="_blank">Changelog</a>
     </section>
-    <div id="footer">
-      <div id="copyright" class="text">© SIMON FRASER UNIVERSITY</div>
-      <a id="feedback" class="text" href="https://www.surveymonkey.ca/r/N6XBHLY" target="_blank">Feedback</a>
-    </div>
     <script>
       // Prevent overlap when zooming in
-      function moveFooter() {
-        const footer = document.getElementById('footer');
-        if (window.innerHeight < document.body.clientHeight) {
-          document.body.removeChild(footer);
-          document.getElementById('main-content').appendChild(footer);
-        } else if (document.getElementById('main-content').contains(footer)) {
-          document.getElementById('main-content').removeChild(footer);
-          document.body.appendChild(footer);
+      // function moveFooter() {
+      //   const footer = document.getElementById('footer');
+      //   if (window.innerHeight < document.body.clientHeight && document.body.contains(footer)) {
+      //     document.body.removeChild(footer);
+      //     document.getElementById('main-content').appendChild(footer);
+      //   } else if (document.getElementById('main-content').contains(footer)) {
+      //     document.getElementById('main-content').removeChild(footer);
+      //     document.body.appendChild(footer);
+      //   }
+      // }
+      function moveHeader() {
+        const header = document.getElementById('return');
+        const main_content = document.getElementById('main-content');
+        const column = document.getElementById('column');
+        const canvas = document.getElementById('canvas-container');
+        if (window.innerHeight < document.body.clientHeight && main_content.contains(header) && !column.contains(header)) {
+          header.style.position = 'relative';
+          main_content.removeChild(header);
+          column.insertBefore(header, canvas);
+        } else if (window.innerHeight >= document.body.clientHeight && column.contains(header)) {
+          header.style.position = 'fixed';
+          column.removeChild(header);
+          main_content.insertBefore(header, column);
         }
       }
-      window.onload = moveFooter;
-      window.addEventListener('resize', moveFooter);
+      window.onload = moveHeader;
+      window.addEventListener('resize', moveHeader);
     </script>
   </body>
 </html>

@@ -24,7 +24,8 @@
     "express": "^4.16.4",
     "phaser": "^3.53.1",
     "phaser-ui-tools": "^2.0.0-beta",
-    "phaser3-rex-plugins": "^1.1.42"
+    "phaser3-rex-plugins": "^1.1.42",
+    "words-to-numbers": "^1.5.1"
   },
   "devDependencies": {
     "babel-core": "^6.26.3",

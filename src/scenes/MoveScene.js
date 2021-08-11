@@ -1,5 +1,7 @@
 import Phaser from 'phaser';
 
+import { scenes } from './util';
+
 export default class MoveScene extends Phaser.Scene {
   constructor() {
     super('move');
@@ -72,6 +74,7 @@ export default class MoveScene extends Phaser.Scene {
       'restaurant1',
       '../assets/images/PreTestScene/restaurant-b-rollover.png'
     );
+    this.load.image('lock', '../assets/images/MoveScene/lock.png');
   }
 
   create() {
@@ -109,23 +112,49 @@ export default class MoveScene extends Phaser.Scene {
     const initSceneButtons = (buttons, scene) => {
       buttons.hideButton(1);
 
-      buttons.on('button.click', () => {
-        if (scene !== 'menu') {
-          this.scene.start('vocab', { scene: scene });
-        } else {
-          this.scene.start('menu');
-        }
-      })
+      if (scene === 'menu' || scenes.indexOf(scene) <= 4 || localStorage.getItem(scenes[scenes.indexOf(scene)-1]) >= 7 || localStorage.getItem('all') == 10) {
+        buttons.on('button.click', () => {
+          if (scene !== 'menu') {
+            this.scene.start('vocab', { scene: scene });
+          } else {
+            this.scene.start('menu');
+          }
+        });
+  
+        buttons.on('button.over', () => {
+          buttons.hideButton(0);
+          buttons.showButton(1);
+        });
+  
+        buttons.on('button.out', () => {
+          buttons.hideButton(1);
+          buttons.showButton(0);
+        });
+      } else {
+        const button = buttons.getElement('buttons[0]')
+        button.setTint('0x808080');
+        this.add.image(button.x, button.y, 'lock');
 
-      buttons.on('button.over', () => {
-        buttons.hideButton(0);
-        buttons.showButton(1);
-      });
+        buttons.on('button.over', () => {
+          const lastScene = scenes[scenes.indexOf(scene)-1]
+          levelReminder.x = button.x;
+          levelReminder.y = button.y + 50;
+          levelReminder.setText('Get 7/10 on the ' + '[b]' + lastScene[0].toUpperCase() + lastScene.slice(1) + '[/b] quiz to unlock!');
+          for (var i = 0; i < 100; i += 10) {
+            setTimeout(() => {
+              levelReminder.alpha += 0.1;
+            }, i); 
+          }
+        });
 
-      buttons.on('button.out', () => {
-        buttons.hideButton(1);
-        buttons.showButton(0);
-      })
+        buttons.on('button.out', () => {
+          for (var i = 0; i < 100; i += 10) {
+            setTimeout(() => {
+              levelReminder.alpha -= 0.1;
+            }, i); 
+          }
+        });
+      }
     };
 
     const backButtons = addButtons(back, back1);
@@ -141,5 +170,19 @@ export default class MoveScene extends Phaser.Scene {
     initSceneButtons(familyButtons, 'family');
     initSceneButtons(greetingsButtons, 'greetings');
     initSceneButtons(restaurantButtons, 'restaurant');
+
+    const levelReminder = this.add.rexBBCodeText(400, 300, '', {
+      fontSize: '20px',
+      fontFamily: 'Mukta',
+      color: '#754F37',
+      backgroundColor: '#FFFFFF',
+      backgroundCornerRadius: 6,
+      padding: {
+        left: 6,
+        right: 6,
+        top: 6,
+        buttom: 6
+      }
+    }).setAlpha(0).setOrigin(0.5);
   }
 }

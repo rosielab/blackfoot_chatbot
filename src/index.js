@@ -16,6 +16,7 @@ import util from './scenes/util';
 import RexUIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin';
 import UIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin.js';
 import DragPlugin from 'phaser3-rex-plugins/plugins/drag-plugin.js';
+import BBCodeTextPlugin from 'phaser3-rex-plugins/plugins/bbcodetext-plugin.js';
 
 const config = {
   type: Phaser.AUTO,
@@ -48,6 +49,12 @@ const config = {
         mapping: 'rexUI',
       },
     ],
+    global: [{
+      key: 'rexBBCodeTextPlugin',
+      plugin: BBCodeTextPlugin,
+      start: true
+    }
+    ]
   },
   scene: [
     util,
